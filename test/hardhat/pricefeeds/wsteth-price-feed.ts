@@ -3,7 +3,7 @@ import {
   SimplePriceFeed__factory,
   SimpleWstETH__factory,
   WstETHPriceFeed__factory
-} from '../../build/types';
+} from '../../../build/types';
 
 export async function makeWstETH({ stEthPrice, tokensPerStEth }) {
   const SimplePriceFeedFactory = (await ethers.getContractFactory('SimplePriceFeed')) as SimplePriceFeed__factory;

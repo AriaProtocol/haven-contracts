@@ -1,4 +1,4 @@
-import { GovernorSimple__factory } from '../build/types';
+import { GovernorSimple__factory } from '../../build/types';
 import { ethers } from 'hardhat';
 import { expect } from 'chai';
 

@@ -3,7 +3,7 @@ import {
   Fauceteer,
   Fauceteer__factory,
   FaucetToken__factory
-} from '../build/types';
+} from '../../build/types';
 
 async function makeFauceteer() {
   const FauceteerFactory = (await ethers.getContractFactory('Fauceteer')) as Fauceteer__factory;

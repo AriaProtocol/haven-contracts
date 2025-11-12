@@ -1,5 +1,5 @@
 import { baseBalanceOf, ethers, expect, exp, makeProtocol, wait, makeBulker, defaultAssets, getGasUsed, makeRewards, fastForward, event } from './helpers';
-import { FaucetWETH__factory, NonStandardFaucetToken__factory } from '../build/types';
+import { FaucetWETH__factory, NonStandardFaucetToken__factory } from '../../build/types';
 
 // XXX Improve the "no permission" tests that should expect a custom error when
 // when https://github.com/nomiclabs/hardhat/issues/1618 gets fixed.

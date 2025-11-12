@@ -708,7 +708,7 @@ const config: HardhatUserConfig = {
   },
 
   paths: {
-    tests: './test',
+    tests: './test/hardhat',
   },
 
   contractSizer: {

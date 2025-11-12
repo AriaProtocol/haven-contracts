@@ -4,7 +4,7 @@ import {
   SweepableBridgeReceiverHarness__factory,
   FaucetToken__factory,
   NonStandardFaucetToken__factory,
-} from '../../build/types';
+} from '../../../build/types';
 import { encodeBridgeReceiverCalldata, makeTimelock } from './base-bridge-receiver-test';
 
 async function makeSweepableBridgeReceiver({ initialize } = { initialize: true }) {

@@ -2,7 +2,7 @@ import { ethers, exp, expect } from '../helpers';
 import {
   SimplePriceFeed__factory,
   ScalingPriceFeed__factory
-} from '../../build/types';
+} from '../../../build/types';
 
 export async function makeScalingPriceFeed({ price, priceFeedDecimals }) {
   const SimplePriceFeedFactory = (await ethers.getContractFactory('SimplePriceFeed')) as SimplePriceFeed__factory;
