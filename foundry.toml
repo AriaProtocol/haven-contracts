@@ -1,9 +1,30 @@
 [profile.default]
 src = 'contracts'
 out = 'forge/out'
-libs = ['node_modules', 'forge/lib']
+libs = ['node_modules', "dependencies"]
 test = 'forge/test'
 cache_path  = 'forge/cache'
+solc = "0.8.15"
+ignored_warnings_from = ["dependencies", "node_modules"]
+dynamic_test_linking = true
+remappings = [
+  "forge-std/=dependencies/forge-std-1.11.0/",
+  "capo/=dependencies/woof-software-compound-capo-lst-lrt-oracles/",
+]
 
+[profile.ci]
+verbosity = 4
+libs = ["dependencies"]
 # disable for CI (used for debugging liquidity issues)
 no_match_test = "test.*SwapVia"
+
+[fmt]
+single_line_statement_blocks = "single"
+sort_imports = true
+contract_new_lines = false
+override_spacing = false
+number_underscore = "thousands"
+
+[dependencies]
+forge-std = "1.11.0"
+"woof-software/compound-capo" = { version = "lst-lrt-oracles", git = "git@github.com:woof-software/compound-capo.git", branch = "lst-lrt-oracles" }
