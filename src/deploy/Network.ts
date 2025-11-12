@@ -254,7 +254,7 @@ export async function deployNetworkComet(
   const configurator = configuratorImpl.attach(configuratorProxy.address);
 
   // Also get a handle for Comet, although it may not *actually* support the interface yet
-  const comet = await deploymentManager.cast(cometProxy.address, 'contracts/CometInterface.sol:CometInterface');
+  const comet = await deploymentManager.cast(cometProxy.address, 'contracts/CometBundleInterface.sol:CometBundleInterface');
 
   // Call initializeStorage if storage not initialized
   // Note: we now rely on the fact that anyone may call, which helps separate the proposal

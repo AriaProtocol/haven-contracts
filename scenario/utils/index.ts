@@ -27,7 +27,7 @@ import {
   setNextBaseFeeToZero,
   setNextBlockTimestamp,
 } from './hreUtils';
-import { BaseBridgeReceiver, CometInterface } from '../../build/types';
+import { BaseBridgeReceiver, CometBundleInterface } from '../../build/types';
 import CometActor from './../context/CometActor';
 import { isBridgeProposal } from './isBridgeProposal';
 import { Interface } from 'ethers/lib/utils';
@@ -1479,7 +1479,7 @@ export async function timeUntilUnderwater({
   actor,
   fudgeFactor = 0n,
 }: {
-  comet: CometInterface;
+  comet: CometBundleInterface;
   actor: CometActor;
   fudgeFactor?: bigint;
 }): Promise<number> {

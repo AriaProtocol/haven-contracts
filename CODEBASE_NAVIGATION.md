@@ -66,7 +66,7 @@ The core operations include supplying assets (base token or collateral), borrowi
 - Extension contract for ERC20 functions (`approve`, `allowance`)
 - Called via delegatecall from Comet proxy
 
-**`contracts/CometInterface.sol`**
+**`contracts/utils/abstract/extensions/CometBundleInterface.sol`**
 - Combined interface for `CometMainInterface` and `CometExtInterface`
 - Use this for type definitions when interacting with Comet
 

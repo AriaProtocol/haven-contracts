@@ -18,7 +18,7 @@ import {
 import CometActor from './CometActor';
 import CometAsset from './CometAsset';
 import {
-  CometInterface,
+  CometBundleInterface,
   ERC20__factory,
   Configurator,
   SimpleTimelock,
@@ -51,7 +51,7 @@ export type MigrationData = {
 export interface CometProperties {
   actors: ActorMap;
   assets: AssetMap;
-  comet: CometInterface;
+  comet: CometBundleInterface;
   configurator: Configurator;
   proxyAdmin: CometProxyAdmin;
   timelock: SimpleTimelock;
@@ -94,7 +94,7 @@ export class CometContext {
     return this.world.deploymentManager.contract('COMP');
   }
 
-  async getComet(): Promise<CometInterface> {
+  async getComet(): Promise<CometBundleInterface> {
     return this.world.deploymentManager.contract('comet');
   }
 

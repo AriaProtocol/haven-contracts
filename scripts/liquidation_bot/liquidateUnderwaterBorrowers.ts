@@ -1,6 +1,6 @@
 import hre from 'hardhat';
 import {
-  CometInterface,
+  CometBundleInterface,
   OnChainLiquidator
 } from '../../build/types';
 import { PoolConfigStruct } from '../../build/types/OnChainLiquidator';
@@ -342,7 +342,7 @@ function getMaxAmountToPurchase(tokenAddress: string): bigint {
 }
 
 async function attemptLiquidation(
-  comet: CometInterface,
+  comet: CometBundleInterface,
   liquidator: OnChainLiquidator,
   targetAddresses: string[],
   signerWithFlashbots: SignerWithFlashbots,
@@ -404,7 +404,7 @@ async function attemptLiquidation(
 }
 
 async function attemptLiquidationViaOnChainLiquidator(
-  comet: CometInterface,
+  comet: CometBundleInterface,
   liquidator: OnChainLiquidator,
   targetAddresses: string[],
   assets: string[],
@@ -470,7 +470,7 @@ async function attemptLiquidationViaOnChainLiquidator(
   }
 }
 
-async function getUniqueAddresses(comet: CometInterface): Promise<Set<string>> {
+async function getUniqueAddresses(comet: CometBundleInterface): Promise<Set<string>> {
   const endBlock = await hre.ethers.provider.getBlockNumber();
   const maxBlockRange = 10000; // Adjust based on provider limits
   const startBlock = endBlock - maxBlockRange;
@@ -478,7 +478,7 @@ async function getUniqueAddresses(comet: CometInterface): Promise<Set<string>> {
   return new Set(withdrawEvents.map(event => event.args.src));
 }
 
-export async function hasPurchaseableCollateral(comet: CometInterface, assets: Asset[], minBaseValue: number): Promise<boolean> {
+export async function hasPurchaseableCollateral(comet: CometBundleInterface, assets: Asset[], minBaseValue: number): Promise<boolean> {
   const baseReserves = (await comet.getReserves()).toBigInt();
   const targetReserves = (await comet.targetReserves()).toBigInt();
   const baseScale = (await comet.baseScale()).toBigInt();
@@ -500,7 +500,7 @@ export async function hasPurchaseableCollateral(comet: CometInterface, assets: A
 }
 
 export async function liquidateUnderwaterBorrowers(
-  comet: CometInterface,
+  comet: CometBundleInterface,
   liquidator: OnChainLiquidator,
   signerWithFlashbots: SignerWithFlashbots,
   network: string,
@@ -532,7 +532,7 @@ export async function liquidateUnderwaterBorrowers(
 }
 
 export async function arbitragePurchaseableCollateral(
-  comet: CometInterface,
+  comet: CometBundleInterface,
   liquidator: OnChainLiquidator,
   assets: Asset[],
   signerWithFlashbots: SignerWithFlashbots,
@@ -558,7 +558,7 @@ export async function arbitragePurchaseableCollateral(
   }
 }
 
-export async function getAssets(comet: CometInterface): Promise<Asset[]> {
+export async function getAssets(comet: CometBundleInterface): Promise<Asset[]> {
   let numAssets = await comet.numAssets();
   let assets = [
     ...await Promise.all(Array(numAssets).fill(0).map(async (_, i) => {

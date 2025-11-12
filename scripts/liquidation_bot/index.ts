@@ -1,7 +1,7 @@
 import hre from 'hardhat';
 import { DeploymentManager } from '../../plugins/deployment_manager/DeploymentManager';
 import {
-  CometInterface,
+  CometBundleInterface,
   OnChainLiquidator
 } from '../../build/types';
 import {
@@ -49,7 +49,7 @@ async function main() {
   await dm.spider();
 
   const contracts = await dm.contracts();
-  let comet = contracts.get('comet') as CometInterface;
+  let comet = contracts.get('comet') as CometBundleInterface;
 
   // Flashbots provider requires passing in a standard provider
   let flashbotsProvider: FlashbotsBundleProvider;

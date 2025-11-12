@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity 0.8.15;
 
-import "./CometCore.sol";
+import "contracts/CometCore.sol";
 
 /**
  * @title Compound's Comet Ext Interface

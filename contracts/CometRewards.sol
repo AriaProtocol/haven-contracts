@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity 0.8.15;
 
-import "./CometInterface.sol";
+import "contracts/utils/abstract/extensions/CometBundleInterface.sol";
 import "./utils/interfaces/ERC20.sol";
 
 /**
@@ -68,7 +68,7 @@ contract CometRewards {
         if (msg.sender != governor) revert NotPermitted(msg.sender);
         if (rewardConfig[comet].token != address(0)) revert AlreadyConfigured(comet);
 
-        uint64 accrualScale = CometInterface(comet).baseAccrualScale();
+        uint64 accrualScale = CometBundleInterface(comet).baseAccrualScale();
         uint8 tokenDecimals = ERC20(token).decimals();
         uint64 tokenScale = safe64(10 ** tokenDecimals);
         if (accrualScale > tokenScale) {
@@ -147,7 +147,7 @@ contract CometRewards {
         RewardConfig memory config = rewardConfig[comet];
         if (config.token == address(0)) revert NotSupported(comet);
 
-        CometInterface(comet).accrueAccount(account);
+        CometBundleInterface(comet).accrueAccount(account);
 
         uint claimed = rewardsClaimed[comet][account];
         uint accrued = getRewardAccrued(comet, account, config);
@@ -173,7 +173,7 @@ contract CometRewards {
      * @param to The address to receive the rewards
      */
     function claimTo(address comet, address src, address to, bool shouldAccrue) external {
-        if (!CometInterface(comet).hasPermission(src, msg.sender)) revert NotPermitted(msg.sender);
+        if (!CometBundleInterface(comet).hasPermission(src, msg.sender)) revert NotPermitted(msg.sender);
 
         claimInternal(comet, src, to, shouldAccrue);
     }
@@ -186,7 +186,7 @@ contract CometRewards {
         if (config.token == address(0)) revert NotSupported(comet);
 
         if (shouldAccrue) {
-            CometInterface(comet).accrueAccount(src);
+            CometBundleInterface(comet).accrueAccount(src);
         }
 
         uint claimed = rewardsClaimed[comet][src];
@@ -205,7 +205,7 @@ contract CometRewards {
      * @dev Calculates the reward accrued for an account on a Comet deployment
      */
     function getRewardAccrued(address comet, address account, RewardConfig memory config) internal view returns (uint) {
-        uint accrued = CometInterface(comet).baseTrackingAccrued(account);
+        uint accrued = CometBundleInterface(comet).baseTrackingAccrued(account);
 
         if (config.shouldUpscale) {
             accrued *= config.rescaleFactor;

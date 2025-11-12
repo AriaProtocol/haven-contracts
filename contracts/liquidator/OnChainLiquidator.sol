@@ -9,7 +9,7 @@ import "./vendor/@uniswap/v3-periphery/contracts/libraries/CallbackValidation.so
 import "./vendor/@uniswap/v3-periphery/contracts/libraries/TransferHelper.sol";
 import "./vendor/@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol";
 
-import "../CometInterface.sol";
+import "contracts/utils/abstract/extensions/CometBundleInterface.sol";
 import "contracts/utils/interfaces/ERC20.sol";
 import "contracts/utils/interfaces/IWstETH.sol";
 import "./interfaces/IStableSwap.sol";
@@ -131,7 +131,7 @@ contract OnChainLiquidator is IUniswapV3FlashCallback, PeripheryImmutableState, 
         if (maxAmountsToPurchase.length != assets.length) revert InvalidArgument();
 
         // Absorb Comet underwater accounts
-        CometInterface(comet).absorb(msg.sender, liquidatableAccounts);
+        CometBundleInterface(comet).absorb(msg.sender, liquidatableAccounts);
         emit Absorb(msg.sender, liquidatableAccounts);
 
         uint256 flashLoanAmount = 0;
@@ -156,7 +156,7 @@ contract OnChainLiquidator is IUniswapV3FlashCallback, PeripheryImmutableState, 
         }
 
         address poolToken0 = flashLoanPairToken;
-        address poolToken1 = CometInterface(comet).baseToken();
+        address poolToken1 = CometBundleInterface(comet).baseToken();
         bool reversedPair = poolToken0 > poolToken1;
         // Use Uniswap approach to determining order of tokens https://github.com/Uniswap/v3-periphery/blob/main/contracts/libraries/PoolAddress.sol#L20-L27
         if (reversedPair) (poolToken0, poolToken1) = (poolToken1, poolToken0);
@@ -211,7 +211,7 @@ contract OnChainLiquidator is IUniswapV3FlashCallback, PeripheryImmutableState, 
 
         address[] memory assets = flashCallbackData.assets;
 
-        address baseToken = CometInterface(flashCallbackData.comet).baseToken();
+        address baseToken = CometBundleInterface(flashCallbackData.comet).baseToken();
 
         // Allow Comet protocol to withdraw USDC (base token) for collateral purchase
         TransferHelper.safeApprove(baseToken, address(flashCallbackData.comet), flashCallbackData.flashLoanAmount);
@@ -223,7 +223,7 @@ contract OnChainLiquidator is IUniswapV3FlashCallback, PeripheryImmutableState, 
 
             if (assetBaseAmount == 0) continue;
 
-            CometInterface(flashCallbackData.comet).buyCollateral(asset, 0, assetBaseAmount, address(this));
+            CometBundleInterface(flashCallbackData.comet).buyCollateral(asset, 0, assetBaseAmount, address(this));
 
             uint256 assetBalance = ERC20(asset).balanceOf(address(this));
 
@@ -273,13 +273,13 @@ contract OnChainLiquidator is IUniswapV3FlashCallback, PeripheryImmutableState, 
     }
 
     function purchasableBalanceOfAsset(address comet, address asset, uint maxCollateralToPurchase) internal returns (uint256, uint256) {
-        uint256 collateralBalance = CometInterface(comet).getCollateralReserves(asset);
+        uint256 collateralBalance = CometBundleInterface(comet).getCollateralReserves(asset);
 
         collateralBalance = min(collateralBalance, maxCollateralToPurchase);
 
-        uint256 baseScale = CometInterface(comet).baseScale();
+        uint256 baseScale = CometBundleInterface(comet).baseScale();
 
-        uint256 quotePrice = CometInterface(comet).quoteCollateral(asset, QUOTE_PRICE_SCALE * baseScale);
+        uint256 quotePrice = CometBundleInterface(comet).quoteCollateral(asset, QUOTE_PRICE_SCALE * baseScale);
         uint256 collateralBalanceInBase = baseScale * QUOTE_PRICE_SCALE * collateralBalance / quotePrice;
 
         return (collateralBalance, collateralBalanceInBase);
@@ -320,7 +320,7 @@ contract OnChainLiquidator is IUniswapV3FlashCallback, PeripheryImmutableState, 
 
         address swapToken = asset;
 
-        address baseToken = CometInterface(comet).baseToken();
+        address baseToken = CometBundleInterface(comet).baseToken();
 
         TransferHelper.safeApprove(asset, address(uniswapRouter), swapAmount);
         // For low liquidity asset, swap it to ETH first
@@ -381,7 +381,7 @@ contract OnChainLiquidator is IUniswapV3FlashCallback, PeripheryImmutableState, 
 
         address swapToken = asset;
 
-        address baseToken = CometInterface(comet).baseToken();
+        address baseToken = CometBundleInterface(comet).baseToken();
 
         TransferHelper.safeApprove(asset, sushiSwapRouter, swapAmount);
 
@@ -425,7 +425,7 @@ contract OnChainLiquidator is IUniswapV3FlashCallback, PeripheryImmutableState, 
 
         address swapToken = asset;
 
-        address baseToken = CometInterface(comet).baseToken();
+        address baseToken = CometBundleInterface(comet).baseToken();
 
         TransferHelper.safeApprove(asset, address(balancerVault), swapAmount);
 
@@ -501,7 +501,7 @@ contract OnChainLiquidator is IUniswapV3FlashCallback, PeripheryImmutableState, 
             revert InvalidPoolConfig(tokenIn, poolConfig);
         }
 
-        address tokenOut = CometInterface(comet).baseToken();
+        address tokenOut = CometBundleInterface(comet).baseToken();
 
         // Curve uses the null address to represent ETH
         if (coin0 == NULL_ADDRESS || coin1 == NULL_ADDRESS) {

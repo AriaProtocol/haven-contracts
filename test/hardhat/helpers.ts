@@ -30,7 +30,7 @@ import {
   Configurator,
   Configurator__factory,
   CometHarnessInterface,
-  CometInterface,
+  CometBundleInterface,
   NonStandardFaucetFeeToken,
   NonStandardFaucetFeeToken__factory,
   AssetListFactory,
@@ -582,7 +582,7 @@ export function objectify(arrayObject) {
   return obj;
 }
 
-export async function baseBalanceOf(comet: CometInterface, account: string): Promise<bigint> {
+export async function baseBalanceOf(comet: CometBundleInterface, account: string): Promise<bigint> {
   const balanceOf = await comet.balanceOf(account);
   const borrowBalanceOf = await comet.borrowBalanceOf(account);
   return balanceOf.sub(borrowBalanceOf).toBigInt();
