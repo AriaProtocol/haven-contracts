@@ -2,7 +2,7 @@ import { ethers, exp, expect } from '../helpers';
 import {
   SimplePriceFeed__factory,
   WBTCPriceFeed__factory
-} from '../../build/types';
+} from '../../../build/types';
 
 export async function makeWBTCPriceFeed({ WBTCToBTCPrice, BTCToUSDPrice }) {
   const SimplePriceFeedFactory = (await ethers.getContractFactory(

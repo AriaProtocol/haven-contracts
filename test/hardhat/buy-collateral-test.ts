@@ -1,4 +1,4 @@
-import { EvilToken, EvilToken__factory, NonStandardFaucetFeeToken__factory, FaucetToken, NonStandardFaucetFeeToken } from '../build/types';
+import { EvilToken, EvilToken__factory, NonStandardFaucetFeeToken__factory, FaucetToken, NonStandardFaucetFeeToken } from '../../build/types';
 import { ethers, event, expect, exp, getBlock, makeProtocol, portfolio, ReentryAttack, wait } from './helpers';
 
 describe('buyCollateral', function () {

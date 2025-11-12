@@ -2,7 +2,7 @@ import { ethers, exp, expect } from '../helpers';
 import {
   SimplePriceFeed__factory,
   MultiplicativePriceFeed__factory
-} from '../../build/types';
+} from '../../../build/types';
 
 export async function makeMultiplicativePriceFeed({ priceA, priceB, decimalsA = 8, decimalsB = 8 }) {
   const SimplePriceFeedFactory = (await ethers.getContractFactory(

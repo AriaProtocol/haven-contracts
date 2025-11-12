@@ -1,0 +1,1 @@
+Utilities used inside core protocol. Nothing is deployable on its own here.

@@ -4,7 +4,7 @@ import {
   CometHarness__factory,
   FaucetToken__factory,
   SimplePriceFeed__factory,
-} from '../build/types';
+} from '../../build/types';
 
 describe('constructor', function () {
   it('sets the baseBorrowMin', async function () {

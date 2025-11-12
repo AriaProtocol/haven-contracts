@@ -6,7 +6,7 @@ import {
   CometHarness__factory,
   CometHarnessInterface,
   OnChainLiquidator__factory
-} from '../../build/types';
+} from '../../../build/types';
 import {
   BALANCER_VAULT,
   COMP,

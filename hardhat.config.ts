@@ -110,9 +110,9 @@ subtask(TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS).setAction(async (_, __, runSuper
   
   return paths.filter((p: string) => {
     return !(
-      p.includes('contracts/capo/contracts/test/') ||
-      p.includes('contracts/capo/test/') ||
-      p.includes('forge-std') ||
+      p.includes('dependencies/woof-software-compound-capo-lst-lrt-oracles/contracts/test/') ||
+      p.includes('dependencies/woof-software-compound-capo-lst-lrt-oracles/test/') ||
+      p.includes('dependencies/forge-std-1.11.0/src/') ||
       p.endsWith('.t.sol')
     );
   });
@@ -708,7 +708,7 @@ const config: HardhatUserConfig = {
   },
 
   paths: {
-    tests: './test',
+    tests: './test/hardhat',
   },
 
   contractSizer: {

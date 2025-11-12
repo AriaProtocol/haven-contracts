@@ -1,0 +1,1 @@
+Specific version or features not required for a working core

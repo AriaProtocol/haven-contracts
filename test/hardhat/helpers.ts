@@ -37,10 +37,10 @@ import {
   AssetListFactory__factory,
   CometHarnessExtendedAssetList__factory,
   CometHarnessInterfaceExtendedAssetList as CometWithExtendedAssetList,
-} from '../build/types';
+} from '../../build/types';
 import { BigNumber } from 'ethers';
 import { TransactionReceipt, TransactionResponse } from '@ethersproject/abstract-provider';
-import { TotalsBasicStructOutput, TotalsCollateralStructOutput } from '../build/types/CometHarness';
+import { TotalsBasicStructOutput, TotalsCollateralStructOutput } from '../../build/types/CometHarness';
 
 export { Comet, ethers, expect, hre };
 

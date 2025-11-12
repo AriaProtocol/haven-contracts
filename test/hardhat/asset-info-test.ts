@@ -4,7 +4,7 @@ import {
   SimplePriceFeed__factory,
   FaucetToken__factory,
   CometHarness__factory
-} from '../build/types';
+} from '../../build/types';
 
 describe('asset info', function () {
   it('initializes protocol', async () => {

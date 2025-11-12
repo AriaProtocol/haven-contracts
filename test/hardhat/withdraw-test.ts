@@ -1,4 +1,4 @@
-import { EvilToken, EvilToken__factory, FaucetToken } from '../build/types';
+import { EvilToken, EvilToken__factory, FaucetToken } from '../../build/types';
 import { baseBalanceOf, ethers, event, expect, exp, makeProtocol, portfolio, ReentryAttack, setTotalsBasic, wait, fastForward } from './helpers';
 
 describe('withdrawTo', function () {

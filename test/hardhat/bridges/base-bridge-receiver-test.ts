@@ -3,7 +3,7 @@ import { utils } from 'ethers';
 import {
   BaseBridgeReceiverHarness__factory,
   Timelock__factory
-} from '../../build/types';
+} from '../../../build/types';
 
 const BRIDGE_RECEIVER_CALLDATA_ABI = ['address[]', 'uint256[]', 'string[]', 'bytes[]'];
 
