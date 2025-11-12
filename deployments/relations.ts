@@ -127,15 +127,15 @@ const relationConfigMap: RelationConfigMap = {
     }
   },
   'governor:implementation': {
-    artifact: 'contracts/IGovernorBravo.sol:IGovernorBravo',
+    artifact: 'contracts/utils/interfaces/IGovernorBravo.sol:IGovernorBravo',
   },
 
   COMP: {
-    artifact: 'contracts/IComp.sol:IComp',
+    artifact: 'contracts/utils/interfaces/IComp.sol:IComp',
   },
 
   FiatTokenProxy: {
-    artifact: 'contracts/ERC20.sol:ERC20',
+    artifact: 'contracts/utils/interfaces/ERC20.sol:ERC20',
     relations: {
       fiatTokenAdmin: {
         field: {

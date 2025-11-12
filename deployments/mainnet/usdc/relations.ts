@@ -12,7 +12,7 @@ export default {
     }
   },
   'AppProxyUpgradeable': {
-    artifact: 'contracts/ERC20.sol:ERC20',
+    artifact: 'contracts/utils/interfaces/ERC20.sol:ERC20',
   },
   fxRoot: {
     relations: {
@@ -22,7 +22,7 @@ export default {
     }
   },
   UUPSProxy: {
-    artifact: 'contracts/ERC20.sol:ERC20',
+    artifact: 'contracts/utils/interfaces/ERC20.sol:ERC20',
     delegates: {
       field: {
         slot: '0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc'
@@ -30,7 +30,7 @@ export default {
     }
   },
   TransparentUpgradeableProxy: {
-    artifact: 'contracts/ERC20.sol:ERC20',
+    artifact: 'contracts/utils/interfaces/ERC20.sol:ERC20',
     delegates: {
       field: {
         slot: '0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc'
@@ -38,7 +38,7 @@ export default {
     }
   },
   ERC1967Proxy: {
-    artifact: 'contracts/ERC20.sol:ERC20',
+    artifact: 'contracts/utils/interfaces/ERC20.sol:ERC20',
     delegates: {
       field: {
         slot: '0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc'

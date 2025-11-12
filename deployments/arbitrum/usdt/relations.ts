@@ -7,7 +7,7 @@ export default {
   },
   // WBTC
   ClonableBeaconProxy: {
-    artifact: 'contracts/ERC20.sol:ERC20',
+    artifact: 'contracts/utils/interfaces/ERC20.sol:ERC20',
     delegates: {
       field: {
         slot: '0xa3f0ad74e5423aebfd80d3ef4346578335a9a72aeaee59ff6cb3582b35133d50'
@@ -15,7 +15,7 @@ export default {
     }
   },
   OssifiableProxy: {
-    artifact: 'contracts/ERC20.sol:ERC20',
+    artifact: 'contracts/utils/interfaces/ERC20.sol:ERC20',
     delegates: {
       field: {
         slot: '0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc'
@@ -23,7 +23,7 @@ export default {
     }
   },
   TransparentUpgradeableProxy: {
-    artifact: 'contracts/ERC20.sol:ERC20',
+    artifact: 'contracts/utils/interfaces/ERC20.sol:ERC20',
     delegates: {
       field: {
         slot: '0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc'

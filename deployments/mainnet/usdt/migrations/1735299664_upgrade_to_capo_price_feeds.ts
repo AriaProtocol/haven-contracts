@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { DeploymentManager } from '../../../../plugins/deployment_manager/DeploymentManager';
 import { migration } from '../../../../plugins/deployment_manager/Migration';
 import { proposal } from '../../../../src/deploy';
-import { Numeric } from '../../../../test/helpers';
+import { Numeric } from '../../../../test/hardhat/helpers';
 import { IWstETH, IRateProvider, AggregatorV3Interface } from '../../../../build/types';
 import { constants } from 'ethers';
 

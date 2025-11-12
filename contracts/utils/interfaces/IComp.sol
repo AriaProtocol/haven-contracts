@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity 0.8.15;
 
-import "./ERC20.sol";
+import "contracts/utils/interfaces/ERC20.sol";
 
 /**
  * @dev Interface for interacting with COMP.

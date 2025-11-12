@@ -2,11 +2,11 @@
 pragma solidity 0.8.15;
 
 import "./CometMainInterface.sol";
-import "./IERC20NonStandard.sol";
-import "./IPriceFeed.sol";
-import "./IAssetListFactory.sol";
-import "./IAssetListFactoryHolder.sol";
-import "./IAssetList.sol";
+import "contracts/utils/interfaces/IERC20NonStandard.sol";
+import "contracts/utils/interfaces/IPriceFeed.sol";
+import "contracts/utils/interfaces/IAssetListFactory.sol";
+import "contracts/utils/interfaces/IAssetListFactoryHolder.sol";
+import "contracts/utils/interfaces/IAssetList.sol";
 
 /**
  * @title Compound's Comet Contract

@@ -2,8 +2,8 @@
 pragma solidity 0.8.15;
 
 import "./CometMainInterface.sol";
-import "./ERC20.sol";
-import "./IPriceFeed.sol";
+import "./utils/interfaces/ERC20.sol";
+import "contracts/utils/interfaces/IPriceFeed.sol";
 
 /**
  * @title Compound's Comet Contract on Scroll

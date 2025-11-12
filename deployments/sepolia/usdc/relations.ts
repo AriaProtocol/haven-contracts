@@ -4,15 +4,15 @@ export default {
   ...baseRelationConfig,
   // USDC / USD price feed
   '0xa2f78ab2355fe2f984d808b5cee7fd0a93d5270e': {
-    artifact: 'contracts/IPriceFeed.sol:IPriceFeed'
+    artifact: 'contracts/utils/interfaces/IPriceFeed.sol:IPriceFeed'
   },
   // WBTC / USD price feed
   '0x1b44f3514812d835eb1bdb0acb33d3fa3351ee43': {
-    artifact: 'contracts/IPriceFeed.sol:IPriceFeed'
+    artifact: 'contracts/utils/interfaces/IPriceFeed.sol:IPriceFeed'
   },
   // WETH / USD price feed
   '0x694aa1769357215de4fac081bf1f309adc325306': {
-    artifact: 'contracts/IPriceFeed.sol:IPriceFeed'
+    artifact: 'contracts/utils/interfaces/IPriceFeed.sol:IPriceFeed'
   },
   fxRoot: {
     relations: {

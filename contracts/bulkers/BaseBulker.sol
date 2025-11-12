@@ -2,8 +2,8 @@
 pragma solidity 0.8.15;
 
 import "../CometInterface.sol";
-import "../IERC20NonStandard.sol";
-import "../IWETH9.sol";
+import "contracts/utils/interfaces/IERC20NonStandard.sol";
+import "contracts/utils/interfaces/IWETH9.sol";
 
 /**
  * @dev Interface for claiming rewards from the CometRewards contract

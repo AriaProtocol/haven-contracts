@@ -475,7 +475,7 @@ Price feeds provide asset prices to the protocol. Various implementations suppor
 
 ### Primary Contract Files
 
-**`contracts/IPriceFeed.sol`**
+**`contracts/utils/interfaces/IPriceFeed.sol`**
 - Interface for price feeds
 - `getPrice()` - Returns price in 8 decimals
 
@@ -570,10 +570,10 @@ Asset management includes adding/removing collateral assets and managing asset l
 **`contracts/CometFactoryWithExtendedAssetList.sol`**
 - Factory for deploying Comet with extended asset list
 
-**`contracts/IAssetList.sol`**
+**`contracts/utils/interfaces/IAssetList.sol`**
 - Interface for asset list contracts
 
-**`contracts/IAssetListFactory.sol`**
+**`contracts/utils/interfaces/IAssetListFactory.sol`**
 - Interface for asset list factory
 
 ### Test Files
