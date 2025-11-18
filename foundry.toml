@@ -12,6 +12,11 @@ remappings = [
   "capo/=dependencies/woof-software-compound-capo-lst-lrt-oracles/",
 ]
 via_ir = true
+optimizer = true
+optimizer_runs = 1 
+
+[profile.default.optimizer_details.yul_details]
+optimizerSteps = "dhfoDgvulfnTUtnIf [xa[r]scLM cCTUtTOntnfDIul Lcul Vcul [j] Tpeul xa[rul] xa[r]cL gvif CTUca[r]LsTOtfDnca[r]Iulc] jmul[jul] VcTOcul jmul"
 
 [profile.ci]
 verbosity = 4
