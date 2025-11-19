@@ -1,11 +1,11 @@
 [profile.default]
 src = 'contracts'
 out = 'forge/out'
-libs = ['node_modules', "dependencies"]
+libs = ["dependencies"]
 test = 'forge/test'
 cache_path  = 'forge/cache'
 solc = "0.8.15"
-ignored_warnings_from = ["dependencies", "node_modules"]
+ignored_warnings_from = ["dependencies"]
 dynamic_test_linking = true
 remappings = [
   "forge-std/=dependencies/forge-std-1.11.0/",
