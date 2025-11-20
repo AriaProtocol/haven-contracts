@@ -1,0 +1,3 @@
+yarn run v1.22.22
+$ /Users/theo/code/Aria/haven/node_modules/.bin/hardhat deploy --network aeneid --deployment usdc
+[37m2025-11-20 17:01:20.388[39m[0m[0m [33m[1mWARN[22m[39m[0m[0m [1m[37mService[39m[22m[0m[0m =>Tenderly config doesn't exist, empty string values are returned instead.
