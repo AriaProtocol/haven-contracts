@@ -197,6 +197,11 @@ export const networkConfigs: NetworkConfig[] = [
     chainId: 1315,
     url: `https://rpc.ankr.com/story_aeneid_testnet/${ANKR_KEY}`,
   },
+  {
+    network: 'anvil',
+    chainId: 31337,
+    url: `http://localhost:8545`,
+  },
 ];
 
 function getDefaultProviderURL(network: string) {
