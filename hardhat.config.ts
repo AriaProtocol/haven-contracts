@@ -192,6 +192,16 @@ export const networkConfigs: NetworkConfig[] = [
     chainId: 59144,
     url: `https://rpc.ankr.com/linea/${ANKR_KEY}`,
   },
+  {
+    network: 'aeneid',
+    chainId: 1315,
+    url: `https://rpc.ankr.com/story_aeneid_testnet/${ANKR_KEY}`,
+  },
+  {
+    network: 'anvil',
+    chainId: 31337,
+    url: `http://localhost:8545`,
+  },
 ];
 
 function getDefaultProviderURL(network: string) {
@@ -370,6 +380,7 @@ const config: HardhatUserConfig = {
       // Scroll
       'scroll': ETHERSCAN_KEY,
       linea: ETHERSCAN_KEY,
+      'aeneid': "default",
     },
     customChains: [
       {
@@ -433,6 +444,14 @@ const config: HardhatUserConfig = {
         urls: {
           apiURL: 'https://explorer-kintsugi.roninchain.com/v2/2020',
           browserURL: 'https://app.roninchain.com'
+        }
+      },
+      {
+        network: 'aeneid',
+        chainId: 1315,
+        urls: {
+          apiURL: 'https://www.storyscan.io/api/',
+          browserURL: 'https://www.storyscan.io/'
         }
       }
     ]

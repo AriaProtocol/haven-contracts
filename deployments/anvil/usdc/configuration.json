@@ -1,0 +1,26 @@
+{
+  "name": "Haven USDC",
+  "symbol": "hUSDC",
+  "baseToken": "USDC",
+  "borrowMin": "100e6",
+  "storeFrontPriceFactor": 0.66,
+  "targetReserves": "5000000e6",
+  "rates": {
+    "supplyKink": 0.8,
+    "supplySlopeLow": 0.0325,
+    "supplySlopeHigh": 0.4,
+    "supplyBase": 0,
+    "borrowKink": 0.8,
+    "borrowSlopeLow": 0.035,
+    "borrowSlopeHigh": 0.25,
+    "borrowBase": 0.015
+  },
+  "tracking": {
+    "indexScale": "1e15",
+    "baseSupplySpeed": "0e15",
+    "baseBorrowSpeed": "0e15",
+    "baseMinForRewards": "1000000e6"
+  },
+  "rewardToken": "",
+  "assets": {}
+}

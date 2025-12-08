@@ -218,6 +218,8 @@ Configuration constants are immutable constants on contract deployment. In the E
 
 ## Storage
 
+| Name       | Type | Description |
+| ---------- | ---- | ----------- |
 | $\TotalSupplyBase$ :green_heart: | $uint72$ | Total amount of base token principal which the protocol owes to suppliers. |
 | $\TotalBorrowBase$ :yellow_heart: | $uint72$ | Total amount of base token principal which borrowers owe to the protocol. |
 | $\LastAccrualTime$ :green_heart::yellow_heart: | $uint40$ | Timestamp of last interest accrual.<br/><br/>_Note_: Split storage between 2 slots with 24-bits available in :yellow_heart: and 20-bits availbile in :green_heart:. |
