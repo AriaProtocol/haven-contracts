@@ -2,18 +2,19 @@
 src = 'contracts'
 out = 'forge/out'
 libs = ["dependencies"]
-test = 'forge/test'
+test = 'test/forge'
 cache_path  = 'forge/cache'
 solc = "0.8.15"
 ignored_warnings_from = ["dependencies"]
 dynamic_test_linking = true
 remappings = [
-  "forge-std/=dependencies/forge-std-1.11.0/",
+  "forge-std/=dependencies/forge-std-1.11.0/src/",
   "capo/=dependencies/woof-software-compound-capo-lst-lrt-oracles/",
 ]
 via_ir = true
 optimizer = true
 optimizer_runs = 1
+evm_version = "cancun"
 
 [profile.default.optimizer_details.yul_details]
 optimizerSteps = "dhfoDgvulfnTUtnIf [xa[r]scLM cCTUtTOntnfDIul Lcul Vcul [j] Tpeul xa[rul] xa[r]cL gvif CTUca[r]LsTOtfDnca[r]Iulc] jmul[jul] VcTOcul jmul"
