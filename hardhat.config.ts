@@ -54,7 +54,6 @@ export function requireEnv(varName, msg?: string): string {
 
 // required environment variables
 [
-  'INFURA_KEY',
   'ANKR_KEY',
 ].map((v) => requireEnv(v));
 
