@@ -21,6 +21,5 @@
     "baseBorrowSpeed": "0e15",
     "baseMinForRewards": "1000000e6"
   },
-  "rewardToken": "",
   "assets": {}
 }

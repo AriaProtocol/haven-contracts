@@ -1,0 +1,39 @@
+{
+  "name": "",
+  "symbol": "",
+  "baseToken": "",
+  "baseTokenAddress": "",
+  "baseTokenPriceFeed": "",
+  "borrowMin": "",
+  "governor": "",
+  "pauseGuardian": "",
+  "storeFrontPriceFactor":"",
+  "targetReserves": "",
+  "rates": {
+    "supplyKink": 0,
+    "supplySlopeLow": 0,
+    "supplySlopeHigh": 0,
+    "supplyBase": 0,
+    "borrowKink": 0,
+    "borrowSlopeLow": 0,
+    "borrowSlopeHigh": 0,
+    "borrowBase": 0
+  },
+  "tracking": {
+    "indexScale": "1e15",
+    "baseSupplySpeed": "0e15",
+    "baseBorrowSpeed": "0e15",
+    "baseMinForRewards": ""
+  },
+  "assets": {
+    "WBTC": {
+      "address": "",
+      "priceFeed": "",
+      "decimals": "",
+      "borrowCF": 0,
+      "liquidateCF": 0,
+      "liquidationFactor": 0,
+      "supplyCap": ""
+    }
+  }
+}
