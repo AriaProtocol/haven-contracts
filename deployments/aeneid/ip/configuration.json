@@ -1,0 +1,48 @@
+{
+  "name": "Haven IP",
+  "symbol": "hIP",
+  "baseToken": "IP",
+  "baseTokenAddress": "0x9bE4bF6Cd8e5f6300149bAd63dA326c9a2882852",
+  "baseTokenPriceFeed": "0xDaBa80C544EaC7F4e6853D2FDc5c64a62F79D145",
+  "borrowMin": "100e18",
+  "governor": "0x12603daD5792DB4f82B84eFCF22fd477e6d4A9Ec",
+  "pauseGuardian": "0x6B7f59E5F2A850B3f93df8947eF52E9ec74268DF",
+  "storeFrontPriceFactor": 0.55,
+  "targetReserves": "7000000e18",
+  "rates": {
+    "supplyKink": 0.85,
+    "supplySlopeLow": 0.05,
+    "supplySlopeHigh": 1.6,
+    "supplyBase": 0,
+    "borrowKink": 0.85,
+    "borrowSlopeLow": 0.06,
+    "borrowSlopeHigh": 1.9,
+    "borrowBase": 0.0152
+  },
+  "tracking": {
+    "indexScale": "1e15",
+    "baseSupplySpeed": "0e15",
+    "baseBorrowSpeed": "0e15",
+    "baseMinForRewards": "1000000e6"
+  },
+  "assets": {
+    "WBTC": {
+      "address": "0xa645b7401921124d3Ec830104FdF1e649a62F0d4",
+      "priceFeed": "0xEf42903f6826f357AeAba04C9E698e035cC0D9cA",
+      "decimals": "8",
+      "borrowCF": 0.75,
+      "liquidateCF": 0.8,
+      "liquidationFactor": 0.93,
+      "supplyCap": "350e8"
+    },
+    "WETH": {
+      "address": "0x4b4964Df273022E526aE989FA759419033f04434",
+      "priceFeed": "0xA080032A1DfB640db5082da531165D1024c91058",
+      "decimals": "18",
+      "borrowCF": 0.765,
+      "liquidateCF": 0.83,
+      "liquidationFactor": 0.92,
+      "supplyCap": "12500e18"
+    }
+  }
+}
