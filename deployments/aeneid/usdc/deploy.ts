@@ -22,8 +22,9 @@ async function makePriceFeed(
   return deploymentManager.deploy(alias, 'test/SimplePriceFeed.sol', [initialPrice * 1e8, decimals]);
 }
 
-// TODO: Support configurable assets as well?
 export default async function deploy(deploymentManager: DeploymentManager, deploySpec: DeploySpec): Promise<Deployed> {
+  deploySpec.excludeRewards = true;
+
   const trace = deploymentManager.tracer();
   const ethers = deploymentManager.hre.ethers;
   const signer = await deploymentManager.getSigner();

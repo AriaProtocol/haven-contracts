@@ -380,7 +380,7 @@ const config: HardhatUserConfig = {
       // Scroll
       'scroll': ETHERSCAN_KEY,
       linea: ETHERSCAN_KEY,
-      'aeneid': "default",
+      'aeneid': 'default',
     },
     customChains: [
       {
