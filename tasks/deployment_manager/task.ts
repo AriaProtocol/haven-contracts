@@ -129,15 +129,18 @@ task('deploy', 'Deploys market')
         const comet = await dm.contract('comet');
         const cometImpl = await dm.contract('comet:implementation');
         const configurator = await dm.contract('configurator');
-        const config = await configurator.getConfiguration(comet.address);
-        const args: VerifyArgs = {
-          via: 'artifacts',
-          address: cometImpl.address,
-          constructorArguments: [config]
-        };
-        console.log(`[${tag}] ${desc} ${cometImpl.address}:`, args);
-        if (verify) {
-          await dm.verifyContract(args);
+        
+        if (comet && cometImpl && configurator) {
+          const config = await configurator.getConfiguration(comet.address);
+          const args: VerifyArgs = {
+            via: "artifacts",
+            address: cometImpl.address,
+            constructorArguments: [config],
+          };
+          console.log(`[${tag}] ${desc} ${cometImpl.address}:`, args);
+          if (verify) {
+            await dm.verifyContract(args);
+          }
         }
       }
     }

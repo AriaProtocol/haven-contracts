@@ -112,7 +112,12 @@ function setupDefaultNetworkProviders(hardhatConfig: HardhatUserConfig) {
         getDefaultProviderURL(netConfig.network),
       gas: netConfig.gas || 'auto',
       gasPrice: netConfig.gasPrice || 'auto',
-      accounts: REMOTE_ACCOUNTS ? 'remote' : (ETH_PK ? [...deriveAccounts(ETH_PK)] : { mnemonic: MNEMONIC }),
+      accounts: REMOTE_ACCOUNTS
+        ? 'remote'
+        : ETH_PK
+          ? [...deriveAccounts(ETH_PK)]
+          : { mnemonic: MNEMONIC },
+      ...hardhatConfig.networks?.[netConfig.network],
     };
   }
 }
@@ -237,6 +242,12 @@ const config: HardhatUserConfig = {
         };
         return acc;
       }, {}),
+    },
+    anvil: {
+      chainId: 31337,
+      accounts: {
+        mnemonic: 'test test test test test test test test test test test junk', // default anvil seed
+      },
     },
   },
 
