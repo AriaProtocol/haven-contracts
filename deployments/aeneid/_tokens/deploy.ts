@@ -55,6 +55,13 @@ export default async function deploy(
     18,
     'IP'
   );
+  const IPRWA1 = await makeToken(
+    deploymentManager,
+    10_000,
+    'IPRWA-1 asset',
+    12,
+    'IPRWA1'
+  );
 
   const USDCPriceFeed = await makePriceFeed(
     deploymentManager,
@@ -80,6 +87,12 @@ export default async function deploy(
     2.35,
     8
   );
+  const IPRWA1PriceFeed = await makePriceFeed(
+    deploymentManager,
+    'IPRWA1:priceFeed',
+    12.34,
+    8
+  );
 
-  return { IP, USDC, WBTC, WETH, USDCPriceFeed, WBTCPriceFeed, WETHPriceFeed, IPFeed };
+  return { IP, IPRWA1, USDC, WBTC, WETH, USDCPriceFeed, WBTCPriceFeed, WETHPriceFeed, IPFeed, IPRWA1PriceFeed };
 }
