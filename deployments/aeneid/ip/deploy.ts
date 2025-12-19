@@ -7,12 +7,12 @@ export default async function deploy(deploymentManager: DeploymentManager, deplo
   // import from USDC market, as it was the first deployed market
   const cometFactory = await deploymentManager.fromDep(
     "cometFactory",
-    "base",
+    "aeneid",
     "usdc"
   );
   const cometProxyAdmin = await deploymentManager.fromDep(
     "cometAdmin",
-    "base",
+    "aeneid",
     "usdc"
   );
   const configurator = await deploymentManager.fromDep(
