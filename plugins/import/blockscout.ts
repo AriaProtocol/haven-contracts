@@ -38,8 +38,8 @@ export function getBlockscoutUrl(network: string): string {
 export async function getBlockscoutRPCUrl(network: string): Promise<string> {
   let host = {
     unichain: `multi-boldest-patina.unichain-mainnet.quiknode.pro/${process.env.UNICHAIN_QUICKNODE_KEY}/`,
-    aeneid: "https://aeneid.storyrpc.io",
-    story: "https://mainnet.storyrpc.io",
+    aeneid: `https://rpc.ankr.com/story_aeneid_testnet/${process.env.ANKR_KEY}`,
+    story: `https://rpc.ankr.com/story_mainnet/${process.env.ANKR_KEY}`,
   }[network];
 
   if (!host) {
