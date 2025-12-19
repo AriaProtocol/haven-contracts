@@ -98,6 +98,7 @@ export interface NetworkConfiguration {
   assets: { [name: string]: NetworkAssetConfiguration };
   rewardToken?: string;
   rewardTokenAddress?: string;
+  skipFetch?: (string | Record<string, string>)[];
 }
 
 function getContractAddress(contractName: string, contracts: ContractMap, fallbackAddress?: string): string {
@@ -176,6 +177,16 @@ export async function getConfiguration(
   configOverrides: ProtocolConfiguration = {},
 ): Promise<ProtocolConfiguration> {
   const config = await deploymentManager.readConfig<NetworkConfiguration>();
+  
+  // Patch config with values from skipFetch if they are objects
+  if (config.skipFetch && Array.isArray(config.skipFetch)) {
+    config.skipFetch.forEach((item: any) => {
+      if (typeof item === 'object' && item !== null) {
+        Object.assign(config, item);
+      }
+    });
+  }
+
   const contracts = await deploymentManager.contracts();
   return getOverridesOrConfig(configOverrides, config, contracts);
 }

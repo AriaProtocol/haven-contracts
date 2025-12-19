@@ -34,6 +34,7 @@ export interface ProtocolConfiguration {
   targetReserves?: BigNumberish;
   assetConfigs?: AssetConfigStruct[];
   rewardTokenAddress?: string;
+  skipFetch?: (string | Record<string, string>)[];
 }
 
 // If `all` is specified, it takes precedence.
