@@ -334,13 +334,20 @@ export async function deployNetworkComet(
     }
   );
 
-  await deploymentManager.idempotent(
-    async () => !sameAddress(await rewards.governor(), governor),
-    async () => {
-      trace(`Transferring governor of CometRewards to ${governor}`);
-      trace(await wait(rewards.connect(admin).transferGovernor(governor)));
-    }
-  );
+  if (!deploySpec.excludeRewards) {
+    await deploymentManager.idempotent(
+      async () => !sameAddress(await rewards.governor(), governor),
+      async () => {
+        trace(`Transferring governor of CometRewards to ${governor}`);
+        trace(await wait(rewards.connect(admin).transferGovernor(governor)));
+      }
+    );
+  }
 
-  return { comet, configurator, rewards, cometFactory };
+  return {
+    comet,
+    configurator,
+    cometFactory,
+    ...(rewards ? { rewards } : {}),
+  };
 }
