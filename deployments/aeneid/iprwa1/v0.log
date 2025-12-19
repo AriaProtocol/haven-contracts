@@ -1,0 +1,2454 @@
+yarn run v1.22.22
+$ /Users/theo/code/Aria/haven-contracts/node_modules/.bin/hardhat deploy --network aeneid --deployment iprwa1
+[37m2025-12-19 16:31:16.645[39m[0m[0m [33m[1mWARN[22m[39m[0m[0m [1m[37mService[39m[22m[0m[0m =>Tenderly config doesn't exist, empty string values are returned instead.
+Pending transactions for CometExt.sol deployment: 650
+Retrying with retries left: 7, wait: 500, error is:  Error: Async call timeout limit reached
+    at Timeout._onTimeout (/Users/theo/code/Aria/haven-contracts/plugins/deployment_manager/Utils.ts:157:20)
+    at listOnTimeout (node:internal/timers:588:17)
+    at processTimers (node:internal/timers:523:7)
+Pending transactions for CometExt.sol deployment: 651
+Retrying with retries left: 3, wait: 5000, error is:  Error: Async call timeout limit reached
+    at Timeout._onTimeout (/Users/theo/code/Aria/haven-contracts/plugins/deployment_manager/Utils.ts:157:20)
+    at listOnTimeout (node:internal/timers:588:17)
+    at processTimers (node:internal/timers:523:7)
+Warning: This function is named "receive" but is not the receive function of the contract. If you intend this to be a receive function, use "receive(...) { ... }" without the "function" keyword to define it.
+  --> contracts/IWstETH.sol:16:14:
+   |
+16 |     function receive() external payable;
+   |              ^^^^^^^
+
+
+Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+--> contracts/bridges/linea/IMessageService.sol
+
+
+Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+--> contracts/test/Comp.sol
+
+
+Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+--> contracts/vendor/canonical-weth/contracts/WETH9.sol
+
+
+Warning: This declaration shadows an existing declaration.
+   --> contracts/liquidator/OnChainLiquidator.sol:124:9:
+    |
+124 |         PoolConfig[] calldata poolConfigs,
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Note: The shadowed declaration is here:
+  --> contracts/liquidator/OnChainLiquidator.sol:81:5:
+   |
+81 |     mapping(address => PoolConfig) public poolConfigs;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: This declaration shadows an existing declaration.
+  --> contracts/test/Dog.sol:34:9:
+   |
+34 |         Puppers[] memory puppers = new Puppers[](pups.length);
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^
+Note: The shadowed declaration is here:
+  --> contracts/test/Dog.sol:33:5:
+   |
+33 |     function puppers() public returns (Puppers[] memory) {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+  --> contracts/Comet.sol:13:1:
+   |
+13 | contract Comet is CometMainInterface {
+   | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+    --> contracts/Comet.sol:1367:5:
+     |
+1367 |     fallback() external payable {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+  --> contracts/CometWithExtendedAssetList.sol:16:1:
+   |
+16 | contract CometWithExtendedAssetList is CometMainInterface {
+   | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+    --> contracts/CometWithExtendedAssetList.sol:1242:5:
+     |
+1242 |     fallback() external payable {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+  --> contracts/ScrollComet.sol:13:1:
+   |
+13 | contract ScrollComet is CometMainInterface {
+   | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+    --> contracts/ScrollComet.sol:1313:5:
+     |
+1313 |     fallback() external payable {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+ --> contracts/bridges/arbitrum/ArbitrumBridgeReceiver.sol:7:1:
+  |
+7 | contract ArbitrumBridgeReceiver is SweepableBridgeReceiver {
+  | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+ --> contracts/bridges/arbitrum/ArbitrumBridgeReceiver.sol:8:5:
+  |
+8 |     fallback() external payable {
+  |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+ --> contracts/bridges/linea/LineaBridgeReceiver.sol:7:1:
+  |
+7 | contract LineaBridgeReceiver is SweepableBridgeReceiver {
+  | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+  --> contracts/bridges/linea/LineaBridgeReceiver.sol:15:5:
+   |
+15 |     fallback() external payable {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+ --> contracts/bridges/optimism/OptimismBridgeReceiver.sol:7:1:
+  |
+7 | contract OptimismBridgeReceiver is SweepableBridgeReceiver {
+  | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+  --> contracts/bridges/optimism/OptimismBridgeReceiver.sol:25:5:
+   |
+25 |     fallback() external payable {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+ --> contracts/bridges/scroll/ScrollBridgeReceiver.sol:9:1:
+  |
+9 | contract ScrollBridgeReceiver is SweepableBridgeReceiver {
+  | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+  --> contracts/bridges/scroll/ScrollBridgeReceiver.sol:34:5:
+   |
+34 |     fallback() external payable {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+ --> contracts/bridges/test/SweepableBridgeReceiverHarness.sol:6:1:
+  |
+6 | contract SweepableBridgeReceiverHarness is SweepableBridgeReceiver {
+  | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+  --> contracts/bridges/test/SweepableBridgeReceiverHarness.sol:14:5:
+   |
+14 |     fallback() external payable { }
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+ --> contracts/test/CometHarness.sol:6:1:
+  |
+6 | contract CometHarness is Comet {
+  | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+    --> contracts/Comet.sol:1367:5:
+     |
+1367 |     fallback() external payable {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+ --> contracts/test/CometHarnessExtendedAssetList.sol:6:1:
+  |
+6 | contract CometHarnessExtendedAssetList is CometWithExtendedAssetList {
+  | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+    --> contracts/CometWithExtendedAssetList.sol:1242:5:
+     |
+1242 |     fallback() external payable {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+  --> contracts/test/CometModified.sol:11:1:
+   |
+11 | contract CometModified is Comet {
+   | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+    --> contracts/Comet.sol:1367:5:
+     |
+1367 |     fallback() external payable {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+ --> contracts/vendor/Timelock.sol:6:1:
+  |
+6 | contract Timelock is ITimelock {
+  | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+  --> contracts/vendor/Timelock.sol:29:5:
+   |
+29 |     fallback() external payable { }
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:27:5:
+   |
+27 |     function GRACE_PERIOD() virtual external view returns (uint);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:30:5:
+   |
+30 |     function MINIMUM_DELAY() virtual external view returns (uint);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:33:5:
+   |
+33 |     function MAXIMUM_DELAY() virtual external view returns (uint);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:36:5:
+   |
+36 |     function admin() virtual external view returns (address);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:39:5:
+   |
+39 |     function pendingAdmin() virtual external view returns (address);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:45:5:
+   |
+45 |     function setPendingAdmin(address pendingAdmin_) virtual external;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:50:5:
+   |
+50 |     function acceptAdmin() virtual external;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:53:5:
+   |
+53 |     function delay() virtual external view returns (uint);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:59:5:
+   |
+59 |     function setDelay(uint delay) virtual external;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:62:5:
+   |
+62 |     function queuedTransactions(bytes32 txHash) virtual external returns (bool);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:73:5:
+   |
+73 |     function queueTransaction(address target, uint value, string memory signature, bytes memory data, uint eta) virtual external returns (bytes32);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:83:5:
+   |
+83 |     function cancelTransaction(address target, uint value, string memory signature, bytes memory data, uint eta) virtual external;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:94:5:
+   |
+94 |     function executeTransaction(address ... nal payable returns (bytes memory);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Visibility for constructor is ignored. If you want the contract to be non-deployable, making it "abstract" is sufficient.
+  --> contracts/vendor/Timelock.sol:17:5:
+   |
+17 |     constructor(address admin_, uint delay_, uint gracePeriod_, uint minimumDelay_, uint maxiumumDelay_) public {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: Unused local variable.
+   --> contracts/Comet.sol:227:9:
+    |
+227 |         uint256 status;
+    |         ^^^^^^^^^^^^^^
+
+
+Warning: Unused local variable.
+   --> contracts/CometWithExtendedAssetList.sol:197:9:
+    |
+197 |         uint256 status;
+    |         ^^^^^^^^^^^^^^
+
+
+Warning: Unused local variable.
+    --> contracts/ScrollComet.sol:1115:9:
+     |
+1115 |         uint gasUsed = startGas - gasleft();
+     |         ^^^^^^^^^^^^
+
+
+Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+  --> contracts/bridges/polygon/PolygonBridgeReceiver.sol:41:9:
+   |
+41 |         uint256 stateId,
+   |         ^^^^^^^^^^^^^^^
+
+
+Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+   --> contracts/bulkers/BaseBulker.sol:166:27:
+    |
+166 |     function handleAction(bytes32 action, bytes calldata data) virtual internal {
+    |                           ^^^^^^^^^^^^^^
+
+
+Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+   --> contracts/bulkers/BaseBulker.sol:166:43:
+    |
+166 |     function handleAction(bytes32 action, bytes calldata data) virtual internal {
+    |                                           ^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+  --> contracts/test/EvilToken.sol:74:28:
+   |
+74 |     function performAttack(address src, address dst, uint256 amount) internal returns (bool) {
+   |                            ^^^^^^^^^^^
+
+
+Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+  --> contracts/test/EvilToken.sol:74:41:
+   |
+74 |     function performAttack(address src, address dst, uint256 amount) internal returns (bool) {
+   |                                         ^^^^^^^^^^^
+
+
+Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+  --> contracts/test/EvilToken.sol:74:54:
+   |
+74 |     function performAttack(address src, address dst, uint256 amount) internal returns (bool) {
+   |                                                      ^^^^^^^^^^^^^^
+
+
+Warning: Function state mutability can be restricted to pure
+   --> contracts/liquidator/OnChainLiquidator.sol:271:5:
+    |
+271 |     function min(uint256 a, uint256 b) internal view returns (uint256) {
+    |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: Function state mutability can be restricted to view
+   --> contracts/liquidator/OnChainLiquidator.sol:275:5:
+    |
+275 |     function purchasableBalanceOfAsset(address comet, address asset, uint maxCollateralToPurchase) internal returns (uint256, uint256) {
+    |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: Function state mutability can be restricted to view
+  --> contracts/test/Dog.sol:33:5:
+   |
+33 |     function puppers() public returns (Puppers[] memory) {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: Function state mutability can be restricted to pure
+  --> contracts/test/SimpleTimelock.sol:30:5:
+   |
+30 |     function acceptAdmin() external {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: Contract code size is 24620 bytes and exceeds 24576 bytes (a limit introduced in Spurious Dragon). This contract may not be deployable on mainnet. Consider enabling the optimizer (with a low "runs" value!), turning off revert strings, or using libraries.
+ --> contracts/test/CometModifiedFactory.sol:7:1:
+  |
+7 | contract CometModifiedFactory is CometConfiguration {
+  | ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Generating typings for: 134 artifacts in dir: build/types for target: ethers-v5
+Successfully generated 251 typings!
+Compiled 127 Solidity files successfully (evm target: london).
+ ·-----------------------------------------|--------------------------------|--------------------------------·
+ |  Solc version: 0.8.15                   ·  Optimizer enabled: true       ·  Runs: 1                       │
+ ··········································|································|·································
+ |  Contract Name                          ·  Deployed size (KiB) (change)  ·  Initcode size (KiB) (change)  │
+ ··········································|································|·································
+ |  Address                                ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  AddressAliasHelper                     ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  ArbitrumBridgeReceiver                 ·                 6.122 (0.000)  ·                 6.149 (0.000)  │
+ ··········································|································|·································
+ |  AssetList                              ·                 2.819 (0.000)  ·                 5.262 (0.000)  │
+ ··········································|································|·································
+ |  AssetListFactory                       ·                 6.090 (0.000)  ·                 6.117 (0.000)  │
+ ··········································|································|·································
+ |  BaseBridgeReceiver                     ·                 2.266 (0.000)  ·                 2.293 (0.000)  │
+ ··········································|································|·································
+ |  BaseBridgeReceiverHarness              ·                 5.523 (0.000)  ·                 5.551 (0.000)  │
+ ··········································|································|·································
+ |  BaseBulker                             ·                 4.057 (0.000)  ·                 4.241 (0.000)  │
+ ··········································|································|·································
+ |  CallbackValidation                     ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  Comet                                  ·                18.826 (0.000)  ·                22.854 (0.000)  │
+ ··········································|································|·································
+ |  CometConfiguration                     ·                 0.062 (0.000)  ·                 0.086 (0.000)  │
+ ··········································|································|·································
+ |  CometExt                               ·                 3.354 (0.000)  ·                 3.522 (0.000)  │
+ ··········································|································|·································
+ |  CometExtAssetList                      ·                 3.431 (0.000)  ·                 3.641 (0.000)  │
+ ··········································|································|·································
+ |  CometFactory                           ·                23.905 (0.000)  ·                23.933 (0.000)  │
+ ··········································|································|·································
+ |  CometFactoryWithExtendedAssetList      ·                21.975 (0.000)  ·                22.002 (0.000)  │
+ ··········································|································|·································
+ |  CometHarness                           ·                20.594 (0.000)  ·                24.628 (0.000)  │
+ ··········································|································|·································
+ |  CometHarnessExtendedAssetList          ·                19.930 (0.000)  ·                22.696 (0.000)  │
+ ··········································|································|·································
+ |  CometMath                              ·                 0.062 (0.000)  ·                 0.086 (0.000)  │
+ ··········································|································|·································
+ |  CometModified                          ·                18.964 (0.000)  ·                22.991 (0.000)  │
+ ··········································|································|·································
+ |  CometModifiedFactory                   ·                24.043 (0.000)  ·                24.070 (0.000)  │
+ ··········································|································|·································
+ |  CometProxyAdmin                        ·                 2.094 (0.000)  ·                 2.188 (0.000)  │
+ ··········································|································|·································
+ |  CometRewards                           ·                 3.392 (0.000)  ·                 3.536 (0.000)  │
+ ··········································|································|·································
+ |  CometStorage                           ·                 0.716 (0.000)  ·                 0.743 (0.000)  │
+ ··········································|································|·································
+ |  CometWithExtendedAssetList             ·                18.163 (0.000)  ·                20.923 (0.000)  │
+ ··········································|································|·································
+ |  Comp                                   ·                 5.329 (0.000)  ·                 5.537 (0.000)  │
+ ··········································|································|·································
+ |  Configurator                           ·                10.051 (0.000)  ·                10.084 (0.000)  │
+ ··········································|································|·································
+ |  ConfiguratorProxy                      ·                 1.696 (0.000)  ·                 3.033 (0.000)  │
+ ··········································|································|·································
+ |  ConfiguratorStorage                    ·                 0.242 (0.000)  ·                 0.269 (0.000)  │
+ ··········································|································|·································
+ |  ConstantPriceFeed                      ·                 0.550 (0.000)  ·                 0.701 (0.000)  │
+ ··········································|································|·································
+ |  Dog                                    ·                 1.908 (0.000)  ·                 2.914 (0.000)  │
+ ··········································|································|·································
+ |  ERC1967Proxy                           ·                 0.198 (0.000)  ·                 1.078 (0.000)  │
+ ··········································|································|·································
+ |  EvilToken                              ·                 3.175 (0.000)  ·                 4.300 (0.000)  │
+ ··········································|································|·································
+ |  EzETHExchangeRatePriceFeed             ·                 1.195 (0.000)  ·                 2.050 (0.000)  │
+ ··········································|································|·································
+ |  Fauceteer                              ·                 0.637 (0.000)  ·                 0.664 (0.000)  │
+ ··········································|································|·································
+ |  FaucetToken                            ·                 1.680 (0.000)  ·                 2.678 (0.000)  │
+ ··········································|································|·································
+ |  FaucetWETH                             ·                 1.754 (0.000)  ·                 2.293 (0.000)  │
+ ··········································|································|·································
+ |  GovernorSimple                         ·                 7.951 (0.000)  ·                 7.979 (0.000)  │
+ ··········································|································|·································
+ |  LineaBridgeReceiver                    ·                 6.267 (0.000)  ·                 6.411 (0.000)  │
+ ··········································|································|·································
+ |  MainnetBulker                          ·                 5.920 (0.000)  ·                 6.343 (0.000)  │
+ ··········································|································|·································
+ |  MainnetBulkerWithWstETHSupport         ·                 6.544 (0.000)  ·                 6.974 (0.000)  │
+ ··········································|································|·································
+ |  MockRedstoneOracle                     ·                 0.401 (0.000)  ·                 0.697 (0.000)  │
+ ··········································|································|·································
+ |  MockRenzoOracle                        ·                 0.556 (0.000)  ·                 0.837 (0.000)  │
+ ··········································|································|·································
+ |  MultiplicativePriceFeed                ·                 1.643 (0.000)  ·                 2.824 (0.000)  │
+ ··········································|································|·································
+ |  NonStandardFaucetFeeToken              ·                 2.127 (0.000)  ·                 3.133 (0.000)  │
+ ··········································|································|·································
+ |  NonStandardFaucetToken                 ·                 1.664 (0.000)  ·                 2.662 (0.000)  │
+ ··········································|································|·································
+ |  NonStandardFeeToken                    ·                 2.012 (0.000)  ·                 3.018 (0.000)  │
+ ··········································|································|·································
+ |  NonStandardToken                       ·                 1.550 (0.000)  ·                 2.548 (0.000)  │
+ ··········································|································|·································
+ |  OnChainLiquidator                      ·                11.863 (0.000)  ·                12.268 (0.000)  │
+ ··········································|································|·································
+ |  OptimismBridgeReceiver                 ·                 6.393 (0.000)  ·                 6.537 (0.000)  │
+ ··········································|································|·································
+ |  PolygonBridgeReceiver                  ·                 5.740 (0.000)  ·                 5.885 (0.000)  │
+ ··········································|································|·································
+ |  PoolAddress                            ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  PriceFeedWith4626Support               ·                 1.729 (0.000)  ·                 2.932 (0.000)  │
+ ··········································|································|·································
+ |  ProxyAdmin                             ·                 1.500 (0.000)  ·                 1.595 (0.000)  │
+ ··········································|································|·································
+ |  RateBasedScalingPriceFeed              ·                 1.195 (0.000)  ·                 2.133 (0.000)  │
+ ··········································|································|·································
+ |  ReverseMultiplicativePriceFeed         ·                 1.760 (0.000)  ·                 2.945 (0.000)  │
+ ··········································|································|·································
+ |  RoninBridgeReceiver                    ·                 6.850 (0.000)  ·                 6.994 (0.000)  │
+ ··········································|································|·································
+ |  RsETHScalingPriceFeed                  ·                 1.195 (0.000)  ·                 2.050 (0.000)  │
+ ··········································|································|·································
+ |  ScalingPriceFeed                       ·                 1.214 (0.000)  ·                 2.353 (0.000)  │
+ ··········································|································|·································
+ |  ScalingPriceFeedWithCustomDescription  ·                 1.214 (0.000)  ·                 2.238 (0.000)  │
+ ··········································|································|·································
+ |  ScrollBridgeReceiver                   ·                 6.403 (0.000)  ·                 6.584 (0.000)  │
+ ··········································|································|·································
+ |  ScrollComet                            ·                18.531 (0.000)  ·                22.685 (0.000)  │
+ ··········································|································|·································
+ |  SimplePriceFeed                        ·                 0.726 (0.000)  ·                 0.863 (0.000)  │
+ ··········································|································|·································
+ |  SimpleTimelock                         ·                 2.507 (0.000)  ·                 2.651 (0.000)  │
+ ··········································|································|·································
+ |  SimpleWstETH                           ·                 0.189 (0.000)  ·                 0.307 (0.000)  │
+ ··········································|································|·································
+ |  StandardToken                          ·                 1.565 (0.000)  ·                 2.563 (0.000)  │
+ ··········································|································|·································
+ |  StorageSlot                            ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  SweepableBridgeReceiver                ·                 3.094 (0.000)  ·                 3.121 (0.000)  │
+ ··········································|································|·································
+ |  SweepableBridgeReceiverHarness         ·                 6.196 (0.000)  ·                 6.224 (0.000)  │
+ ··········································|································|·································
+ |  Timelock                               ·                 3.398 (0.000)  ·                 3.844 (0.000)  │
+ ··········································|································|·································
+ |  TransferHelper                         ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  TransparentUpgradeableProxy            ·                 1.834 (0.000)  ·                 3.171 (0.000)  │
+ ··········································|································|·································
+ |  WBTCPriceFeed                          ·                 1.464 (0.000)  ·                 2.093 (0.000)  │
+ ··········································|································|·································
+ |  WETH9                                  ·                 1.654 (0.000)  ·                 1.916 (0.000)  │
+ ··········································|································|·································
+ |  WstETHPriceFeed                        ·                 1.544 (0.000)  ·                 2.109 (0.000)  │
+ ·-----------------------------------------|--------------------------------|--------------------------------·
+
+Warning: 1 contracts exceed the size limit for mainnet deployment (24.000 KiB deployed, 48.000 KiB init).
+Successfully submitted source code for contract
+contracts/CometExt.sol:CometExt at 0x373709397ca0c533D48295a813059DB8b68682C5
+for verification on the block explorer. Waiting for verification result...
+
+Successfully verified contract CometExt on Etherscan.
+https://aeneid.storyscan.io/address/0x373709397ca0c533D48295a813059DB8b68682C5#code
+Retrying with retries left: 6, wait: 1000, error is:  Error: Async call timeout limit reached
+    at Timeout._onTimeout (/Users/theo/code/Aria/haven-contracts/plugins/deployment_manager/Utils.ts:157:20)
+    at listOnTimeout (node:internal/timers:588:17)
+    at processTimers (node:internal/timers:523:7)
+Pending transactions for CometExt.sol deployment: 652
+Retrying with retries left: 3, wait: 5000, error is:  Error: Async call timeout limit reached
+    at Timeout._onTimeout (/Users/theo/code/Aria/haven-contracts/plugins/deployment_manager/Utils.ts:157:20)
+    at listOnTimeout (node:internal/timers:588:17)
+    at processTimers (node:internal/timers:523:7)
+Warning: This function is named "receive" but is not the receive function of the contract. If you intend this to be a receive function, use "receive(...) { ... }" without the "function" keyword to define it.
+  --> contracts/IWstETH.sol:16:14:
+   |
+16 |     function receive() external payable;
+   |              ^^^^^^^
+
+
+Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+--> contracts/bridges/linea/IMessageService.sol
+
+
+Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+--> contracts/test/Comp.sol
+
+
+Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+--> contracts/vendor/canonical-weth/contracts/WETH9.sol
+
+
+Warning: This declaration shadows an existing declaration.
+   --> contracts/liquidator/OnChainLiquidator.sol:124:9:
+    |
+124 |         PoolConfig[] calldata poolConfigs,
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Note: The shadowed declaration is here:
+  --> contracts/liquidator/OnChainLiquidator.sol:81:5:
+   |
+81 |     mapping(address => PoolConfig) public poolConfigs;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: This declaration shadows an existing declaration.
+  --> contracts/test/Dog.sol:34:9:
+   |
+34 |         Puppers[] memory puppers = new Puppers[](pups.length);
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^
+Note: The shadowed declaration is here:
+  --> contracts/test/Dog.sol:33:5:
+   |
+33 |     function puppers() public returns (Puppers[] memory) {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+  --> contracts/Comet.sol:13:1:
+   |
+13 | contract Comet is CometMainInterface {
+   | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+    --> contracts/Comet.sol:1367:5:
+     |
+1367 |     fallback() external payable {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+  --> contracts/CometWithExtendedAssetList.sol:16:1:
+   |
+16 | contract CometWithExtendedAssetList is CometMainInterface {
+   | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+    --> contracts/CometWithExtendedAssetList.sol:1242:5:
+     |
+1242 |     fallback() external payable {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+  --> contracts/ScrollComet.sol:13:1:
+   |
+13 | contract ScrollComet is CometMainInterface {
+   | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+    --> contracts/ScrollComet.sol:1313:5:
+     |
+1313 |     fallback() external payable {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+ --> contracts/bridges/arbitrum/ArbitrumBridgeReceiver.sol:7:1:
+  |
+7 | contract ArbitrumBridgeReceiver is SweepableBridgeReceiver {
+  | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+ --> contracts/bridges/arbitrum/ArbitrumBridgeReceiver.sol:8:5:
+  |
+8 |     fallback() external payable {
+  |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+ --> contracts/bridges/linea/LineaBridgeReceiver.sol:7:1:
+  |
+7 | contract LineaBridgeReceiver is SweepableBridgeReceiver {
+  | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+  --> contracts/bridges/linea/LineaBridgeReceiver.sol:15:5:
+   |
+15 |     fallback() external payable {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+ --> contracts/bridges/optimism/OptimismBridgeReceiver.sol:7:1:
+  |
+7 | contract OptimismBridgeReceiver is SweepableBridgeReceiver {
+  | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+  --> contracts/bridges/optimism/OptimismBridgeReceiver.sol:25:5:
+   |
+25 |     fallback() external payable {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+ --> contracts/bridges/scroll/ScrollBridgeReceiver.sol:9:1:
+  |
+9 | contract ScrollBridgeReceiver is SweepableBridgeReceiver {
+  | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+  --> contracts/bridges/scroll/ScrollBridgeReceiver.sol:34:5:
+   |
+34 |     fallback() external payable {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+ --> contracts/bridges/test/SweepableBridgeReceiverHarness.sol:6:1:
+  |
+6 | contract SweepableBridgeReceiverHarness is SweepableBridgeReceiver {
+  | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+  --> contracts/bridges/test/SweepableBridgeReceiverHarness.sol:14:5:
+   |
+14 |     fallback() external payable { }
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+ --> contracts/test/CometHarness.sol:6:1:
+  |
+6 | contract CometHarness is Comet {
+  | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+    --> contracts/Comet.sol:1367:5:
+     |
+1367 |     fallback() external payable {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+ --> contracts/test/CometHarnessExtendedAssetList.sol:6:1:
+  |
+6 | contract CometHarnessExtendedAssetList is CometWithExtendedAssetList {
+  | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+    --> contracts/CometWithExtendedAssetList.sol:1242:5:
+     |
+1242 |     fallback() external payable {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+  --> contracts/test/CometModified.sol:11:1:
+   |
+11 | contract CometModified is Comet {
+   | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+    --> contracts/Comet.sol:1367:5:
+     |
+1367 |     fallback() external payable {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+ --> contracts/vendor/Timelock.sol:6:1:
+  |
+6 | contract Timelock is ITimelock {
+  | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+  --> contracts/vendor/Timelock.sol:29:5:
+   |
+29 |     fallback() external payable { }
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:27:5:
+   |
+27 |     function GRACE_PERIOD() virtual external view returns (uint);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:30:5:
+   |
+30 |     function MINIMUM_DELAY() virtual external view returns (uint);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:33:5:
+   |
+33 |     function MAXIMUM_DELAY() virtual external view returns (uint);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:36:5:
+   |
+36 |     function admin() virtual external view returns (address);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:39:5:
+   |
+39 |     function pendingAdmin() virtual external view returns (address);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:45:5:
+   |
+45 |     function setPendingAdmin(address pendingAdmin_) virtual external;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:50:5:
+   |
+50 |     function acceptAdmin() virtual external;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:53:5:
+   |
+53 |     function delay() virtual external view returns (uint);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:59:5:
+   |
+59 |     function setDelay(uint delay) virtual external;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:62:5:
+   |
+62 |     function queuedTransactions(bytes32 txHash) virtual external returns (bool);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:73:5:
+   |
+73 |     function queueTransaction(address target, uint value, string memory signature, bytes memory data, uint eta) virtual external returns (bytes32);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:83:5:
+   |
+83 |     function cancelTransaction(address target, uint value, string memory signature, bytes memory data, uint eta) virtual external;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:94:5:
+   |
+94 |     function executeTransaction(address ... nal payable returns (bytes memory);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Visibility for constructor is ignored. If you want the contract to be non-deployable, making it "abstract" is sufficient.
+  --> contracts/vendor/Timelock.sol:17:5:
+   |
+17 |     constructor(address admin_, uint delay_, uint gracePeriod_, uint minimumDelay_, uint maxiumumDelay_) public {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: Unused local variable.
+   --> contracts/Comet.sol:227:9:
+    |
+227 |         uint256 status;
+    |         ^^^^^^^^^^^^^^
+
+
+Warning: Unused local variable.
+   --> contracts/CometWithExtendedAssetList.sol:197:9:
+    |
+197 |         uint256 status;
+    |         ^^^^^^^^^^^^^^
+
+
+Warning: Unused local variable.
+    --> contracts/ScrollComet.sol:1115:9:
+     |
+1115 |         uint gasUsed = startGas - gasleft();
+     |         ^^^^^^^^^^^^
+
+
+Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+  --> contracts/bridges/polygon/PolygonBridgeReceiver.sol:41:9:
+   |
+41 |         uint256 stateId,
+   |         ^^^^^^^^^^^^^^^
+
+
+Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+   --> contracts/bulkers/BaseBulker.sol:166:27:
+    |
+166 |     function handleAction(bytes32 action, bytes calldata data) virtual internal {
+    |                           ^^^^^^^^^^^^^^
+
+
+Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+   --> contracts/bulkers/BaseBulker.sol:166:43:
+    |
+166 |     function handleAction(bytes32 action, bytes calldata data) virtual internal {
+    |                                           ^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+  --> contracts/test/EvilToken.sol:74:28:
+   |
+74 |     function performAttack(address src, address dst, uint256 amount) internal returns (bool) {
+   |                            ^^^^^^^^^^^
+
+
+Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+  --> contracts/test/EvilToken.sol:74:41:
+   |
+74 |     function performAttack(address src, address dst, uint256 amount) internal returns (bool) {
+   |                                         ^^^^^^^^^^^
+
+
+Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+  --> contracts/test/EvilToken.sol:74:54:
+   |
+74 |     function performAttack(address src, address dst, uint256 amount) internal returns (bool) {
+   |                                                      ^^^^^^^^^^^^^^
+
+
+Warning: Function state mutability can be restricted to pure
+   --> contracts/liquidator/OnChainLiquidator.sol:271:5:
+    |
+271 |     function min(uint256 a, uint256 b) internal view returns (uint256) {
+    |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: Function state mutability can be restricted to view
+   --> contracts/liquidator/OnChainLiquidator.sol:275:5:
+    |
+275 |     function purchasableBalanceOfAsset(address comet, address asset, uint maxCollateralToPurchase) internal returns (uint256, uint256) {
+    |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: Function state mutability can be restricted to view
+  --> contracts/test/Dog.sol:33:5:
+   |
+33 |     function puppers() public returns (Puppers[] memory) {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: Function state mutability can be restricted to pure
+  --> contracts/test/SimpleTimelock.sol:30:5:
+   |
+30 |     function acceptAdmin() external {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: Contract code size is 24620 bytes and exceeds 24576 bytes (a limit introduced in Spurious Dragon). This contract may not be deployable on mainnet. Consider enabling the optimizer (with a low "runs" value!), turning off revert strings, or using libraries.
+ --> contracts/test/CometModifiedFactory.sol:7:1:
+  |
+7 | contract CometModifiedFactory is CometConfiguration {
+  | ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Generating typings for: 134 artifacts in dir: build/types for target: ethers-v5
+Successfully generated 251 typings!
+Compiled 127 Solidity files successfully (evm target: london).
+ ·-----------------------------------------|--------------------------------|--------------------------------·
+ |  Solc version: 0.8.15                   ·  Optimizer enabled: true       ·  Runs: 1                       │
+ ··········································|································|·································
+ |  Contract Name                          ·  Deployed size (KiB) (change)  ·  Initcode size (KiB) (change)  │
+ ··········································|································|·································
+ |  Address                                ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  AddressAliasHelper                     ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  ArbitrumBridgeReceiver                 ·                 6.122 (0.000)  ·                 6.149 (0.000)  │
+ ··········································|································|·································
+ |  AssetList                              ·                 2.819 (0.000)  ·                 5.262 (0.000)  │
+ ··········································|································|·································
+ |  AssetListFactory                       ·                 6.090 (0.000)  ·                 6.117 (0.000)  │
+ ··········································|································|·································
+ |  BaseBridgeReceiver                     ·                 2.266 (0.000)  ·                 2.293 (0.000)  │
+ ··········································|································|·································
+ |  BaseBridgeReceiverHarness              ·                 5.523 (0.000)  ·                 5.551 (0.000)  │
+ ··········································|································|·································
+ |  BaseBulker                             ·                 4.057 (0.000)  ·                 4.241 (0.000)  │
+ ··········································|································|·································
+ |  CallbackValidation                     ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  Comet                                  ·                18.826 (0.000)  ·                22.854 (0.000)  │
+ ··········································|································|·································
+ |  CometConfiguration                     ·                 0.062 (0.000)  ·                 0.086 (0.000)  │
+ ··········································|································|·································
+ |  CometExt                               ·                 3.354 (0.000)  ·                 3.522 (0.000)  │
+ ··········································|································|·································
+ |  CometExtAssetList                      ·                 3.431 (0.000)  ·                 3.641 (0.000)  │
+ ··········································|································|·································
+ |  CometFactory                           ·                23.905 (0.000)  ·                23.933 (0.000)  │
+ ··········································|································|·································
+ |  CometFactoryWithExtendedAssetList      ·                21.975 (0.000)  ·                22.002 (0.000)  │
+ ··········································|································|·································
+ |  CometHarness                           ·                20.594 (0.000)  ·                24.628 (0.000)  │
+ ··········································|································|·································
+ |  CometHarnessExtendedAssetList          ·                19.930 (0.000)  ·                22.696 (0.000)  │
+ ··········································|································|·································
+ |  CometMath                              ·                 0.062 (0.000)  ·                 0.086 (0.000)  │
+ ··········································|································|·································
+ |  CometModified                          ·                18.964 (0.000)  ·                22.991 (0.000)  │
+ ··········································|································|·································
+ |  CometModifiedFactory                   ·                24.043 (0.000)  ·                24.070 (0.000)  │
+ ··········································|································|·································
+ |  CometProxyAdmin                        ·                 2.094 (0.000)  ·                 2.188 (0.000)  │
+ ··········································|································|·································
+ |  CometRewards                           ·                 3.392 (0.000)  ·                 3.536 (0.000)  │
+ ··········································|································|·································
+ |  CometStorage                           ·                 0.716 (0.000)  ·                 0.743 (0.000)  │
+ ··········································|································|·································
+ |  CometWithExtendedAssetList             ·                18.163 (0.000)  ·                20.923 (0.000)  │
+ ··········································|································|·································
+ |  Comp                                   ·                 5.329 (0.000)  ·                 5.537 (0.000)  │
+ ··········································|································|·································
+ |  Configurator                           ·                10.051 (0.000)  ·                10.084 (0.000)  │
+ ··········································|································|·································
+ |  ConfiguratorProxy                      ·                 1.696 (0.000)  ·                 3.033 (0.000)  │
+ ··········································|································|·································
+ |  ConfiguratorStorage                    ·                 0.242 (0.000)  ·                 0.269 (0.000)  │
+ ··········································|································|·································
+ |  ConstantPriceFeed                      ·                 0.550 (0.000)  ·                 0.701 (0.000)  │
+ ··········································|································|·································
+ |  Dog                                    ·                 1.908 (0.000)  ·                 2.914 (0.000)  │
+ ··········································|································|·································
+ |  ERC1967Proxy                           ·                 0.198 (0.000)  ·                 1.078 (0.000)  │
+ ··········································|································|·································
+ |  EvilToken                              ·                 3.175 (0.000)  ·                 4.300 (0.000)  │
+ ··········································|································|·································
+ |  EzETHExchangeRatePriceFeed             ·                 1.195 (0.000)  ·                 2.050 (0.000)  │
+ ··········································|································|·································
+ |  Fauceteer                              ·                 0.637 (0.000)  ·                 0.664 (0.000)  │
+ ··········································|································|·································
+ |  FaucetToken                            ·                 1.680 (0.000)  ·                 2.678 (0.000)  │
+ ··········································|································|·································
+ |  FaucetWETH                             ·                 1.754 (0.000)  ·                 2.293 (0.000)  │
+ ··········································|································|·································
+ |  GovernorSimple                         ·                 7.951 (0.000)  ·                 7.979 (0.000)  │
+ ··········································|································|·································
+ |  LineaBridgeReceiver                    ·                 6.267 (0.000)  ·                 6.411 (0.000)  │
+ ··········································|································|·································
+ |  MainnetBulker                          ·                 5.920 (0.000)  ·                 6.343 (0.000)  │
+ ··········································|································|·································
+ |  MainnetBulkerWithWstETHSupport         ·                 6.544 (0.000)  ·                 6.974 (0.000)  │
+ ··········································|································|·································
+ |  MockRedstoneOracle                     ·                 0.401 (0.000)  ·                 0.697 (0.000)  │
+ ··········································|································|·································
+ |  MockRenzoOracle                        ·                 0.556 (0.000)  ·                 0.837 (0.000)  │
+ ··········································|································|·································
+ |  MultiplicativePriceFeed                ·                 1.643 (0.000)  ·                 2.824 (0.000)  │
+ ··········································|································|·································
+ |  NonStandardFaucetFeeToken              ·                 2.127 (0.000)  ·                 3.133 (0.000)  │
+ ··········································|································|·································
+ |  NonStandardFaucetToken                 ·                 1.664 (0.000)  ·                 2.662 (0.000)  │
+ ··········································|································|·································
+ |  NonStandardFeeToken                    ·                 2.012 (0.000)  ·                 3.018 (0.000)  │
+ ··········································|································|·································
+ |  NonStandardToken                       ·                 1.550 (0.000)  ·                 2.548 (0.000)  │
+ ··········································|································|·································
+ |  OnChainLiquidator                      ·                11.863 (0.000)  ·                12.268 (0.000)  │
+ ··········································|································|·································
+ |  OptimismBridgeReceiver                 ·                 6.393 (0.000)  ·                 6.537 (0.000)  │
+ ··········································|································|·································
+ |  PolygonBridgeReceiver                  ·                 5.740 (0.000)  ·                 5.885 (0.000)  │
+ ··········································|································|·································
+ |  PoolAddress                            ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  PriceFeedWith4626Support               ·                 1.729 (0.000)  ·                 2.932 (0.000)  │
+ ··········································|································|·································
+ |  ProxyAdmin                             ·                 1.500 (0.000)  ·                 1.595 (0.000)  │
+ ··········································|································|·································
+ |  RateBasedScalingPriceFeed              ·                 1.195 (0.000)  ·                 2.133 (0.000)  │
+ ··········································|································|·································
+ |  ReverseMultiplicativePriceFeed         ·                 1.760 (0.000)  ·                 2.945 (0.000)  │
+ ··········································|································|·································
+ |  RoninBridgeReceiver                    ·                 6.850 (0.000)  ·                 6.994 (0.000)  │
+ ··········································|································|·································
+ |  RsETHScalingPriceFeed                  ·                 1.195 (0.000)  ·                 2.050 (0.000)  │
+ ··········································|································|·································
+ |  ScalingPriceFeed                       ·                 1.214 (0.000)  ·                 2.353 (0.000)  │
+ ··········································|································|·································
+ |  ScalingPriceFeedWithCustomDescription  ·                 1.214 (0.000)  ·                 2.238 (0.000)  │
+ ··········································|································|·································
+ |  ScrollBridgeReceiver                   ·                 6.403 (0.000)  ·                 6.584 (0.000)  │
+ ··········································|································|·································
+ |  ScrollComet                            ·                18.531 (0.000)  ·                22.685 (0.000)  │
+ ··········································|································|·································
+ |  SimplePriceFeed                        ·                 0.726 (0.000)  ·                 0.863 (0.000)  │
+ ··········································|································|·································
+ |  SimpleTimelock                         ·                 2.507 (0.000)  ·                 2.651 (0.000)  │
+ ··········································|································|·································
+ |  SimpleWstETH                           ·                 0.189 (0.000)  ·                 0.307 (0.000)  │
+ ··········································|································|·································
+ |  StandardToken                          ·                 1.565 (0.000)  ·                 2.563 (0.000)  │
+ ··········································|································|·································
+ |  StorageSlot                            ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  SweepableBridgeReceiver                ·                 3.094 (0.000)  ·                 3.121 (0.000)  │
+ ··········································|································|·································
+ |  SweepableBridgeReceiverHarness         ·                 6.196 (0.000)  ·                 6.224 (0.000)  │
+ ··········································|································|·································
+ |  Timelock                               ·                 3.398 (0.000)  ·                 3.844 (0.000)  │
+ ··········································|································|·································
+ |  TransferHelper                         ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  TransparentUpgradeableProxy            ·                 1.834 (0.000)  ·                 3.171 (0.000)  │
+ ··········································|································|·································
+ |  WBTCPriceFeed                          ·                 1.464 (0.000)  ·                 2.093 (0.000)  │
+ ··········································|································|·································
+ |  WETH9                                  ·                 1.654 (0.000)  ·                 1.916 (0.000)  │
+ ··········································|································|·································
+ |  WstETHPriceFeed                        ·                 1.544 (0.000)  ·                 2.109 (0.000)  │
+ ·-----------------------------------------|--------------------------------|--------------------------------·
+
+Warning: 1 contracts exceed the size limit for mainnet deployment (24.000 KiB deployed, 48.000 KiB init).
+Successfully submitted source code for contract
+contracts/CometExt.sol:CometExt at 0xF1291d3A92a6F2e078900C657B87Dabd6534A82d
+for verification on the block explorer. Waiting for verification result...
+
+Successfully verified contract CometExt on Etherscan.
+https://aeneid.storyscan.io/address/0xF1291d3A92a6F2e078900C657B87Dabd6534A82d#code
+Retrying with retries left: 5, wait: 2000, error is:  Error: Async call timeout limit reached
+    at Timeout._onTimeout (/Users/theo/code/Aria/haven-contracts/plugins/deployment_manager/Utils.ts:157:20)
+    at listOnTimeout (node:internal/timers:588:17)
+    at processTimers (node:internal/timers:523:7)
+Pending transactions for CometExt.sol deployment: 653
+Retrying with retries left: 3, wait: 5000, error is:  Error: Async call timeout limit reached
+    at Timeout._onTimeout (/Users/theo/code/Aria/haven-contracts/plugins/deployment_manager/Utils.ts:157:20)
+    at listOnTimeout (node:internal/timers:588:17)
+    at processTimers (node:internal/timers:523:7)
+Nothing to compile
+No need to generate any newer typings.
+ ·-----------------------------------------|--------------------------------|--------------------------------·
+ |  Solc version: 0.8.15                   ·  Optimizer enabled: true       ·  Runs: 1                       │
+ ··········································|································|·································
+ |  Contract Name                          ·  Deployed size (KiB) (change)  ·  Initcode size (KiB) (change)  │
+ ··········································|································|·································
+ |  Address                                ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  AddressAliasHelper                     ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  ArbitrumBridgeReceiver                 ·                 6.122 (0.000)  ·                 6.149 (0.000)  │
+ ··········································|································|·································
+ |  AssetList                              ·                 2.819 (0.000)  ·                 5.262 (0.000)  │
+ ··········································|································|·································
+ |  AssetListFactory                       ·                 6.090 (0.000)  ·                 6.117 (0.000)  │
+ ··········································|································|·································
+ |  BaseBridgeReceiver                     ·                 2.266 (0.000)  ·                 2.293 (0.000)  │
+ ··········································|································|·································
+ |  BaseBridgeReceiverHarness              ·                 5.523 (0.000)  ·                 5.551 (0.000)  │
+ ··········································|································|·································
+ |  BaseBulker                             ·                 4.057 (0.000)  ·                 4.241 (0.000)  │
+ ··········································|································|·································
+ |  CallbackValidation                     ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  Comet                                  ·                18.826 (0.000)  ·                22.854 (0.000)  │
+ ··········································|································|·································
+ |  CometConfiguration                     ·                 0.062 (0.000)  ·                 0.086 (0.000)  │
+ ··········································|································|·································
+ |  CometExt                               ·                 3.354 (0.000)  ·                 3.522 (0.000)  │
+ ··········································|································|·································
+ |  CometExtAssetList                      ·                 3.431 (0.000)  ·                 3.641 (0.000)  │
+ ··········································|································|·································
+ |  CometFactory                           ·                23.905 (0.000)  ·                23.933 (0.000)  │
+ ··········································|································|·································
+ |  CometFactoryWithExtendedAssetList      ·                21.975 (0.000)  ·                22.002 (0.000)  │
+ ··········································|································|·································
+ |  CometHarness                           ·                20.594 (0.000)  ·                24.628 (0.000)  │
+ ··········································|································|·································
+ |  CometHarnessExtendedAssetList          ·                19.930 (0.000)  ·                22.696 (0.000)  │
+ ··········································|································|·································
+ |  CometMath                              ·                 0.062 (0.000)  ·                 0.086 (0.000)  │
+ ··········································|································|·································
+ |  CometModified                          ·                18.964 (0.000)  ·                22.991 (0.000)  │
+ ··········································|································|·································
+ |  CometModifiedFactory                   ·                24.043 (0.000)  ·                24.070 (0.000)  │
+ ··········································|································|·································
+ |  CometProxyAdmin                        ·                 2.094 (0.000)  ·                 2.188 (0.000)  │
+ ··········································|································|·································
+ |  CometRewards                           ·                 3.392 (0.000)  ·                 3.536 (0.000)  │
+ ··········································|································|·································
+ |  CometStorage                           ·                 0.716 (0.000)  ·                 0.743 (0.000)  │
+ ··········································|································|·································
+ |  CometWithExtendedAssetList             ·                18.163 (0.000)  ·                20.923 (0.000)  │
+ ··········································|································|·································
+ |  Comp                                   ·                 5.329 (0.000)  ·                 5.537 (0.000)  │
+ ··········································|································|·································
+ |  Configurator                           ·                10.051 (0.000)  ·                10.084 (0.000)  │
+ ··········································|································|·································
+ |  ConfiguratorProxy                      ·                 1.696 (0.000)  ·                 3.033 (0.000)  │
+ ··········································|································|·································
+ |  ConfiguratorStorage                    ·                 0.242 (0.000)  ·                 0.269 (0.000)  │
+ ··········································|································|·································
+ |  ConstantPriceFeed                      ·                 0.550 (0.000)  ·                 0.701 (0.000)  │
+ ··········································|································|·································
+ |  Dog                                    ·                 1.908 (0.000)  ·                 2.914 (0.000)  │
+ ··········································|································|·································
+ |  ERC1967Proxy                           ·                 0.198 (0.000)  ·                 1.078 (0.000)  │
+ ··········································|································|·································
+ |  EvilToken                              ·                 3.175 (0.000)  ·                 4.300 (0.000)  │
+ ··········································|································|·································
+ |  EzETHExchangeRatePriceFeed             ·                 1.195 (0.000)  ·                 2.050 (0.000)  │
+ ··········································|································|·································
+ |  Fauceteer                              ·                 0.637 (0.000)  ·                 0.664 (0.000)  │
+ ··········································|································|·································
+ |  FaucetToken                            ·                 1.680 (0.000)  ·                 2.678 (0.000)  │
+ ··········································|································|·································
+ |  FaucetWETH                             ·                 1.754 (0.000)  ·                 2.293 (0.000)  │
+ ··········································|································|·································
+ |  GovernorSimple                         ·                 7.951 (0.000)  ·                 7.979 (0.000)  │
+ ··········································|································|·································
+ |  LineaBridgeReceiver                    ·                 6.267 (0.000)  ·                 6.411 (0.000)  │
+ ··········································|································|·································
+ |  MainnetBulker                          ·                 5.920 (0.000)  ·                 6.343 (0.000)  │
+ ··········································|································|·································
+ |  MainnetBulkerWithWstETHSupport         ·                 6.544 (0.000)  ·                 6.974 (0.000)  │
+ ··········································|································|·································
+ |  MockRedstoneOracle                     ·                 0.401 (0.000)  ·                 0.697 (0.000)  │
+ ··········································|································|·································
+ |  MockRenzoOracle                        ·                 0.556 (0.000)  ·                 0.837 (0.000)  │
+ ··········································|································|·································
+ |  MultiplicativePriceFeed                ·                 1.643 (0.000)  ·                 2.824 (0.000)  │
+ ··········································|································|·································
+ |  NonStandardFaucetFeeToken              ·                 2.127 (0.000)  ·                 3.133 (0.000)  │
+ ··········································|································|·································
+ |  NonStandardFaucetToken                 ·                 1.664 (0.000)  ·                 2.662 (0.000)  │
+ ··········································|································|·································
+ |  NonStandardFeeToken                    ·                 2.012 (0.000)  ·                 3.018 (0.000)  │
+ ··········································|································|·································
+ |  NonStandardToken                       ·                 1.550 (0.000)  ·                 2.548 (0.000)  │
+ ··········································|································|·································
+ |  OnChainLiquidator                      ·                11.863 (0.000)  ·                12.268 (0.000)  │
+ ··········································|································|·································
+ |  OptimismBridgeReceiver                 ·                 6.393 (0.000)  ·                 6.537 (0.000)  │
+ ··········································|································|·································
+ |  PolygonBridgeReceiver                  ·                 5.740 (0.000)  ·                 5.885 (0.000)  │
+ ··········································|································|·································
+ |  PoolAddress                            ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  PriceFeedWith4626Support               ·                 1.729 (0.000)  ·                 2.932 (0.000)  │
+ ··········································|································|·································
+ |  ProxyAdmin                             ·                 1.500 (0.000)  ·                 1.595 (0.000)  │
+ ··········································|································|·································
+ |  RateBasedScalingPriceFeed              ·                 1.195 (0.000)  ·                 2.133 (0.000)  │
+ ··········································|································|·································
+ |  ReverseMultiplicativePriceFeed         ·                 1.760 (0.000)  ·                 2.945 (0.000)  │
+ ··········································|································|·································
+ |  RoninBridgeReceiver                    ·                 6.850 (0.000)  ·                 6.994 (0.000)  │
+ ··········································|································|·································
+ |  RsETHScalingPriceFeed                  ·                 1.195 (0.000)  ·                 2.050 (0.000)  │
+ ··········································|································|·································
+ |  ScalingPriceFeed                       ·                 1.214 (0.000)  ·                 2.353 (0.000)  │
+ ··········································|································|·································
+ |  ScalingPriceFeedWithCustomDescription  ·                 1.214 (0.000)  ·                 2.238 (0.000)  │
+ ··········································|································|·································
+ |  ScrollBridgeReceiver                   ·                 6.403 (0.000)  ·                 6.584 (0.000)  │
+ ··········································|································|·································
+ |  ScrollComet                            ·                18.531 (0.000)  ·                22.685 (0.000)  │
+ ··········································|································|·································
+ |  SimplePriceFeed                        ·                 0.726 (0.000)  ·                 0.863 (0.000)  │
+ ··········································|································|·································
+ |  SimpleTimelock                         ·                 2.507 (0.000)  ·                 2.651 (0.000)  │
+ ··········································|································|·································
+ |  SimpleWstETH                           ·                 0.189 (0.000)  ·                 0.307 (0.000)  │
+ ··········································|································|·································
+ |  StandardToken                          ·                 1.565 (0.000)  ·                 2.563 (0.000)  │
+ ··········································|································|·································
+ |  StorageSlot                            ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  SweepableBridgeReceiver                ·                 3.094 (0.000)  ·                 3.121 (0.000)  │
+ ··········································|································|·································
+ |  SweepableBridgeReceiverHarness         ·                 6.196 (0.000)  ·                 6.224 (0.000)  │
+ ··········································|································|·································
+ |  Timelock                               ·                 3.398 (0.000)  ·                 3.844 (0.000)  │
+ ··········································|································|·································
+ |  TransferHelper                         ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  TransparentUpgradeableProxy            ·                 1.834 (0.000)  ·                 3.171 (0.000)  │
+ ··········································|································|·································
+ |  WBTCPriceFeed                          ·                 1.464 (0.000)  ·                 2.093 (0.000)  │
+ ··········································|································|·································
+ |  WETH9                                  ·                 1.654 (0.000)  ·                 1.916 (0.000)  │
+ ··········································|································|·································
+ |  WstETHPriceFeed                        ·                 1.544 (0.000)  ·                 2.109 (0.000)  │
+ ·-----------------------------------------|--------------------------------|--------------------------------·
+
+Warning: 1 contracts exceed the size limit for mainnet deployment (24.000 KiB deployed, 48.000 KiB init).
+Successfully submitted source code for contract
+contracts/CometExt.sol:CometExt at 0xBa7D34a810f0Cb9F426E7Bdd52372708384f2063
+for verification on the block explorer. Waiting for verification result...
+
+Successfully verified contract CometExt on Etherscan.
+https://aeneid.storyscan.io/address/0xBa7D34a810f0Cb9F426E7Bdd52372708384f2063#code
+Pending transactions for Comet.sol deployment: 654
+Nothing to compile
+No need to generate any newer typings.
+ ·-----------------------------------------|--------------------------------|--------------------------------·
+ |  Solc version: 0.8.15                   ·  Optimizer enabled: true       ·  Runs: 1                       │
+ ··········································|································|·································
+ |  Contract Name                          ·  Deployed size (KiB) (change)  ·  Initcode size (KiB) (change)  │
+ ··········································|································|·································
+ |  Address                                ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  AddressAliasHelper                     ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  ArbitrumBridgeReceiver                 ·                 6.122 (0.000)  ·                 6.149 (0.000)  │
+ ··········································|································|·································
+ |  AssetList                              ·                 2.819 (0.000)  ·                 5.262 (0.000)  │
+ ··········································|································|·································
+ |  AssetListFactory                       ·                 6.090 (0.000)  ·                 6.117 (0.000)  │
+ ··········································|································|·································
+ |  BaseBridgeReceiver                     ·                 2.266 (0.000)  ·                 2.293 (0.000)  │
+ ··········································|································|·································
+ |  BaseBridgeReceiverHarness              ·                 5.523 (0.000)  ·                 5.551 (0.000)  │
+ ··········································|································|·································
+ |  BaseBulker                             ·                 4.057 (0.000)  ·                 4.241 (0.000)  │
+ ··········································|································|·································
+ |  CallbackValidation                     ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  Comet                                  ·                18.826 (0.000)  ·                22.854 (0.000)  │
+ ··········································|································|·································
+ |  CometConfiguration                     ·                 0.062 (0.000)  ·                 0.086 (0.000)  │
+ ··········································|································|·································
+ |  CometExt                               ·                 3.354 (0.000)  ·                 3.522 (0.000)  │
+ ··········································|································|·································
+ |  CometExtAssetList                      ·                 3.431 (0.000)  ·                 3.641 (0.000)  │
+ ··········································|································|·································
+ |  CometFactory                           ·                23.905 (0.000)  ·                23.933 (0.000)  │
+ ··········································|································|·································
+ |  CometFactoryWithExtendedAssetList      ·                21.975 (0.000)  ·                22.002 (0.000)  │
+ ··········································|································|·································
+ |  CometHarness                           ·                20.594 (0.000)  ·                24.628 (0.000)  │
+ ··········································|································|·································
+ |  CometHarnessExtendedAssetList          ·                19.930 (0.000)  ·                22.696 (0.000)  │
+ ··········································|································|·································
+ |  CometMath                              ·                 0.062 (0.000)  ·                 0.086 (0.000)  │
+ ··········································|································|·································
+ |  CometModified                          ·                18.964 (0.000)  ·                22.991 (0.000)  │
+ ··········································|································|·································
+ |  CometModifiedFactory                   ·                24.043 (0.000)  ·                24.070 (0.000)  │
+ ··········································|································|·································
+ |  CometProxyAdmin                        ·                 2.094 (0.000)  ·                 2.188 (0.000)  │
+ ··········································|································|·································
+ |  CometRewards                           ·                 3.392 (0.000)  ·                 3.536 (0.000)  │
+ ··········································|································|·································
+ |  CometStorage                           ·                 0.716 (0.000)  ·                 0.743 (0.000)  │
+ ··········································|································|·································
+ |  CometWithExtendedAssetList             ·                18.163 (0.000)  ·                20.923 (0.000)  │
+ ··········································|································|·································
+ |  Comp                                   ·                 5.329 (0.000)  ·                 5.537 (0.000)  │
+ ··········································|································|·································
+ |  Configurator                           ·                10.051 (0.000)  ·                10.084 (0.000)  │
+ ··········································|································|·································
+ |  ConfiguratorProxy                      ·                 1.696 (0.000)  ·                 3.033 (0.000)  │
+ ··········································|································|·································
+ |  ConfiguratorStorage                    ·                 0.242 (0.000)  ·                 0.269 (0.000)  │
+ ··········································|································|·································
+ |  ConstantPriceFeed                      ·                 0.550 (0.000)  ·                 0.701 (0.000)  │
+ ··········································|································|·································
+ |  Dog                                    ·                 1.908 (0.000)  ·                 2.914 (0.000)  │
+ ··········································|································|·································
+ |  ERC1967Proxy                           ·                 0.198 (0.000)  ·                 1.078 (0.000)  │
+ ··········································|································|·································
+ |  EvilToken                              ·                 3.175 (0.000)  ·                 4.300 (0.000)  │
+ ··········································|································|·································
+ |  EzETHExchangeRatePriceFeed             ·                 1.195 (0.000)  ·                 2.050 (0.000)  │
+ ··········································|································|·································
+ |  Fauceteer                              ·                 0.637 (0.000)  ·                 0.664 (0.000)  │
+ ··········································|································|·································
+ |  FaucetToken                            ·                 1.680 (0.000)  ·                 2.678 (0.000)  │
+ ··········································|································|·································
+ |  FaucetWETH                             ·                 1.754 (0.000)  ·                 2.293 (0.000)  │
+ ··········································|································|·································
+ |  GovernorSimple                         ·                 7.951 (0.000)  ·                 7.979 (0.000)  │
+ ··········································|································|·································
+ |  LineaBridgeReceiver                    ·                 6.267 (0.000)  ·                 6.411 (0.000)  │
+ ··········································|································|·································
+ |  MainnetBulker                          ·                 5.920 (0.000)  ·                 6.343 (0.000)  │
+ ··········································|································|·································
+ |  MainnetBulkerWithWstETHSupport         ·                 6.544 (0.000)  ·                 6.974 (0.000)  │
+ ··········································|································|·································
+ |  MockRedstoneOracle                     ·                 0.401 (0.000)  ·                 0.697 (0.000)  │
+ ··········································|································|·································
+ |  MockRenzoOracle                        ·                 0.556 (0.000)  ·                 0.837 (0.000)  │
+ ··········································|································|·································
+ |  MultiplicativePriceFeed                ·                 1.643 (0.000)  ·                 2.824 (0.000)  │
+ ··········································|································|·································
+ |  NonStandardFaucetFeeToken              ·                 2.127 (0.000)  ·                 3.133 (0.000)  │
+ ··········································|································|·································
+ |  NonStandardFaucetToken                 ·                 1.664 (0.000)  ·                 2.662 (0.000)  │
+ ··········································|································|·································
+ |  NonStandardFeeToken                    ·                 2.012 (0.000)  ·                 3.018 (0.000)  │
+ ··········································|································|·································
+ |  NonStandardToken                       ·                 1.550 (0.000)  ·                 2.548 (0.000)  │
+ ··········································|································|·································
+ |  OnChainLiquidator                      ·                11.863 (0.000)  ·                12.268 (0.000)  │
+ ··········································|································|·································
+ |  OptimismBridgeReceiver                 ·                 6.393 (0.000)  ·                 6.537 (0.000)  │
+ ··········································|································|·································
+ |  PolygonBridgeReceiver                  ·                 5.740 (0.000)  ·                 5.885 (0.000)  │
+ ··········································|································|·································
+ |  PoolAddress                            ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  PriceFeedWith4626Support               ·                 1.729 (0.000)  ·                 2.932 (0.000)  │
+ ··········································|································|·································
+ |  ProxyAdmin                             ·                 1.500 (0.000)  ·                 1.595 (0.000)  │
+ ··········································|································|·································
+ |  RateBasedScalingPriceFeed              ·                 1.195 (0.000)  ·                 2.133 (0.000)  │
+ ··········································|································|·································
+ |  ReverseMultiplicativePriceFeed         ·                 1.760 (0.000)  ·                 2.945 (0.000)  │
+ ··········································|································|·································
+ |  RoninBridgeReceiver                    ·                 6.850 (0.000)  ·                 6.994 (0.000)  │
+ ··········································|································|·································
+ |  RsETHScalingPriceFeed                  ·                 1.195 (0.000)  ·                 2.050 (0.000)  │
+ ··········································|································|·································
+ |  ScalingPriceFeed                       ·                 1.214 (0.000)  ·                 2.353 (0.000)  │
+ ··········································|································|·································
+ |  ScalingPriceFeedWithCustomDescription  ·                 1.214 (0.000)  ·                 2.238 (0.000)  │
+ ··········································|································|·································
+ |  ScrollBridgeReceiver                   ·                 6.403 (0.000)  ·                 6.584 (0.000)  │
+ ··········································|································|·································
+ |  ScrollComet                            ·                18.531 (0.000)  ·                22.685 (0.000)  │
+ ··········································|································|·································
+ |  SimplePriceFeed                        ·                 0.726 (0.000)  ·                 0.863 (0.000)  │
+ ··········································|································|·································
+ |  SimpleTimelock                         ·                 2.507 (0.000)  ·                 2.651 (0.000)  │
+ ··········································|································|·································
+ |  SimpleWstETH                           ·                 0.189 (0.000)  ·                 0.307 (0.000)  │
+ ··········································|································|·································
+ |  StandardToken                          ·                 1.565 (0.000)  ·                 2.563 (0.000)  │
+ ··········································|································|·································
+ |  StorageSlot                            ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  SweepableBridgeReceiver                ·                 3.094 (0.000)  ·                 3.121 (0.000)  │
+ ··········································|································|·································
+ |  SweepableBridgeReceiverHarness         ·                 6.196 (0.000)  ·                 6.224 (0.000)  │
+ ··········································|································|·································
+ |  Timelock                               ·                 3.398 (0.000)  ·                 3.844 (0.000)  │
+ ··········································|································|·································
+ |  TransferHelper                         ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  TransparentUpgradeableProxy            ·                 1.834 (0.000)  ·                 3.171 (0.000)  │
+ ··········································|································|·································
+ |  WBTCPriceFeed                          ·                 1.464 (0.000)  ·                 2.093 (0.000)  │
+ ··········································|································|·································
+ |  WETH9                                  ·                 1.654 (0.000)  ·                 1.916 (0.000)  │
+ ··········································|································|·································
+ |  WstETHPriceFeed                        ·                 1.544 (0.000)  ·                 2.109 (0.000)  │
+ ·-----------------------------------------|--------------------------------|--------------------------------·
+
+Warning: 1 contracts exceed the size limit for mainnet deployment (24.000 KiB deployed, 48.000 KiB init).
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+  --> contracts/Comet.sol:13:1:
+   |
+13 | contract Comet is CometMainInterface {
+   | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+    --> contracts/Comet.sol:1367:5:
+     |
+1367 |     fallback() external payable {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: Unused local variable.
+   --> contracts/Comet.sol:227:9:
+    |
+227 |         uint256 status;
+    |         ^^^^^^^^^^^^^^
+
+
+Successfully submitted source code for contract
+contracts/Comet.sol:Comet at 0x9949Ba5ebFe06C68bE324dCdfaF08a8E35BbBEe2
+for verification on the block explorer. Waiting for verification result...
+
+Successfully verified contract Comet on Etherscan.
+https://aeneid.storyscan.io/address/0x9949Ba5ebFe06C68bE324dCdfaF08a8E35BbBEe2#code
+Pending transactions for vendor/proxy/transparent/TransparentUpgradeableProxy.sol deployment: 655
+Nothing to compile
+No need to generate any newer typings.
+ ·-----------------------------------------|--------------------------------|--------------------------------·
+ |  Solc version: 0.8.15                   ·  Optimizer enabled: true       ·  Runs: 1                       │
+ ··········································|································|·································
+ |  Contract Name                          ·  Deployed size (KiB) (change)  ·  Initcode size (KiB) (change)  │
+ ··········································|································|·································
+ |  Address                                ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  AddressAliasHelper                     ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  ArbitrumBridgeReceiver                 ·                 6.122 (0.000)  ·                 6.149 (0.000)  │
+ ··········································|································|·································
+ |  AssetList                              ·                 2.819 (0.000)  ·                 5.262 (0.000)  │
+ ··········································|································|·································
+ |  AssetListFactory                       ·                 6.090 (0.000)  ·                 6.117 (0.000)  │
+ ··········································|································|·································
+ |  BaseBridgeReceiver                     ·                 2.266 (0.000)  ·                 2.293 (0.000)  │
+ ··········································|································|·································
+ |  BaseBridgeReceiverHarness              ·                 5.523 (0.000)  ·                 5.551 (0.000)  │
+ ··········································|································|·································
+ |  BaseBulker                             ·                 4.057 (0.000)  ·                 4.241 (0.000)  │
+ ··········································|································|·································
+ |  CallbackValidation                     ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  Comet                                  ·                18.826 (0.000)  ·                22.854 (0.000)  │
+ ··········································|································|·································
+ |  CometConfiguration                     ·                 0.062 (0.000)  ·                 0.086 (0.000)  │
+ ··········································|································|·································
+ |  CometExt                               ·                 3.354 (0.000)  ·                 3.522 (0.000)  │
+ ··········································|································|·································
+ |  CometExtAssetList                      ·                 3.431 (0.000)  ·                 3.641 (0.000)  │
+ ··········································|································|·································
+ |  CometFactory                           ·                23.905 (0.000)  ·                23.933 (0.000)  │
+ ··········································|································|·································
+ |  CometFactoryWithExtendedAssetList      ·                21.975 (0.000)  ·                22.002 (0.000)  │
+ ··········································|································|·································
+ |  CometHarness                           ·                20.594 (0.000)  ·                24.628 (0.000)  │
+ ··········································|································|·································
+ |  CometHarnessExtendedAssetList          ·                19.930 (0.000)  ·                22.696 (0.000)  │
+ ··········································|································|·································
+ |  CometMath                              ·                 0.062 (0.000)  ·                 0.086 (0.000)  │
+ ··········································|································|·································
+ |  CometModified                          ·                18.964 (0.000)  ·                22.991 (0.000)  │
+ ··········································|································|·································
+ |  CometModifiedFactory                   ·                24.043 (0.000)  ·                24.070 (0.000)  │
+ ··········································|································|·································
+ |  CometProxyAdmin                        ·                 2.094 (0.000)  ·                 2.188 (0.000)  │
+ ··········································|································|·································
+ |  CometRewards                           ·                 3.392 (0.000)  ·                 3.536 (0.000)  │
+ ··········································|································|·································
+ |  CometStorage                           ·                 0.716 (0.000)  ·                 0.743 (0.000)  │
+ ··········································|································|·································
+ |  CometWithExtendedAssetList             ·                18.163 (0.000)  ·                20.923 (0.000)  │
+ ··········································|································|·································
+ |  Comp                                   ·                 5.329 (0.000)  ·                 5.537 (0.000)  │
+ ··········································|································|·································
+ |  Configurator                           ·                10.051 (0.000)  ·                10.084 (0.000)  │
+ ··········································|································|·································
+ |  ConfiguratorProxy                      ·                 1.696 (0.000)  ·                 3.033 (0.000)  │
+ ··········································|································|·································
+ |  ConfiguratorStorage                    ·                 0.242 (0.000)  ·                 0.269 (0.000)  │
+ ··········································|································|·································
+ |  ConstantPriceFeed                      ·                 0.550 (0.000)  ·                 0.701 (0.000)  │
+ ··········································|································|·································
+ |  Dog                                    ·                 1.908 (0.000)  ·                 2.914 (0.000)  │
+ ··········································|································|·································
+ |  ERC1967Proxy                           ·                 0.198 (0.000)  ·                 1.078 (0.000)  │
+ ··········································|································|·································
+ |  EvilToken                              ·                 3.175 (0.000)  ·                 4.300 (0.000)  │
+ ··········································|································|·································
+ |  EzETHExchangeRatePriceFeed             ·                 1.195 (0.000)  ·                 2.050 (0.000)  │
+ ··········································|································|·································
+ |  Fauceteer                              ·                 0.637 (0.000)  ·                 0.664 (0.000)  │
+ ··········································|································|·································
+ |  FaucetToken                            ·                 1.680 (0.000)  ·                 2.678 (0.000)  │
+ ··········································|································|·································
+ |  FaucetWETH                             ·                 1.754 (0.000)  ·                 2.293 (0.000)  │
+ ··········································|································|·································
+ |  GovernorSimple                         ·                 7.951 (0.000)  ·                 7.979 (0.000)  │
+ ··········································|································|·································
+ |  LineaBridgeReceiver                    ·                 6.267 (0.000)  ·                 6.411 (0.000)  │
+ ··········································|································|·································
+ |  MainnetBulker                          ·                 5.920 (0.000)  ·                 6.343 (0.000)  │
+ ··········································|································|·································
+ |  MainnetBulkerWithWstETHSupport         ·                 6.544 (0.000)  ·                 6.974 (0.000)  │
+ ··········································|································|·································
+ |  MockRedstoneOracle                     ·                 0.401 (0.000)  ·                 0.697 (0.000)  │
+ ··········································|································|·································
+ |  MockRenzoOracle                        ·                 0.556 (0.000)  ·                 0.837 (0.000)  │
+ ··········································|································|·································
+ |  MultiplicativePriceFeed                ·                 1.643 (0.000)  ·                 2.824 (0.000)  │
+ ··········································|································|·································
+ |  NonStandardFaucetFeeToken              ·                 2.127 (0.000)  ·                 3.133 (0.000)  │
+ ··········································|································|·································
+ |  NonStandardFaucetToken                 ·                 1.664 (0.000)  ·                 2.662 (0.000)  │
+ ··········································|································|·································
+ |  NonStandardFeeToken                    ·                 2.012 (0.000)  ·                 3.018 (0.000)  │
+ ··········································|································|·································
+ |  NonStandardToken                       ·                 1.550 (0.000)  ·                 2.548 (0.000)  │
+ ··········································|································|·································
+ |  OnChainLiquidator                      ·                11.863 (0.000)  ·                12.268 (0.000)  │
+ ··········································|································|·································
+ |  OptimismBridgeReceiver                 ·                 6.393 (0.000)  ·                 6.537 (0.000)  │
+ ··········································|································|·································
+ |  PolygonBridgeReceiver                  ·                 5.740 (0.000)  ·                 5.885 (0.000)  │
+ ··········································|································|·································
+ |  PoolAddress                            ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  PriceFeedWith4626Support               ·                 1.729 (0.000)  ·                 2.932 (0.000)  │
+ ··········································|································|·································
+ |  ProxyAdmin                             ·                 1.500 (0.000)  ·                 1.595 (0.000)  │
+ ··········································|································|·································
+ |  RateBasedScalingPriceFeed              ·                 1.195 (0.000)  ·                 2.133 (0.000)  │
+ ··········································|································|·································
+ |  ReverseMultiplicativePriceFeed         ·                 1.760 (0.000)  ·                 2.945 (0.000)  │
+ ··········································|································|·································
+ |  RoninBridgeReceiver                    ·                 6.850 (0.000)  ·                 6.994 (0.000)  │
+ ··········································|································|·································
+ |  RsETHScalingPriceFeed                  ·                 1.195 (0.000)  ·                 2.050 (0.000)  │
+ ··········································|································|·································
+ |  ScalingPriceFeed                       ·                 1.214 (0.000)  ·                 2.353 (0.000)  │
+ ··········································|································|·································
+ |  ScalingPriceFeedWithCustomDescription  ·                 1.214 (0.000)  ·                 2.238 (0.000)  │
+ ··········································|································|·································
+ |  ScrollBridgeReceiver                   ·                 6.403 (0.000)  ·                 6.584 (0.000)  │
+ ··········································|································|·································
+ |  ScrollComet                            ·                18.531 (0.000)  ·                22.685 (0.000)  │
+ ··········································|································|·································
+ |  SimplePriceFeed                        ·                 0.726 (0.000)  ·                 0.863 (0.000)  │
+ ··········································|································|·································
+ |  SimpleTimelock                         ·                 2.507 (0.000)  ·                 2.651 (0.000)  │
+ ··········································|································|·································
+ |  SimpleWstETH                           ·                 0.189 (0.000)  ·                 0.307 (0.000)  │
+ ··········································|································|·································
+ |  StandardToken                          ·                 1.565 (0.000)  ·                 2.563 (0.000)  │
+ ··········································|································|·································
+ |  StorageSlot                            ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  SweepableBridgeReceiver                ·                 3.094 (0.000)  ·                 3.121 (0.000)  │
+ ··········································|································|·································
+ |  SweepableBridgeReceiverHarness         ·                 6.196 (0.000)  ·                 6.224 (0.000)  │
+ ··········································|································|·································
+ |  Timelock                               ·                 3.398 (0.000)  ·                 3.844 (0.000)  │
+ ··········································|································|·································
+ |  TransferHelper                         ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  TransparentUpgradeableProxy            ·                 1.834 (0.000)  ·                 3.171 (0.000)  │
+ ··········································|································|·································
+ |  WBTCPriceFeed                          ·                 1.464 (0.000)  ·                 2.093 (0.000)  │
+ ··········································|································|·································
+ |  WETH9                                  ·                 1.654 (0.000)  ·                 1.916 (0.000)  │
+ ··········································|································|·································
+ |  WstETHPriceFeed                        ·                 1.544 (0.000)  ·                 2.109 (0.000)  │
+ ·-----------------------------------------|--------------------------------|--------------------------------·
+
+Warning: 1 contracts exceed the size limit for mainnet deployment (24.000 KiB deployed, 48.000 KiB init).
+Successfully submitted source code for contract
+contracts/vendor/proxy/transparent/TransparentUpgradeableProxy.sol:TransparentUpgradeableProxy at 0xC9cB25E839d065994fc2d51001F6307599c77207
+for verification on the block explorer. Waiting for verification result...
+
+Warning: This function is named "receive" but is not the receive function of the contract. If you intend this to be a receive function, use "receive(...) { ... }" without the "function" keyword to define it.
+  --> contracts/IWstETH.sol:16:14:
+   |
+16 |     function receive() external payable;
+   |              ^^^^^^^
+
+
+Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+--> contracts/bridges/linea/IMessageService.sol
+
+
+Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+--> contracts/test/Comp.sol
+
+
+Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+--> contracts/vendor/canonical-weth/contracts/WETH9.sol
+
+
+Warning: This declaration shadows an existing declaration.
+   --> contracts/liquidator/OnChainLiquidator.sol:124:9:
+    |
+124 |         PoolConfig[] calldata poolConfigs,
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Note: The shadowed declaration is here:
+  --> contracts/liquidator/OnChainLiquidator.sol:81:5:
+   |
+81 |     mapping(address => PoolConfig) public poolConfigs;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: This declaration shadows an existing declaration.
+  --> contracts/test/Dog.sol:34:9:
+   |
+34 |         Puppers[] memory puppers = new Puppers[](pups.length);
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^
+Note: The shadowed declaration is here:
+  --> contracts/test/Dog.sol:33:5:
+   |
+33 |     function puppers() public returns (Puppers[] memory) {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+  --> contracts/Comet.sol:13:1:
+   |
+13 | contract Comet is CometMainInterface {
+   | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+    --> contracts/Comet.sol:1367:5:
+     |
+1367 |     fallback() external payable {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+  --> contracts/CometWithExtendedAssetList.sol:16:1:
+   |
+16 | contract CometWithExtendedAssetList is CometMainInterface {
+   | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+    --> contracts/CometWithExtendedAssetList.sol:1242:5:
+     |
+1242 |     fallback() external payable {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+  --> contracts/ScrollComet.sol:13:1:
+   |
+13 | contract ScrollComet is CometMainInterface {
+   | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+    --> contracts/ScrollComet.sol:1313:5:
+     |
+1313 |     fallback() external payable {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+ --> contracts/bridges/arbitrum/ArbitrumBridgeReceiver.sol:7:1:
+  |
+7 | contract ArbitrumBridgeReceiver is SweepableBridgeReceiver {
+  | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+ --> contracts/bridges/arbitrum/ArbitrumBridgeReceiver.sol:8:5:
+  |
+8 |     fallback() external payable {
+  |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+ --> contracts/bridges/linea/LineaBridgeReceiver.sol:7:1:
+  |
+7 | contract LineaBridgeReceiver is SweepableBridgeReceiver {
+  | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+  --> contracts/bridges/linea/LineaBridgeReceiver.sol:15:5:
+   |
+15 |     fallback() external payable {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+ --> contracts/bridges/optimism/OptimismBridgeReceiver.sol:7:1:
+  |
+7 | contract OptimismBridgeReceiver is SweepableBridgeReceiver {
+  | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+  --> contracts/bridges/optimism/OptimismBridgeReceiver.sol:25:5:
+   |
+25 |     fallback() external payable {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+ --> contracts/bridges/scroll/ScrollBridgeReceiver.sol:9:1:
+  |
+9 | contract ScrollBridgeReceiver is SweepableBridgeReceiver {
+  | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+  --> contracts/bridges/scroll/ScrollBridgeReceiver.sol:34:5:
+   |
+34 |     fallback() external payable {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+ --> contracts/bridges/test/SweepableBridgeReceiverHarness.sol:6:1:
+  |
+6 | contract SweepableBridgeReceiverHarness is SweepableBridgeReceiver {
+  | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+  --> contracts/bridges/test/SweepableBridgeReceiverHarness.sol:14:5:
+   |
+14 |     fallback() external payable { }
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+ --> contracts/test/CometHarness.sol:6:1:
+  |
+6 | contract CometHarness is Comet {
+  | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+    --> contracts/Comet.sol:1367:5:
+     |
+1367 |     fallback() external payable {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+ --> contracts/test/CometHarnessExtendedAssetList.sol:6:1:
+  |
+6 | contract CometHarnessExtendedAssetList is CometWithExtendedAssetList {
+  | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+    --> contracts/CometWithExtendedAssetList.sol:1242:5:
+     |
+1242 |     fallback() external payable {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+  --> contracts/test/CometModified.sol:11:1:
+   |
+11 | contract CometModified is Comet {
+   | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+    --> contracts/Comet.sol:1367:5:
+     |
+1367 |     fallback() external payable {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+ --> contracts/vendor/Timelock.sol:6:1:
+  |
+6 | contract Timelock is ITimelock {
+  | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+  --> contracts/vendor/Timelock.sol:29:5:
+   |
+29 |     fallback() external payable { }
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:27:5:
+   |
+27 |     function GRACE_PERIOD() virtual external view returns (uint);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:30:5:
+   |
+30 |     function MINIMUM_DELAY() virtual external view returns (uint);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:33:5:
+   |
+33 |     function MAXIMUM_DELAY() virtual external view returns (uint);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:36:5:
+   |
+36 |     function admin() virtual external view returns (address);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:39:5:
+   |
+39 |     function pendingAdmin() virtual external view returns (address);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:45:5:
+   |
+45 |     function setPendingAdmin(address pendingAdmin_) virtual external;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:50:5:
+   |
+50 |     function acceptAdmin() virtual external;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:53:5:
+   |
+53 |     function delay() virtual external view returns (uint);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:59:5:
+   |
+59 |     function setDelay(uint delay) virtual external;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:62:5:
+   |
+62 |     function queuedTransactions(bytes32 txHash) virtual external returns (bool);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:73:5:
+   |
+73 |     function queueTransaction(address target, uint value, string memory signature, bytes memory data, uint eta) virtual external returns (bytes32);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:83:5:
+   |
+83 |     function cancelTransaction(address target, uint value, string memory signature, bytes memory data, uint eta) virtual external;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Interface functions are implicitly "virtual"
+  --> contracts/ITimelock.sol:94:5:
+   |
+94 |     function executeTransaction(address ... nal payable returns (bytes memory);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Visibility for constructor is ignored. If you want the contract to be non-deployable, making it "abstract" is sufficient.
+  --> contracts/vendor/Timelock.sol:17:5:
+   |
+17 |     constructor(address admin_, uint delay_, uint gracePeriod_, uint minimumDelay_, uint maxiumumDelay_) public {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: Unused local variable.
+   --> contracts/Comet.sol:227:9:
+    |
+227 |         uint256 status;
+    |         ^^^^^^^^^^^^^^
+
+
+Warning: Unused local variable.
+   --> contracts/CometWithExtendedAssetList.sol:197:9:
+    |
+197 |         uint256 status;
+    |         ^^^^^^^^^^^^^^
+
+
+Warning: Unused local variable.
+    --> contracts/ScrollComet.sol:1115:9:
+     |
+1115 |         uint gasUsed = startGas - gasleft();
+     |         ^^^^^^^^^^^^
+
+
+Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+  --> contracts/bridges/polygon/PolygonBridgeReceiver.sol:41:9:
+   |
+41 |         uint256 stateId,
+   |         ^^^^^^^^^^^^^^^
+
+
+Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+   --> contracts/bulkers/BaseBulker.sol:166:27:
+    |
+166 |     function handleAction(bytes32 action, bytes calldata data) virtual internal {
+    |                           ^^^^^^^^^^^^^^
+
+
+Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+   --> contracts/bulkers/BaseBulker.sol:166:43:
+    |
+166 |     function handleAction(bytes32 action, bytes calldata data) virtual internal {
+    |                                           ^^^^^^^^^^^^^^^^^^^
+
+
+Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+  --> contracts/test/EvilToken.sol:74:28:
+   |
+74 |     function performAttack(address src, address dst, uint256 amount) internal returns (bool) {
+   |                            ^^^^^^^^^^^
+
+
+Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+  --> contracts/test/EvilToken.sol:74:41:
+   |
+74 |     function performAttack(address src, address dst, uint256 amount) internal returns (bool) {
+   |                                         ^^^^^^^^^^^
+
+
+Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+  --> contracts/test/EvilToken.sol:74:54:
+   |
+74 |     function performAttack(address src, address dst, uint256 amount) internal returns (bool) {
+   |                                                      ^^^^^^^^^^^^^^
+
+
+Warning: Function state mutability can be restricted to pure
+   --> contracts/liquidator/OnChainLiquidator.sol:271:5:
+    |
+271 |     function min(uint256 a, uint256 b) internal view returns (uint256) {
+    |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: Function state mutability can be restricted to view
+   --> contracts/liquidator/OnChainLiquidator.sol:275:5:
+    |
+275 |     function purchasableBalanceOfAsset(address comet, address asset, uint maxCollateralToPurchase) internal returns (uint256, uint256) {
+    |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: Function state mutability can be restricted to view
+  --> contracts/test/Dog.sol:33:5:
+   |
+33 |     function puppers() public returns (Puppers[] memory) {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: Function state mutability can be restricted to pure
+  --> contracts/test/SimpleTimelock.sol:30:5:
+   |
+30 |     function acceptAdmin() external {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: Contract code size is 24620 bytes and exceeds 24576 bytes (a limit introduced in Spurious Dragon). This contract may not be deployable on mainnet. Consider enabling the optimizer (with a low "runs" value!), turning off revert strings, or using libraries.
+ --> contracts/test/CometModifiedFactory.sol:7:1:
+  |
+7 | contract CometModifiedFactory is CometConfiguration {
+  | ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Generating typings for: 134 artifacts in dir: build/types for target: ethers-v5
+Successfully generated 251 typings!
+Compiled 127 Solidity files successfully (evm target: london).
+Successfully verified contract TransparentUpgradeableProxy on Etherscan.
+https://aeneid.storyscan.io/address/0xC9cB25E839d065994fc2d51001F6307599c77207#code
+ ·-----------------------------------------|--------------------------------|--------------------------------·
+ |  Solc version: 0.8.15                   ·  Optimizer enabled: true       ·  Runs: 1                       │
+ ··········································|································|·································
+ |  Contract Name                          ·  Deployed size (KiB) (change)  ·  Initcode size (KiB) (change)  │
+ ··········································|································|·································
+ |  Address                                ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  AddressAliasHelper                     ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  ArbitrumBridgeReceiver                 ·                 6.122 (0.000)  ·                 6.149 (0.000)  │
+ ··········································|································|·································
+ |  AssetList                              ·                 2.819 (0.000)  ·                 5.262 (0.000)  │
+ ··········································|································|·································
+ |  AssetListFactory                       ·                 6.090 (0.000)  ·                 6.117 (0.000)  │
+ ··········································|································|·································
+ |  BaseBridgeReceiver                     ·                 2.266 (0.000)  ·                 2.293 (0.000)  │
+ ··········································|································|·································
+ |  BaseBridgeReceiverHarness              ·                 5.523 (0.000)  ·                 5.551 (0.000)  │
+ ··········································|································|·································
+ |  BaseBulker                             ·                 4.057 (0.000)  ·                 4.241 (0.000)  │
+ ··········································|································|·································
+ |  CallbackValidation                     ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  Comet                                  ·                18.826 (0.000)  ·                22.854 (0.000)  │
+ ··········································|································|·································
+ |  CometConfiguration                     ·                 0.062 (0.000)  ·                 0.086 (0.000)  │
+ ··········································|································|·································
+ |  CometExt                               ·                 3.354 (0.000)  ·                 3.522 (0.000)  │
+ ··········································|································|·································
+ |  CometExtAssetList                      ·                 3.431 (0.000)  ·                 3.641 (0.000)  │
+ ··········································|································|·································
+ |  CometFactory                           ·                23.905 (0.000)  ·                23.933 (0.000)  │
+ ··········································|································|·································
+ |  CometFactoryWithExtendedAssetList      ·                21.975 (0.000)  ·                22.002 (0.000)  │
+ ··········································|································|·································
+ |  CometHarness                           ·                20.594 (0.000)  ·                24.628 (0.000)  │
+ ··········································|································|·································
+ |  CometHarnessExtendedAssetList          ·                19.930 (0.000)  ·                22.696 (0.000)  │
+ ··········································|································|·································
+ |  CometMath                              ·                 0.062 (0.000)  ·                 0.086 (0.000)  │
+ ··········································|································|·································
+ |  CometModified                          ·                18.964 (0.000)  ·                22.991 (0.000)  │
+ ··········································|································|·································
+ |  CometModifiedFactory                   ·                24.043 (0.000)  ·                24.070 (0.000)  │
+ ··········································|································|·································
+ |  CometProxyAdmin                        ·                 2.094 (0.000)  ·                 2.188 (0.000)  │
+ ··········································|································|·································
+ |  CometRewards                           ·                 3.392 (0.000)  ·                 3.536 (0.000)  │
+ ··········································|································|·································
+ |  CometStorage                           ·                 0.716 (0.000)  ·                 0.743 (0.000)  │
+ ··········································|································|·································
+ |  CometWithExtendedAssetList             ·                18.163 (0.000)  ·                20.923 (0.000)  │
+ ··········································|································|·································
+ |  Comp                                   ·                 5.329 (0.000)  ·                 5.537 (0.000)  │
+ ··········································|································|·································
+ |  Configurator                           ·                10.051 (0.000)  ·                10.084 (0.000)  │
+ ··········································|································|·································
+ |  ConfiguratorProxy                      ·                 1.696 (0.000)  ·                 3.033 (0.000)  │
+ ··········································|································|·································
+ |  ConfiguratorStorage                    ·                 0.242 (0.000)  ·                 0.269 (0.000)  │
+ ··········································|································|·································
+ |  ConstantPriceFeed                      ·                 0.550 (0.000)  ·                 0.701 (0.000)  │
+ ··········································|································|·································
+ |  Dog                                    ·                 1.908 (0.000)  ·                 2.914 (0.000)  │
+ ··········································|································|·································
+ |  ERC1967Proxy                           ·                 0.198 (0.000)  ·                 1.078 (0.000)  │
+ ··········································|································|·································
+ |  EvilToken                              ·                 3.175 (0.000)  ·                 4.300 (0.000)  │
+ ··········································|································|·································
+ |  EzETHExchangeRatePriceFeed             ·                 1.195 (0.000)  ·                 2.050 (0.000)  │
+ ··········································|································|·································
+ |  Fauceteer                              ·                 0.637 (0.000)  ·                 0.664 (0.000)  │
+ ··········································|································|·································
+ |  FaucetToken                            ·                 1.680 (0.000)  ·                 2.678 (0.000)  │
+ ··········································|································|·································
+ |  FaucetWETH                             ·                 1.754 (0.000)  ·                 2.293 (0.000)  │
+ ··········································|································|·································
+ |  GovernorSimple                         ·                 7.951 (0.000)  ·                 7.979 (0.000)  │
+ ··········································|································|·································
+ |  LineaBridgeReceiver                    ·                 6.267 (0.000)  ·                 6.411 (0.000)  │
+ ··········································|································|·································
+ |  MainnetBulker                          ·                 5.920 (0.000)  ·                 6.343 (0.000)  │
+ ··········································|································|·································
+ |  MainnetBulkerWithWstETHSupport         ·                 6.544 (0.000)  ·                 6.974 (0.000)  │
+ ··········································|································|·································
+ |  MockRedstoneOracle                     ·                 0.401 (0.000)  ·                 0.697 (0.000)  │
+ ··········································|································|·································
+ |  MockRenzoOracle                        ·                 0.556 (0.000)  ·                 0.837 (0.000)  │
+ ··········································|································|·································
+ |  MultiplicativePriceFeed                ·                 1.643 (0.000)  ·                 2.824 (0.000)  │
+ ··········································|································|·································
+ |  NonStandardFaucetFeeToken              ·                 2.127 (0.000)  ·                 3.133 (0.000)  │
+ ··········································|································|·································
+ |  NonStandardFaucetToken                 ·                 1.664 (0.000)  ·                 2.662 (0.000)  │
+ ··········································|································|·································
+ |  NonStandardFeeToken                    ·                 2.012 (0.000)  ·                 3.018 (0.000)  │
+ ··········································|································|·································
+ |  NonStandardToken                       ·                 1.550 (0.000)  ·                 2.548 (0.000)  │
+ ··········································|································|·································
+ |  OnChainLiquidator                      ·                11.863 (0.000)  ·                12.268 (0.000)  │
+ ··········································|································|·································
+ |  OptimismBridgeReceiver                 ·                 6.393 (0.000)  ·                 6.537 (0.000)  │
+ ··········································|································|·································
+ |  PolygonBridgeReceiver                  ·                 5.740 (0.000)  ·                 5.885 (0.000)  │
+ ··········································|································|·································
+ |  PoolAddress                            ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  PriceFeedWith4626Support               ·                 1.729 (0.000)  ·                 2.932 (0.000)  │
+ ··········································|································|·································
+ |  ProxyAdmin                             ·                 1.500 (0.000)  ·                 1.595 (0.000)  │
+ ··········································|································|·································
+ |  RateBasedScalingPriceFeed              ·                 1.195 (0.000)  ·                 2.133 (0.000)  │
+ ··········································|································|·································
+ |  ReverseMultiplicativePriceFeed         ·                 1.760 (0.000)  ·                 2.945 (0.000)  │
+ ··········································|································|·································
+ |  RoninBridgeReceiver                    ·                 6.850 (0.000)  ·                 6.994 (0.000)  │
+ ··········································|································|·································
+ |  RsETHScalingPriceFeed                  ·                 1.195 (0.000)  ·                 2.050 (0.000)  │
+ ··········································|································|·································
+ |  ScalingPriceFeed                       ·                 1.214 (0.000)  ·                 2.353 (0.000)  │
+ ··········································|································|·································
+ |  ScalingPriceFeedWithCustomDescription  ·                 1.214 (0.000)  ·                 2.238 (0.000)  │
+ ··········································|································|·································
+ |  ScrollBridgeReceiver                   ·                 6.403 (0.000)  ·                 6.584 (0.000)  │
+ ··········································|································|·································
+ |  ScrollComet                            ·                18.531 (0.000)  ·                22.685 (0.000)  │
+ ··········································|································|·································
+ |  SimplePriceFeed                        ·                 0.726 (0.000)  ·                 0.863 (0.000)  │
+ ··········································|································|·································
+ |  SimpleTimelock                         ·                 2.507 (0.000)  ·                 2.651 (0.000)  │
+ ··········································|································|·································
+ |  SimpleWstETH                           ·                 0.189 (0.000)  ·                 0.307 (0.000)  │
+ ··········································|································|·································
+ |  StandardToken                          ·                 1.565 (0.000)  ·                 2.563 (0.000)  │
+ ··········································|································|·································
+ |  StorageSlot                            ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  SweepableBridgeReceiver                ·                 3.094 (0.000)  ·                 3.121 (0.000)  │
+ ··········································|································|·································
+ |  SweepableBridgeReceiverHarness         ·                 6.196 (0.000)  ·                 6.224 (0.000)  │
+ ··········································|································|·································
+ |  Timelock                               ·                 3.398 (0.000)  ·                 3.844 (0.000)  │
+ ··········································|································|·································
+ |  TransferHelper                         ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  TransparentUpgradeableProxy            ·                 1.834 (0.000)  ·                 3.171 (0.000)  │
+ ··········································|································|·································
+ |  WBTCPriceFeed                          ·                 1.464 (0.000)  ·                 2.093 (0.000)  │
+ ··········································|································|·································
+ |  WETH9                                  ·                 1.654 (0.000)  ·                 1.916 (0.000)  │
+ ··········································|································|·································
+ |  WstETHPriceFeed                        ·                 1.544 (0.000)  ·                 2.109 (0.000)  │
+ ·-----------------------------------------|--------------------------------|--------------------------------·
+
+Warning: 1 contracts exceed the size limit for mainnet deployment (24.000 KiB deployed, 48.000 KiB init).
+Successfully submitted source code for contract
+contracts/CometExt.sol:CometExt at 0xA42049489E63E549e36D2091f66488DDB8A66B3B
+for verification on the block explorer. Waiting for verification result...
+
+Successfully verified contract CometExt on Etherscan.
+https://aeneid.storyscan.io/address/0xA42049489E63E549e36D2091f66488DDB8A66B3B#code
+[aeneid/iprwa1] Deployed 3 contracts, spent 0.012750000000000001 Ξ
+[aeneid/iprwa1]
++ New addresses
+- Old addresses
+
+  Object {
++   "count": 3,
+-   "count": 0,
+    "spider": Object {
++     "aliases": Map {
++       "comet" => "0xC9cB25E839d065994fc2d51001F6307599c77207",
++       "comet:implementation" => "0x050873e868Fb68Ad65690c30cAEFfbC11E2c7686",
++       "comet:implementation:implementation" => "0xBa7D34a810f0Cb9F426E7Bdd52372708384f2063",
++       "IPRWA1" => "0x4706A60522De9658055EA0B895C7DD49d61675fa",
++       "cometExt" => "0xBa7D34a810f0Cb9F426E7Bdd52372708384f2063",
++       "assetListFactory" => "0x0000000000000000000000000000000000000000",
++       "IPRWA1:priceFeed" => "0x9D998356a612A79BEC89bD2D8929D2656bB2eD0d",
++       "WBTC" => "0xa645b7401921124d3Ec830104FdF1e649a62F0d4",
++       "WETH" => "0x4b4964Df273022E526aE989FA759419033f04434",
++       "WBTC:priceFeed" => "0xEf42903f6826f357AeAba04C9E698e035cC0D9cA",
++       "WETH:priceFeed" => "0xA080032A1DfB640db5082da531165D1024c91058",
++       "cometAdmin" => "0xb24AD24521AA5085600F5d1856E124b5D5b0f04C",
++       "timelock" => "0x12603daD5792DB4f82B84eFCF22fd477e6d4A9Ec",
++       "configurator" => "0xd44cc86821A84CAd937eC0a3121433106dbFB22b",
++       "configurator:implementation" => "0x664d6c6af3a261deE1d9c2fFDEe40db87279aBdF",
++       "configuratorAdmin" => "0xb24AD24521AA5085600F5d1856E124b5D5b0f04C",
++       "cometFactory" => "0xF34C37858519909766b468c2Bd9D35d4237bC512",
+-     "aliases": Map {},
+-     "roots": Map {},
+    },
++     "roots": Map {
++       "comet" => "0xC9cB25E839d065994fc2d51001F6307599c77207",
++       "configurator" => "0xd44cc86821A84CAd937eC0a3121433106dbFB22b",
++       "cometFactory" => "0xF34C37858519909766b468c2Bd9D35d4237bC512",
++     },
++   },
++   "start": 2025-12-19T16:39:27.055Z,
+-   "start": 2025-12-19T16:31:16.731Z,
+  }
+[aeneid/iprwa1] Verify 0x050873e868Fb68Ad65690c30cAEFfbC11E2c7686: {
+  via: 'artifacts',
+  address: '0x050873e868Fb68Ad65690c30cAEFfbC11E2c7686',
+  constructorArguments: [
+    [
+      '0x12603daD5792DB4f82B84eFCF22fd477e6d4A9Ec',
+      '0x6B7f59E5F2A850B3f93df8947eF52E9ec74268DF',
+      '0x4706A60522De9658055EA0B895C7DD49d61675fa',
+      '0x9D998356a612A79BEC89bD2D8929D2656bB2eD0d',
+      '0xBa7D34a810f0Cb9F426E7Bdd52372708384f2063',
+      BigNumber { value: "850000000000000000" },
+      BigNumber { value: "50000000000000000" },
+      BigNumber { value: "1600000000000000000" },
+      BigNumber { value: "0" },
+      BigNumber { value: "850000000000000000" },
+      BigNumber { value: "60000000000000000" },
+      BigNumber { value: "1900000000000000000" },
+      BigNumber { value: "15200000000000000" },
+      BigNumber { value: "550000000000000064" },
+      BigNumber { value: "1000000000000000" },
+      BigNumber { value: "0" },
+      BigNumber { value: "0" },
+      BigNumber { value: "1000000000000" },
+      BigNumber { value: "100000000000000000000" },
+      BigNumber { value: "7000000000000000000000000" },
+      [Array],
+      governor: '0x12603daD5792DB4f82B84eFCF22fd477e6d4A9Ec',
+      pauseGuardian: '0x6B7f59E5F2A850B3f93df8947eF52E9ec74268DF',
+      baseToken: '0x4706A60522De9658055EA0B895C7DD49d61675fa',
+      baseTokenPriceFeed: '0x9D998356a612A79BEC89bD2D8929D2656bB2eD0d',
+      extensionDelegate: '0xBa7D34a810f0Cb9F426E7Bdd52372708384f2063',
+      supplyKink: BigNumber { value: "850000000000000000" },
+      supplyPerYearInterestRateSlopeLow: BigNumber { value: "50000000000000000" },
+      supplyPerYearInterestRateSlopeHigh: BigNumber { value: "1600000000000000000" },
+      supplyPerYearInterestRateBase: BigNumber { value: "0" },
+      borrowKink: BigNumber { value: "850000000000000000" },
+      borrowPerYearInterestRateSlopeLow: BigNumber { value: "60000000000000000" },
+      borrowPerYearInterestRateSlopeHigh: BigNumber { value: "1900000000000000000" },
+      borrowPerYearInterestRateBase: BigNumber { value: "15200000000000000" },
+      storeFrontPriceFactor: BigNumber { value: "550000000000000064" },
+      trackingIndexScale: BigNumber { value: "1000000000000000" },
+      baseTrackingSupplySpeed: BigNumber { value: "0" },
+      baseTrackingBorrowSpeed: BigNumber { value: "0" },
+      baseMinForRewards: BigNumber { value: "1000000000000" },
+      baseBorrowMin: BigNumber { value: "100000000000000000000" },
+      targetReserves: BigNumber { value: "7000000000000000000000000" },
+      assetConfigs: [Array]
+    ]
+  ]
+}
+Nothing to compile
+No need to generate any newer typings.
+ ·-----------------------------------------|--------------------------------|--------------------------------·
+ |  Solc version: 0.8.15                   ·  Optimizer enabled: true       ·  Runs: 1                       │
+ ··········································|································|·································
+ |  Contract Name                          ·  Deployed size (KiB) (change)  ·  Initcode size (KiB) (change)  │
+ ··········································|································|·································
+ |  Address                                ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  AddressAliasHelper                     ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  ArbitrumBridgeReceiver                 ·                 6.122 (0.000)  ·                 6.149 (0.000)  │
+ ··········································|································|·································
+ |  AssetList                              ·                 2.819 (0.000)  ·                 5.262 (0.000)  │
+ ··········································|································|·································
+ |  AssetListFactory                       ·                 6.090 (0.000)  ·                 6.117 (0.000)  │
+ ··········································|································|·································
+ |  BaseBridgeReceiver                     ·                 2.266 (0.000)  ·                 2.293 (0.000)  │
+ ··········································|································|·································
+ |  BaseBridgeReceiverHarness              ·                 5.523 (0.000)  ·                 5.551 (0.000)  │
+ ··········································|································|·································
+ |  BaseBulker                             ·                 4.057 (0.000)  ·                 4.241 (0.000)  │
+ ··········································|································|·································
+ |  CallbackValidation                     ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  Comet                                  ·                18.826 (0.000)  ·                22.854 (0.000)  │
+ ··········································|································|·································
+ |  CometConfiguration                     ·                 0.062 (0.000)  ·                 0.086 (0.000)  │
+ ··········································|································|·································
+ |  CometExt                               ·                 3.354 (0.000)  ·                 3.522 (0.000)  │
+ ··········································|································|·································
+ |  CometExtAssetList                      ·                 3.431 (0.000)  ·                 3.641 (0.000)  │
+ ··········································|································|·································
+ |  CometFactory                           ·                23.905 (0.000)  ·                23.933 (0.000)  │
+ ··········································|································|·································
+ |  CometFactoryWithExtendedAssetList      ·                21.975 (0.000)  ·                22.002 (0.000)  │
+ ··········································|································|·································
+ |  CometHarness                           ·                20.594 (0.000)  ·                24.628 (0.000)  │
+ ··········································|································|·································
+ |  CometHarnessExtendedAssetList          ·                19.930 (0.000)  ·                22.696 (0.000)  │
+ ··········································|································|·································
+ |  CometMath                              ·                 0.062 (0.000)  ·                 0.086 (0.000)  │
+ ··········································|································|·································
+ |  CometModified                          ·                18.964 (0.000)  ·                22.991 (0.000)  │
+ ··········································|································|·································
+ |  CometModifiedFactory                   ·                24.043 (0.000)  ·                24.070 (0.000)  │
+ ··········································|································|·································
+ |  CometProxyAdmin                        ·                 2.094 (0.000)  ·                 2.188 (0.000)  │
+ ··········································|································|·································
+ |  CometRewards                           ·                 3.392 (0.000)  ·                 3.536 (0.000)  │
+ ··········································|································|·································
+ |  CometStorage                           ·                 0.716 (0.000)  ·                 0.743 (0.000)  │
+ ··········································|································|·································
+ |  CometWithExtendedAssetList             ·                18.163 (0.000)  ·                20.923 (0.000)  │
+ ··········································|································|·································
+ |  Comp                                   ·                 5.329 (0.000)  ·                 5.537 (0.000)  │
+ ··········································|································|·································
+ |  Configurator                           ·                10.051 (0.000)  ·                10.084 (0.000)  │
+ ··········································|································|·································
+ |  ConfiguratorProxy                      ·                 1.696 (0.000)  ·                 3.033 (0.000)  │
+ ··········································|································|·································
+ |  ConfiguratorStorage                    ·                 0.242 (0.000)  ·                 0.269 (0.000)  │
+ ··········································|································|·································
+ |  ConstantPriceFeed                      ·                 0.550 (0.000)  ·                 0.701 (0.000)  │
+ ··········································|································|·································
+ |  Dog                                    ·                 1.908 (0.000)  ·                 2.914 (0.000)  │
+ ··········································|································|·································
+ |  ERC1967Proxy                           ·                 0.198 (0.000)  ·                 1.078 (0.000)  │
+ ··········································|································|·································
+ |  EvilToken                              ·                 3.175 (0.000)  ·                 4.300 (0.000)  │
+ ··········································|································|·································
+ |  EzETHExchangeRatePriceFeed             ·                 1.195 (0.000)  ·                 2.050 (0.000)  │
+ ··········································|································|·································
+ |  Fauceteer                              ·                 0.637 (0.000)  ·                 0.664 (0.000)  │
+ ··········································|································|·································
+ |  FaucetToken                            ·                 1.680 (0.000)  ·                 2.678 (0.000)  │
+ ··········································|································|·································
+ |  FaucetWETH                             ·                 1.754 (0.000)  ·                 2.293 (0.000)  │
+ ··········································|································|·································
+ |  GovernorSimple                         ·                 7.951 (0.000)  ·                 7.979 (0.000)  │
+ ··········································|································|·································
+ |  LineaBridgeReceiver                    ·                 6.267 (0.000)  ·                 6.411 (0.000)  │
+ ··········································|································|·································
+ |  MainnetBulker                          ·                 5.920 (0.000)  ·                 6.343 (0.000)  │
+ ··········································|································|·································
+ |  MainnetBulkerWithWstETHSupport         ·                 6.544 (0.000)  ·                 6.974 (0.000)  │
+ ··········································|································|·································
+ |  MockRedstoneOracle                     ·                 0.401 (0.000)  ·                 0.697 (0.000)  │
+ ··········································|································|·································
+ |  MockRenzoOracle                        ·                 0.556 (0.000)  ·                 0.837 (0.000)  │
+ ··········································|································|·································
+ |  MultiplicativePriceFeed                ·                 1.643 (0.000)  ·                 2.824 (0.000)  │
+ ··········································|································|·································
+ |  NonStandardFaucetFeeToken              ·                 2.127 (0.000)  ·                 3.133 (0.000)  │
+ ··········································|································|·································
+ |  NonStandardFaucetToken                 ·                 1.664 (0.000)  ·                 2.662 (0.000)  │
+ ··········································|································|·································
+ |  NonStandardFeeToken                    ·                 2.012 (0.000)  ·                 3.018 (0.000)  │
+ ··········································|································|·································
+ |  NonStandardToken                       ·                 1.550 (0.000)  ·                 2.548 (0.000)  │
+ ··········································|································|·································
+ |  OnChainLiquidator                      ·                11.863 (0.000)  ·                12.268 (0.000)  │
+ ··········································|································|·································
+ |  OptimismBridgeReceiver                 ·                 6.393 (0.000)  ·                 6.537 (0.000)  │
+ ··········································|································|·································
+ |  PolygonBridgeReceiver                  ·                 5.740 (0.000)  ·                 5.885 (0.000)  │
+ ··········································|································|·································
+ |  PoolAddress                            ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  PriceFeedWith4626Support               ·                 1.729 (0.000)  ·                 2.932 (0.000)  │
+ ··········································|································|·································
+ |  ProxyAdmin                             ·                 1.500 (0.000)  ·                 1.595 (0.000)  │
+ ··········································|································|·································
+ |  RateBasedScalingPriceFeed              ·                 1.195 (0.000)  ·                 2.133 (0.000)  │
+ ··········································|································|·································
+ |  ReverseMultiplicativePriceFeed         ·                 1.760 (0.000)  ·                 2.945 (0.000)  │
+ ··········································|································|·································
+ |  RoninBridgeReceiver                    ·                 6.850 (0.000)  ·                 6.994 (0.000)  │
+ ··········································|································|·································
+ |  RsETHScalingPriceFeed                  ·                 1.195 (0.000)  ·                 2.050 (0.000)  │
+ ··········································|································|·································
+ |  ScalingPriceFeed                       ·                 1.214 (0.000)  ·                 2.353 (0.000)  │
+ ··········································|································|·································
+ |  ScalingPriceFeedWithCustomDescription  ·                 1.214 (0.000)  ·                 2.238 (0.000)  │
+ ··········································|································|·································
+ |  ScrollBridgeReceiver                   ·                 6.403 (0.000)  ·                 6.584 (0.000)  │
+ ··········································|································|·································
+ |  ScrollComet                            ·                18.531 (0.000)  ·                22.685 (0.000)  │
+ ··········································|································|·································
+ |  SimplePriceFeed                        ·                 0.726 (0.000)  ·                 0.863 (0.000)  │
+ ··········································|································|·································
+ |  SimpleTimelock                         ·                 2.507 (0.000)  ·                 2.651 (0.000)  │
+ ··········································|································|·································
+ |  SimpleWstETH                           ·                 0.189 (0.000)  ·                 0.307 (0.000)  │
+ ··········································|································|·································
+ |  StandardToken                          ·                 1.565 (0.000)  ·                 2.563 (0.000)  │
+ ··········································|································|·································
+ |  StorageSlot                            ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  SweepableBridgeReceiver                ·                 3.094 (0.000)  ·                 3.121 (0.000)  │
+ ··········································|································|·································
+ |  SweepableBridgeReceiverHarness         ·                 6.196 (0.000)  ·                 6.224 (0.000)  │
+ ··········································|································|·································
+ |  Timelock                               ·                 3.398 (0.000)  ·                 3.844 (0.000)  │
+ ··········································|································|·································
+ |  TransferHelper                         ·                 0.062 (0.000)  ·                 0.090 (0.000)  │
+ ··········································|································|·································
+ |  TransparentUpgradeableProxy            ·                 1.834 (0.000)  ·                 3.171 (0.000)  │
+ ··········································|································|·································
+ |  WBTCPriceFeed                          ·                 1.464 (0.000)  ·                 2.093 (0.000)  │
+ ··········································|································|·································
+ |  WETH9                                  ·                 1.654 (0.000)  ·                 1.916 (0.000)  │
+ ··········································|································|·································
+ |  WstETHPriceFeed                        ·                 1.544 (0.000)  ·                 2.109 (0.000)  │
+ ·-----------------------------------------|--------------------------------|--------------------------------·
+
+Warning: 1 contracts exceed the size limit for mainnet deployment (24.000 KiB deployed, 48.000 KiB init).
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+  --> contracts/Comet.sol:13:1:
+   |
+13 | contract Comet is CometMainInterface {
+   | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+    --> contracts/Comet.sol:1367:5:
+     |
+1367 |     fallback() external payable {
+     |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+Warning: Unused local variable.
+   --> contracts/Comet.sol:227:9:
+    |
+227 |         uint256 status;
+    |         ^^^^^^^^^^^^^^
+
+
+Successfully submitted source code for contract
+contracts/Comet.sol:Comet at 0x050873e868Fb68Ad65690c30cAEFfbC11E2c7686
+for verification on the block explorer. Waiting for verification result...
+
+Successfully verified contract Comet on Etherscan.
+https://aeneid.storyscan.io/address/0x050873e868Fb68Ad65690c30cAEFfbC11E2c7686#code
+Done in 533.88s.
