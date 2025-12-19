@@ -262,7 +262,8 @@ export class DeploymentManager {
 
         return deploy(contractFile, deployArgs, this.hre, await this.deployOpts());
       },
-      retries
+      retries,
+      600_000
     );
     this.counter++;
     return contract;
@@ -345,7 +346,8 @@ export class DeploymentManager {
   async _deployBuild<C extends Contract>(buildFile: BuildFile, deployArgs: any[], retries?: number): Promise<C> {
     const contract = await this.retry(
       async () => deployBuild(buildFile, deployArgs, this.hre, await this.deployOpts()),
-      retries
+      retries,
+      600_000
     );
     this.counter++;
     return contract;

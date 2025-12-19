@@ -2,6 +2,9 @@ import { Deployed, DeploymentManager } from '../../../plugins/deployment_manager
 import { DeploySpec, deployComet } from '../../../src/deploy';
 
 export default async function deploy(deploymentManager: DeploymentManager, deploySpec: DeploySpec): Promise<Deployed> {
+  // Ensure we don't force redeploy everything, which would overwrite imports
+  // This ensures that imported contracts (factories, admin, configurator) are reused
+  deploySpec.all = false;
   deploySpec.excludeRewards = true;
 
   // import from USDC market, as it was the first deployed market
