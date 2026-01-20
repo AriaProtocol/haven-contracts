@@ -24,6 +24,7 @@ contract Fixture_3Sup_3Bor is Comet_Setup {
         int256 reserves;
         uint256 utilization;
     }
+
     struct CollateralData {
         uint256 totalsCollateral;
         uint256 collateralReserves;
@@ -136,8 +137,8 @@ contract Fixture_3Sup_3Bor is Comet_Setup {
         invariant.reserves = comet.getReserves();
         invariant.utilization = comet.getUtilization();
 
-       _updateCollateralInvariant(address(weth));
-       _updateCollateralInvariant(address(wbtc));
+        _updateCollateralInvariant(address(weth));
+        _updateCollateralInvariant(address(wbtc));
     }
 
     function _updateCollateralInvariant(address token) internal {

@@ -40,13 +40,7 @@ contract OnChainLiquidatorTest is Test {
         SimplePriceFeed cbEthPriceFeed = new SimplePriceFeed(98104218, 8);
 
         liquidator = new OnChainLiquidator(
-            BALANCER_VAULT,
-            SUSHISWAP_ROUTER,
-            UNISWAP_ROUTER,
-            UNISWAP_V3_FACTORY,
-            ST_ETH,
-            WST_ETH,
-            WETH9
+            BALANCER_VAULT, SUSHISWAP_ROUTER, UNISWAP_ROUTER, UNISWAP_V3_FACTORY, ST_ETH, WST_ETH, WETH9
         );
 
         CometConfiguration.AssetConfig[] memory assetConfigs = new CometConfiguration.AssetConfig[](2);
@@ -69,8 +63,8 @@ contract OnChainLiquidatorTest is Test {
             supplyCap: 0
         });
 
-        comet = new Comet(CometConfiguration.Configuration(
-            {
+        comet = new Comet(
+            CometConfiguration.Configuration({
                 governor: TIMELOCK,
                 pauseGuardian: GNOSIS_SAFE,
                 baseToken: WETH9,
@@ -92,8 +86,8 @@ contract OnChainLiquidatorTest is Test {
                 baseBorrowMin: 100e6,
                 targetReserves: 5000000e6,
                 assetConfigs: assetConfigs
-            }
-        ));
+            })
+        );
 
         // contracts
         vm.label(UNISWAP_V3_FACTORY, "UniswapV3 Factory");
@@ -176,7 +170,7 @@ contract OnChainLiquidatorTest is Test {
         uint256[] memory maxAmountsToPurchase = new uint256[](1);
         maxAmountsToPurchase[0] = type(uint256).max;
 
-        address[] memory assets =  new address[](1);
+        address[] memory assets = new address[](1);
         assets[0] = asset;
 
         vm.prank(whale);

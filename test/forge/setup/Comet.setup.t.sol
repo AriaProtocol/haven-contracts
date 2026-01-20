@@ -61,11 +61,8 @@ contract Comet_Setup is Test, CometConfiguration {
         wbtcPriceFeed = new SimplePriceFeed(90_000 * 1e8, 8); // $90000
 
         // Deploy Extension Delegate
-        CometConfiguration.ExtConfiguration
-            memory extConfig = CometConfiguration.ExtConfiguration({
-                name32: NAME32,
-                symbol32: SYMBOL32
-            });
+        CometConfiguration.ExtConfiguration memory extConfig =
+            CometConfiguration.ExtConfiguration({name32: NAME32, symbol32: SYMBOL32});
         extensionDelegate = new CometExt(extConfig);
 
         // Configure Assets

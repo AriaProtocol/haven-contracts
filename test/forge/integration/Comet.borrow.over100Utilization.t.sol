@@ -4,7 +4,7 @@ import {CometInterface} from "contracts/CometInterface.sol";
 
 import {Fixture_3Sup_3Bor} from "test/forge/setup/Fixture_3Sup_3Bor.t.sol";
 
-contract Comet_borrow_Over100Utilization_Test is Fixture_3Sup_3Bor {    
+contract Comet_borrow_Over100Utilization_Test is Fixture_3Sup_3Bor {
     function testFork_borrowReserves_Over100Utilization() public {
         vm.startPrank(lastBorrower);
 
@@ -31,10 +31,10 @@ contract Comet_borrow_Over100Utilization_Test is Fixture_3Sup_3Bor {
 
         // Prices drop, WETH price halves, Comet absorb debt by liquidator calls
         {
-            (,int256 price_,,,) = wethPriceFeed.latestRoundData();
+            (, int256 price_,,,) = wethPriceFeed.latestRoundData();
             wethPriceFeed.setRoundData(39234, price_ / 2, 0, 0, 2);
 
-            address[] memory absorbees =new address[](1);
+            address[] memory absorbees = new address[](1);
             absorbees[0] = lastBorrower;
 
             vm.startPrank(absorber);
