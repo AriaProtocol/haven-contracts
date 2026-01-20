@@ -1,4 +1,3 @@
-
 pragma solidity ^0.8.15;
 
 import {Comet_Setup} from "test/forge/setup/Comet.setup.t.sol";
@@ -18,6 +17,20 @@ contract Fixture_3Sup_3Bor is Comet_Setup {
 
     uint256 public constant RESERVES = 100_000 * 1e6;
 
+    /// @dev Borrow invariant registered in setup
+    struct BorrowInvariant {
+        uint256 totalBorrow;
+        mapping(address => CollateralData) collaterals;
+        int256 reserves;
+        uint256 utilization;
+    }
+    struct CollateralData {
+        uint256 totalsCollateral;
+        uint256 collateralReserves;
+    }
+    /// @dev must be in storage due to mapping
+    BorrowInvariant public invariant;
+
     function setUp() public override {
         super.setUp();
 
@@ -27,28 +40,13 @@ contract Fixture_3Sup_3Bor is Comet_Setup {
         weth.allocateTo(lastBorrower, 264e18);
 
         baseToken.allocateTo(address(comet), RESERVES); // Fund reserves
-    }
 
-    function test_SetUpState() public {
-        uint256 totalSupply = comet.totalSupply();
-        uint256 totalBorrow = comet.totalBorrow();
-
-        // Suppliers supplied 3M
-        assertApproxEqAbs(totalSupply, 3_000_000e6, 1000);
-
-        // Borrowers borrowed 2.4M
-        assertEq(totalBorrow, 2_400_000e6);
-
-        // Utilization = 2.4M / 3.0M = 80%
-        uint256 utilization = comet.getUtilization();
-        assertApproxEqAbs(utilization, 0.8e18, 1e14);
-
-        int256 reserves = comet.getReserves();
-        emit log_named_int("Base reserves at start", reserves);
+        _updateBorrowInvariant();
     }
 
     // Supply 3M
-    function setupSuppliers() public {vm.label(supplier1, "Supplier 1");
+    function setupSuppliers() public {
+        vm.label(supplier1, "Supplier 1");
         vm.label(supplier2, "Supplier 2");
         vm.label(supplier3, "Supplier 3");
 
@@ -73,7 +71,8 @@ contract Fixture_3Sup_3Bor is Comet_Setup {
     }
 
     // Borrow 2.4M
-    function setupBorrowers() public {vm.label(borrower1, "Borrower 1 (WBTC)");
+    function setupBorrowers() public {
+        vm.label(borrower1, "Borrower 1 (WBTC)");
         vm.label(borrower2, "Borrower 2 (WETH)");
         vm.label(borrower3, "Borrower 3 (Mixed)");
 
@@ -108,5 +107,42 @@ contract Fixture_3Sup_3Bor is Comet_Setup {
         comet.supply(address(weth), 100e18);
         comet.withdraw(address(baseToken), 800_000e6);
         vm.stopPrank();
+    }
+
+    function test_SetUpState() public {
+        uint256 totalSupply = comet.totalSupply();
+        uint256 totalBorrow = comet.totalBorrow();
+
+        // Suppliers supplied 3M
+        assertApproxEqAbs(totalSupply, 3_000_000e6, 1000);
+
+        // Borrowers borrowed 2.4M
+        assertEq(totalBorrow, 2_400_000e6);
+
+        // Utilization = 2.4M / 3.0M = 80%
+        uint256 utilization = comet.getUtilization();
+        assertApproxEqAbs(utilization, 0.8e18, 1e14);
+
+        int256 reserves = comet.getReserves();
+        emit log_named_int("Base reserves at start", reserves);
+    }
+
+    //============================================================================//
+    //                                  INTERNAL                                  //
+    //============================================================================//
+    /// @dev only includes WETH and WBTC collateral
+    function _updateBorrowInvariant() internal {
+        invariant.totalBorrow = comet.totalBorrow();
+        invariant.reserves = comet.getReserves();
+        invariant.utilization = comet.getUtilization();
+
+       _updateCollateralInvariant(address(weth));
+       _updateCollateralInvariant(address(wbtc));
+    }
+
+    function _updateCollateralInvariant(address token) internal {
+        (uint128 totalSupplyAsset,) = comet.totalsCollateral(token);
+        invariant.collaterals[token].totalsCollateral = totalSupplyAsset;
+        invariant.collaterals[token].collateralReserves = comet.getCollateralReserves(token);
     }
 }
