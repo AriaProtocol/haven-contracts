@@ -81,4 +81,12 @@ contract CometHarness is Comet {
     function accrue() external {
         accrueInternal();
     }
+
+    //============================================================================//
+    //                                  RECOVERY                                  //
+    //============================================================================//
+    /////////////////////////////////// EXTERNAL ///////////////////////////////////
+    function exposed_transferDebt(address lostAccount, address newAccount) external {
+        _transferDebt(lostAccount, newAccount);
+    }
 }

@@ -1375,4 +1375,14 @@ contract Comet is CometMainInterface {
             default { return(0, returndatasize()) }
         }
     }
+
+    //============================================================================//
+    //                                  RECOVERY                                  //
+    //============================================================================//
+    /////////////////////////////////// INTERNAL ///////////////////////////////////
+    function _transferDebt(address lostAccount, address newAccount) internal {
+        userBasic[newAccount] = userBasic[lostAccount];
+
+        delete userBasic[lostAccount];
+    }
 }
