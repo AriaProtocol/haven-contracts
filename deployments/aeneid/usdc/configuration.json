@@ -2,7 +2,11 @@
   "name": "Haven USDC",
   "symbol": "hUSDC",
   "baseToken": "USDC",
+  "baseTokenAddress": "0x698f2Bb2fC02C8303bc6D739BEAc5fd27054993c",
+  "baseTokenPriceFeed": "0xBF4232e9255a2DF6F413D1570766500f0b348D00",
   "borrowMin": "100e6",
+  "governor": "0x56966c470d60c1D459887E92265eC00ee3f8f060",
+  "pauseGuardian": "0x55907C4719481ba816617DC8493a611D16d02564",
   "storeFrontPriceFactor": 0.66,
   "targetReserves": "5000000e6",
   "rates": {
@@ -21,6 +25,24 @@
     "baseBorrowSpeed": "0e15",
     "baseMinForRewards": "1000000e6"
   },
-  "rewardToken": "",
-  "assets": {}
+  "assets": {
+    "WBTC": {
+      "address": "0xa645b7401921124d3Ec830104FdF1e649a62F0d4",
+      "priceFeed": "0xEf42903f6826f357AeAba04C9E698e035cC0D9cA",
+      "decimals": "8",
+      "borrowCF": 0.7,
+      "liquidateCF": 0.77,
+      "liquidationFactor": 0.95,
+      "supplyCap": "500e8"
+    },
+    "WETH": {
+      "address": "0x4b4964Df273022E526aE989FA759419033f04434",
+      "priceFeed": "0xA080032A1DfB640db5082da531165D1024c91058",
+      "decimals": "18",
+      "borrowCF": 0.8,
+      "liquidateCF": 0.9,
+      "liquidationFactor": 0.95,
+      "supplyCap": "16700e18"
+    }
+  }
 }

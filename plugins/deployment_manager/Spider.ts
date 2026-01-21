@@ -95,11 +95,19 @@ async function crawl(
   context: Ctx,
   aliases: Aliases,
   contracts: ContractMap,
-  trace: TraceFn
+  trace: TraceFn,
+  skipFetch: Address[] = []
 ): Promise<Alias> {
   const { aliasRender, address, path } = node;
   const { template: aliasTemplate } = aliasRender;
   //trace(`Crawling ${address}`, aliasRender);
+
+  if (skipFetch.some(a => a.toLowerCase() === address.toLowerCase())) {
+    trace(`Skipping fetch for ${address}`);
+    const alias = await readAlias(undefined, aliasRender, context, path);
+    maybeStore(alias, address, aliases);
+    return alias;
+  }
 
   async function maybeProcess(alias: Alias, build: Build, config: RelationConfig): Promise<Alias> {
     if (maybeStore(alias, address, aliases)) {
@@ -119,7 +127,8 @@ async function crawl(
             context,
             aliases,
             contracts,
-            trace
+            trace,
+            skipFetch
           );
           const implContract = contracts.get(implAlias);
           if (!implContract) {
@@ -151,7 +160,8 @@ async function crawl(
               context,
               aliases,
               contracts,
-              trace
+              trace,
+              skipFetch
             );
 
             // Add the aliasTemplate in place to the relative context
@@ -245,7 +255,8 @@ export async function spider(
   hre: HRE,
   relations: RelationConfigMap,
   roots: Roots,
-  trace: TraceFn = debug
+  trace: TraceFn = debug,
+  skipFetch: Address[] = []
 ): Promise<Spider> {
   const context = {};
   const aliases = new Map();
@@ -262,7 +273,8 @@ export async function spider(
       context,
       aliases,
       contracts,
-      trace
+      trace,
+      skipFetch
     );
 
     // Add the aliasTemplate in place to the relative context

@@ -262,7 +262,8 @@ export class DeploymentManager {
 
         return deploy(contractFile, deployArgs, this.hre, await this.deployOpts());
       },
-      retries
+      retries,
+      600_000
     );
     this.counter++;
     return contract;
@@ -345,7 +346,8 @@ export class DeploymentManager {
   async _deployBuild<C extends Contract>(buildFile: BuildFile, deployArgs: any[], retries?: number): Promise<C> {
     const contract = await this.retry(
       async () => deployBuild(buildFile, deployArgs, this.hre, await this.deployOpts()),
-      retries
+      retries,
+      600_000
     );
     this.counter++;
     return contract;
@@ -399,13 +401,37 @@ export class DeploymentManager {
       ...await getRoots(this.cache),
       ...Object.entries(deployed).map(([a, c]): [Alias, Address] => [a, c.address])
     ]);
+
+    let skipFetch: Address[] = [];
+    try {
+      const config = await this.readConfig<any>();
+      if (config.skipFetch && Array.isArray(config.skipFetch)) {
+        skipFetch = config.skipFetch.flatMap((item: any) => {
+          if (typeof item === 'string') {
+            // It's a key (e.g. "governor") or an address
+            if (config[item] && typeof config[item] === 'string') {
+              return config[item];
+            }
+            return item;
+          } else if (typeof item === 'object' && item !== null) {
+            // It's an object (e.g. { "governor": "0x..." })
+            return Object.values(item).filter(v => typeof v === 'string');
+          }
+          return [];
+        });
+      }
+    } catch (e) {
+      // Ignore if config cannot be read
+    }
+
     const crawl = await spider(
       this.cache,
       this.network,
       this.hre,
       relationConfigMap,
       roots,
-      this.tracer()
+      this.tracer(),
+      skipFetch
     );
     await putRoots(this.cache, roots);
     await storeAliases(this.cache, crawl.aliases);

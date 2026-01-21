@@ -12,7 +12,8 @@ cache/
 dist/
 deployments/*/.contracts
 deployments/*/*/verify
-deployments/*/*/aliases.json
+deployments/anvil/*/aliases.json
+deployments/hardhat/*/aliases.json
 forge/cache
 forge/out
 

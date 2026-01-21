@@ -239,12 +239,15 @@ export async function deployNetworkComet(
     maybeForce()
   );
 
-  const rewards = await deploymentManager.deploy(
-    'rewards',
-    'CometRewards.sol',
-    [admin.address],
-    maybeForce(deploySpec.rewards)
-  );
+  let rewards;
+  if(!deploySpec.excludeRewards) {
+    rewards = await deploymentManager.deploy(
+      'rewards',
+      'CometRewards.sol',
+      [admin.address],
+      maybeForce(deploySpec.rewards)
+    );
+  }
 
   /* Wire things up */
 
@@ -304,13 +307,14 @@ export async function deployNetworkComet(
     }
   );
 
-  await deploymentManager.idempotent(
-    async () => amAdmin && rewardTokenAddress !== undefined && !sameAddress((await rewards.rewardConfig(comet.address)).token, rewardTokenAddress),
-    async () => {
-      trace(`Setting reward token in CometRewards to ${rewardTokenAddress} for ${comet.address}`);
-      trace(await wait(rewards.connect(admin).setRewardConfig(comet.address, rewardTokenAddress)));
-    }
-  );
+  if(!deploySpec.excludeRewards) 
+    await deploymentManager.idempotent(
+      async () => amAdmin && rewardTokenAddress !== undefined && !sameAddress((await rewards.rewardConfig(comet.address)).token, rewardTokenAddress),
+      async () => {
+        trace(`Setting reward token in CometRewards to ${rewardTokenAddress} for ${comet.address}`);
+        trace(await wait(rewards.connect(admin).setRewardConfig(comet.address, rewardTokenAddress)));
+      }
+    );
 
   /* Transfer to Gov */
 
@@ -330,13 +334,20 @@ export async function deployNetworkComet(
     }
   );
 
-  await deploymentManager.idempotent(
-    async () => !sameAddress(await rewards.governor(), governor),
-    async () => {
-      trace(`Transferring governor of CometRewards to ${governor}`);
-      trace(await wait(rewards.connect(admin).transferGovernor(governor)));
-    }
-  );
+  if (!deploySpec.excludeRewards) {
+    await deploymentManager.idempotent(
+      async () => !sameAddress(await rewards.governor(), governor),
+      async () => {
+        trace(`Transferring governor of CometRewards to ${governor}`);
+        trace(await wait(rewards.connect(admin).transferGovernor(governor)));
+      }
+    );
+  }
 
-  return { comet, configurator, rewards, cometFactory };
+  return {
+    comet,
+    configurator,
+    cometFactory,
+    ...(rewards ? { rewards } : {}),
+  };
 }

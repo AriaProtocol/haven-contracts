@@ -1,0 +1,9 @@
+{
+    "cometAdmin": "0xb24AD24521AA5085600F5d1856E124b5D5b0f04C",
+    "comet:implementation:implementation": "0x3c0d4B8c379B7B8C28A9422E1c7a1454503DAc10",
+    "cometFactory": "0xF34C37858519909766b468c2Bd9D35d4237bC512",
+    "comet:implementation": "0xb6B619Fb76877A287dd46DBEf2c18823320BB863",
+    "comet": "0xBF6C8d955e8601631F4e7315fC20D38fBa4AD128",
+    "configurator:implementation": "0x664d6c6af3a261deE1d9c2fFDEe40db87279aBdF",
+    "configurator": "0xd44cc86821A84CAd937eC0a3121433106dbFB22b"
+}

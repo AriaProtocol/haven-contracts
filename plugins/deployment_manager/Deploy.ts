@@ -35,7 +35,7 @@ async function retry(fn: () => Promise<any>, retries: number = 7, timeLimit?: nu
     if (retries === 0) throw e;
 
     console.warn(`Retrying with retries left: ${retries}, wait: ${wait}, error is: `, e);
-    await this.resetSignersPendingCounts();
+    // await this.resetSignersPendingCounts(); // 'this' is undefined here
 
     await new Promise(ok => setTimeout(ok, wait));
     return retry(fn, retries - 1, timeLimit, wait * 2);
@@ -55,7 +55,36 @@ async function doDeploy<C extends Contract>(
   const contract = await factory.deploy(...args, {
     gasPrice,
   });
-  await contract.deployed();
+
+  // Poll for deployment success to avoid hanging on provider events
+  const provider = contract.provider;
+  if (provider && contract.deployTransaction) {
+    const start = Date.now();
+    // Wait up to 10 minutes (matching retry timeout)
+    while (Date.now() - start < 600_000) {
+      try {
+        const code = await provider.getCode(contract.address);
+        if (code && code !== '0x') {
+          console.log(`Contract code confirmed at ${contract.address}`);
+          break;
+        }
+        const receipt = await provider.getTransactionReceipt(contract.deployTransaction.hash);
+        if (receipt) {
+          if (receipt.status === 0) throw new Error(`Transaction failed: ${contract.deployTransaction.hash}`);
+          if (receipt.status === 1) {
+            console.log(`Transaction confirmed: ${contract.deployTransaction.hash}`);
+            break;
+          }
+        }
+      } catch (e) {
+        if (e.message.includes('Transaction failed')) throw e;
+      }
+      await new Promise(r => setTimeout(r, 5000));
+    }
+  } else {
+    await contract.deployed();
+  }
+
   trace(contract.deployTransaction, `Deployed ${name} @ ${contract.address}`);
   return contract as C;
 }
@@ -131,18 +160,22 @@ export async function deploy<C extends Contract>(
     constructorArguments: deployArgs,
   };
 
-  await retry(async () => {
-    if (deployOpts.verificationStrategy === 'lazy') {
-      // Cache params for verification
-      await putVerifyArgs(deployOpts.cache, contract.address, verifyArgs);
-    } else if (deployOpts.verificationStrategy === 'eager') {
-      await verifyContract(
-        verifyArgs,
-        hre,
-        deployOpts.raiseOnVerificationFailure
-      );
-    }
-  }, 3, undefined, 5000);
+  try {
+    await retry(async () => {
+      if (deployOpts.verificationStrategy === 'lazy') {
+        // Cache params for verification
+        await putVerifyArgs(deployOpts.cache, contract.address, verifyArgs);
+      } else if (deployOpts.verificationStrategy === 'eager') {
+        await verifyContract(
+          verifyArgs,
+          hre,
+          deployOpts.raiseOnVerificationFailure
+        );
+      }
+    }, 3, undefined, 5000);
+  } catch (e) {
+    console.warn(`Verification failed for ${contractName} at ${contract.address}, but contract was deployed. Error:`, e);
+  }
 
   await maybeStoreCache(deployOpts, contract, buildFile);
 
@@ -165,17 +198,22 @@ export async function deployBuild<C extends Contract>(
     buildFile,
     deployArgs
   };
-  if (deployOpts.verificationStrategy === 'lazy') {
-    // Cache params for verification
-    await putVerifyArgs(deployOpts.cache, contract.address, verifyArgs);
-  } else if (deployOpts.verificationStrategy === 'eager') {
-    // We need to do manual verification here, since this is coming
-    // from a build file, not from hardhat's own compilation.
-    await verifyContract(
-      verifyArgs,
-      hre,
-      deployOpts.raiseOnVerificationFailure
-    );
+  
+  try {
+    if (deployOpts.verificationStrategy === 'lazy') {
+      // Cache params for verification
+      await putVerifyArgs(deployOpts.cache, contract.address, verifyArgs);
+    } else if (deployOpts.verificationStrategy === 'eager') {
+      // We need to do manual verification here, since this is coming
+      // from a build file, not from hardhat's own compilation.
+      await verifyContract(
+        verifyArgs,
+        hre,
+        deployOpts.raiseOnVerificationFailure
+      );
+    }
+  } catch (e) {
+    console.warn(`Verification failed for imported contract at ${contract.address}, but contract was deployed. Error:`, e);
   }
 
   await maybeStoreCache(deployOpts, contract, buildFile);
