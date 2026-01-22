@@ -1376,10 +1376,26 @@ contract Comet is CometMainInterface {
         }
     }
 
+    // TODO: also add into CometWithExtendedAssetList.sol
     //============================================================================//
     //                                  RECOVERY                                  //
     //============================================================================//
     /////////////////////////////////// INTERNAL ///////////////////////////////////
+    function _transferCollateral(address lostAccount, address newAccount) internal {
+        uint16 assetsIn = userBasic[lostAccount].assetsIn;
+        // further optimization with typeof(i) = typeof(assetsIn)
+        for (uint8 i; i < numAssets; ++i) {
+            if(isInAsset(assetsIn, i)) {
+                AssetInfo memory assetInfo = getAssetInfo(i);
+                address asset = assetInfo.asset;
+                
+                userCollateral[newAccount][asset] = userCollateral[lostAccount][asset];
+                
+                delete userCollateral[lostAccount][asset];
+            }
+        }
+    }
+    
     function _transferDebt(address lostAccount, address newAccount) internal {
         userBasic[newAccount] = userBasic[lostAccount];
 

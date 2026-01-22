@@ -32,7 +32,7 @@ contract Fixture_3Sup_3Bor is Comet_Setup {
     /// @dev must be in storage due to mapping
     BorrowInvariant public invariant;
 
-    function setUp() public override {
+    function setUp() public virtual override {
         super.setUp();
 
         setupSuppliers();
@@ -110,7 +110,7 @@ contract Fixture_3Sup_3Bor is Comet_Setup {
         vm.stopPrank();
     }
 
-    function test_SetUpState() public {
+    function test_SetUpState() public virtual {
         uint256 totalSupply = comet.totalSupply();
         uint256 totalBorrow = comet.totalBorrow();
 
