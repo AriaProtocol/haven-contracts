@@ -48,6 +48,21 @@ contract Comet_Setup is Test, CometConfiguration {
     }
 
     function deployComet() public {
+        _deployTokensAndPriceFeed();
+        _deployCometExt();
+
+        comet = new CometHarness(_configureComet());
+        comet.initializeStorage();
+
+        // Labels
+        vm.label(address(comet), "Comet");
+        vm.label(address(baseToken), "USDC");
+        vm.label(address(weth), "WETH");
+        vm.label(address(wbtc), "WBTC");
+        vm.label(governor, "Governor");
+    }
+
+    function _deployTokensAndPriceFeed() internal {
         // Deploy Base Token (USDC)
         baseToken = new FaucetToken(1000000 * 1e6, "USD Coin", 6, "USDC");
         baseTokenPriceFeed = new SimplePriceFeed(1e8, 8); // $1
@@ -59,17 +74,19 @@ contract Comet_Setup is Test, CometConfiguration {
         // Deploy WBTC
         wbtc = new FaucetToken(100 * 1e8, "Wrapped Bitcoin", 8, "WBTC");
         wbtcPriceFeed = new SimplePriceFeed(90_000 * 1e8, 8); // $90000
+    }
 
-        // Deploy Extension Delegate
+    function _deployCometExt() internal {
         CometConfiguration.ExtConfiguration memory extConfig =
             CometConfiguration.ExtConfiguration({name32: NAME32, symbol32: SYMBOL32});
         extensionDelegate = new CometExt(extConfig);
+    }
 
-        // Configure Assets
-        AssetConfig[] memory assetConfigs = new AssetConfig[](2);
+    function _configureAssets() internal returns (AssetConfig[] memory config) {
+        config = new AssetConfig[](2);
 
         // WETH Config
-        assetConfigs[0] = AssetConfig({
+        config[0] = AssetConfig({
             asset: address(weth),
             priceFeed: address(wethPriceFeed),
             decimals: 18,
@@ -80,7 +97,7 @@ contract Comet_Setup is Test, CometConfiguration {
         });
 
         // WBTC Config
-        assetConfigs[1] = AssetConfig({
+        config[1] = AssetConfig({
             asset: address(wbtc),
             priceFeed: address(wbtcPriceFeed),
             decimals: 8,
@@ -89,9 +106,10 @@ contract Comet_Setup is Test, CometConfiguration {
             liquidationFactor: 0.9e18,
             supplyCap: 10_000 * 1e8
         });
+    }
 
-        // Configure Comet
-        Configuration memory config = Configuration({
+    function _configureComet() internal returns (Configuration memory config) {
+        config = Configuration({
             governor: governor,
             pauseGuardian: pauseGuardian,
             baseToken: address(baseToken),
@@ -112,20 +130,7 @@ contract Comet_Setup is Test, CometConfiguration {
             baseMinForRewards: BASE_MIN_FOR_REWARDS,
             baseBorrowMin: BASE_BORROW_MIN,
             targetReserves: TARGET_RESERVES,
-            assetConfigs: assetConfigs
+            assetConfigs: _configureAssets()
         });
-
-        // Deploy Comet
-        comet = new CometHarness(config);
-
-        // Initialize Storage
-        comet.initializeStorage();
-
-        // Labels
-        vm.label(address(comet), "Comet");
-        vm.label(address(baseToken), "USDC");
-        vm.label(address(weth), "WETH");
-        vm.label(address(wbtc), "WBTC");
-        vm.label(governor, "Governor");
     }
 }
