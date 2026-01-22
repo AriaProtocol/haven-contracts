@@ -9,14 +9,10 @@ contract Comet_transferCollateral_Test is Fixture_3Sup_3Bor {
 
     CometExtInterface public cometExt;
 
-    uint16 assetsIn;
-
     function setUp() public override {
         super.setUp();
 
         cometExt = CometExtInterface(address(comet));
-
-        (,,, assetsIn,) = comet.userBasic(borrower3);
     }
 
     function test_SetUpState() public override {
@@ -31,16 +27,30 @@ contract Comet_transferCollateral_Test is Fixture_3Sup_3Bor {
     }
 
     function test_transferCollateral() public {
-        // collateral before admin transfer
-        (uint128 lostWethCollBalance, uint128 lostCollWeth_reserved) = cometExt.userCollateral(borrower3, address(weth));
-        (uint128 lostWbtcCollBalance, uint128 lostCollWbtc_reserved) = cometExt.userCollateral(borrower3, address(wbtc));
+        // collateral before admin transfer; userCollateral(...) returns _reserved on top => only use in CometWithExtendedAssetList
+        uint128 lostWethCollBalance = cometExt.collateralBalanceOf(borrower3, address(weth));
+        uint128 lostWbtcCollBalance = cometExt.collateralBalanceOf(borrower3, address(wbtc));
 
         comet.exposed_transferCollateral(borrower3, newAddr);
 
         // newAddr has borrower3 collateral
-        {}
+        {
+            assertEq(
+                cometExt.collateralBalanceOf(newAddr, address(weth)),
+                lostWethCollBalance,
+                "NewAddr DOES NOT have WETH as collateral"
+            );
+            assertEq(
+                cometExt.collateralBalanceOf(newAddr, address(wbtc)),
+                lostWbtcCollBalance,
+                "NewAddr DOES NOT have WETH as collateral"
+            );
+        }
 
         // lost address does not have any collateral
-        {}
+        {
+            assertEq(cometExt.collateralBalanceOf(borrower3, address(weth)), 0, "Borrower3 WETH collateral NOT cleaned");
+            assertEq(cometExt.collateralBalanceOf(borrower3, address(wbtc)), 0, "Borrower3 WBTC collateral NOT cleaned");
+        }
     }
 }
