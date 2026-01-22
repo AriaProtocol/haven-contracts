@@ -2,7 +2,7 @@ pragma solidity ^0.8.15;
 
 import {CometInterface} from "contracts/CometInterface.sol";
 
-import {Fixture_3Sup_3Bor} from "test/forge/setup/Fixture_3Sup_3Bor.t.sol";
+import {Fixture_3Sup_3Bor} from "test/forge/setup/fixtures/Fixture_3Sup_3Bor.t.sol";
 
 contract Comet_borrow_Over100Utilization_Test is Fixture_3Sup_3Bor {
     function testFork_borrowReserves_Over100Utilization() public {

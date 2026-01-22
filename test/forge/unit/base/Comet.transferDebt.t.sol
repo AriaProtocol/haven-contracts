@@ -1,6 +1,6 @@
 pragma solidity ^0.8.15;
 
-import {Fixture_3Sup_3Bor} from "test/forge/setup/Fixture_3Sup_3Bor.t.sol";
+import {Fixture_3Sup_3Bor} from "test/forge/setup/fixtures/Fixture_3Sup_3Bor.t.sol";
 
 contract Comet_transferDebt_Test is Fixture_3Sup_3Bor {
     address public newAddr = makeAddr("new address borrower3");
