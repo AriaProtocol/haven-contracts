@@ -18,17 +18,6 @@ contract Comet_transferCollateral_Test is Comet_Setup, Fixture_3Sup_3Bor {
         cometExt = CometExtInterface(address(comet));
     }
 
-    function test_SetUpState() public override {
-        super.test_SetUpState();
-
-        assertGe(
-            cometExt.collateralBalanceOf(borrower3, address(weth)), 0, "Borrower3 DOES NOT have WETH as collateral"
-        );
-        assertGe(
-            cometExt.collateralBalanceOf(borrower3, address(wbtc)), 0, "Borrower3 DOES NOT have WBTC as collateral"
-        );
-    }
-
     function test_transferCollateral() public {
         // collateral before admin transfer; userCollateral(...) returns _reserved on top => only use in CometWithExtendedAssetList
         uint128 lostWethCollBalance = cometExt.collateralBalanceOf(borrower3, address(weth));

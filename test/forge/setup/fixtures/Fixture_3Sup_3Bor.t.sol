@@ -2,6 +2,7 @@ pragma solidity ^0.8.15;
 
 import {Test} from "forge-std/Test.sol";
 
+import {CometExtInterface} from "contracts/CometExtInterface.sol";
 import {CometMainInterface} from "contracts/CometMainInterface.sol";
 import {FaucetToken} from "contracts/test/FaucetToken.sol";
 
@@ -57,6 +58,17 @@ contract Fixture_3Sup_3Bor is Test {
 
         int256 reserves = __comet.getReserves();
         emit log_named_int("Base reserves at start", reserves);
+
+        assertGe(
+            CometExtInterface(address(__comet)).collateralBalanceOf(borrower3, address(__weth)),
+            0,
+            "Borrower3 DOES NOT have WETH as collateral"
+        );
+        assertGe(
+            CometExtInterface(address(__comet)).collateralBalanceOf(borrower3, address(__wbtc)),
+            0,
+            "Borrower3 DOES NOT have WBTC as collateral"
+        );
     }
 
     //============================================================================//
