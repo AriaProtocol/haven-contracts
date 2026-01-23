@@ -1376,7 +1376,6 @@ contract Comet is CometMainInterface {
         }
     }
 
-    // TODO: also add into CometWithExtendedAssetList.sol
     //============================================================================//
     //                                  RECOVERY                                  //
     //============================================================================//

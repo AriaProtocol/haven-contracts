@@ -82,4 +82,16 @@ contract CometHarnessExtendedAssetList is CometWithExtendedAssetList {
     function accrue() external {
         accrueInternal();
     }
+
+    //============================================================================//
+    //                                  RECOVERY                                  //
+    //============================================================================//
+    /////////////////////////////////// EXTERNAL ///////////////////////////////////
+    function exposed_transferCollateral(address lostAccount, address newAccount) external {
+        _transferCollateral(lostAccount, newAccount);
+    }
+
+    function exposed_transferDebt(address lostAccount, address newAccount) external {
+        _transferDebt(lostAccount, newAccount);
+    }
 }
