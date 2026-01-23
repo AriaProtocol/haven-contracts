@@ -1,9 +1,16 @@
 pragma solidity ^0.8.15;
 
+import {Comet_Setup} from "test/forge/setup/Comet.setup.t.sol";
 import {Fixture_3Sup_3Bor} from "test/forge/setup/fixtures/Fixture_3Sup_3Bor.t.sol";
 
-contract Comet_transferDebt_Test is Fixture_3Sup_3Bor {
+contract Comet_transferDebt_Test is Comet_Setup, Fixture_3Sup_3Bor {
     address public newAddr = makeAddr("new address borrower3");
+
+    function setUp() public override {
+        super.setUp();
+
+        _loadFixture(comet, baseToken, weth, wbtc);
+    }
 
     function test_transferDebt() public {
         // debt before admin transfer

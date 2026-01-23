@@ -2,15 +2,18 @@ pragma solidity ^0.8.15;
 
 import {CometExtInterface} from "contracts/CometExtInterface.sol";
 
+import {Comet_Setup} from "test/forge/setup/Comet.setup.t.sol";
 import {Fixture_3Sup_3Bor} from "test/forge/setup/fixtures/Fixture_3Sup_3Bor.t.sol";
 
-contract Comet_transferCollateral_Test is Fixture_3Sup_3Bor {
+contract Comet_transferCollateral_Test is Comet_Setup, Fixture_3Sup_3Bor {
     address public newAddr = makeAddr("new address borrower3");
 
     CometExtInterface public cometExt;
 
     function setUp() public override {
         super.setUp();
+
+        _loadFixture(comet, baseToken, weth, wbtc);
 
         cometExt = CometExtInterface(address(comet));
     }
@@ -43,7 +46,7 @@ contract Comet_transferCollateral_Test is Fixture_3Sup_3Bor {
             assertEq(
                 cometExt.collateralBalanceOf(newAddr, address(wbtc)),
                 lostWbtcCollBalance,
-                "NewAddr DOES NOT have WETH as collateral"
+                "NewAddr DOES NOT have WBTC as collateral"
             );
         }
 

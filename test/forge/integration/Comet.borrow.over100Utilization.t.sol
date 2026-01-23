@@ -2,9 +2,16 @@ pragma solidity ^0.8.15;
 
 import {CometInterface} from "contracts/CometInterface.sol";
 
+import {Comet_Setup} from "test/forge/setup/Comet.setup.t.sol";
 import {Fixture_3Sup_3Bor} from "test/forge/setup/fixtures/Fixture_3Sup_3Bor.t.sol";
 
-contract Comet_borrow_Over100Utilization_Test is Fixture_3Sup_3Bor {
+contract Comet_borrow_Over100Utilization_Test is Comet_Setup, Fixture_3Sup_3Bor {
+    function setUp() public override {
+        super.setUp();
+
+        _loadFixture(comet, baseToken, weth, wbtc);
+    }
+
     function testFork_borrowReserves_Over100Utilization() public {
         vm.startPrank(lastBorrower);
 
