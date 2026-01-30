@@ -8,12 +8,14 @@ import "./IAssetListFactory.sol";
 import "./IAssetListFactoryHolder.sol";
 import "./IAssetList.sol";
 
+import {AccessManaged} from "oz/access/manager/AccessManaged.sol";
+
 /**
  * @title Compound's Comet Contract
  * @notice An efficient monolithic money market protocol
  * @author Compound
  */
-contract CometWithExtendedAssetList is CometMainInterface {
+contract CometWithExtendedAssetList is CometMainInterface, AccessManaged {
     /** General configuration constants **/
 
     /// @notice The admin of the protocol
@@ -112,7 +114,7 @@ contract CometWithExtendedAssetList is CometMainInterface {
      * @notice Construct a new protocol instance
      * @param config The mapping of initial/constant parameters
      **/
-    constructor(Configuration memory config) {
+    constructor(Configuration memory config) AccessManaged(config.governor) {
         // Sanity checks
         uint8 decimals_ = IERC20NonStandard(config.baseToken).decimals();
         if (decimals_ > MAX_BASE_DECIMALS) revert BadDecimals();
@@ -603,6 +605,7 @@ contract CometWithExtendedAssetList is CometMainInterface {
         }
     }
 
+    // TODO: Careful as Governor is now AccessManager + pauseGuardian shall be configured there too
     /**
      * @notice Pauses different actions within Comet
      * @param supplyPaused Boolean for pausing supply actions
@@ -1302,7 +1305,7 @@ contract CometWithExtendedAssetList is CometMainInterface {
     function absorb(
         address absorber,
         address[] calldata accounts
-    ) external override {
+    ) external override restricted {
         if (isAbsorbPaused()) revert Paused();
 
         uint startGas = gasleft();
@@ -1427,7 +1430,7 @@ contract CometWithExtendedAssetList is CometMainInterface {
         uint minAmount,
         uint baseAmount,
         address recipient
-    ) external override nonReentrant {
+    ) external override nonReentrant restricted {
         if (isBuyPaused()) revert Paused();
 
         int reserves = getReserves();
@@ -1482,6 +1485,7 @@ contract CometWithExtendedAssetList is CometMainInterface {
             baseScale;
     }
 
+    // TODO: Careful as Governor is now AccessManager + pauseGuardian shall be configured there too
     /**
      * @notice Withdraws base token reserves if called by the governor
      * @param to An address of the receiver of withdrawn reserves
@@ -1499,6 +1503,7 @@ contract CometWithExtendedAssetList is CometMainInterface {
         emit WithdrawReserves(to, amount);
     }
 
+    // TODO: Careful as Governor is now AccessManager + pauseGuardian shall be configured there too
     /**
      * @notice Sets Comet's ERC20 allowance of an asset for a manager
      * @dev Only callable by governor

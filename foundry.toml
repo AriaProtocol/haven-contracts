@@ -10,6 +10,7 @@ dynamic_test_linking = true
 remappings = [
   "forge-std/=dependencies/forge-std-1.11.0/src/",
   "capo/=dependencies/woof-software-compound-capo-lst-lrt-oracles/",
+  "oz/=dependencies/@openzeppelin-contracts-5.5.0/"
 ]
 via_ir = true
 optimizer = true
@@ -40,3 +41,4 @@ ignore = ["contracts/"]
 [dependencies]
 forge-std = "1.11.0"
 "woof-software/compound-capo" = { version = "lst-lrt-oracles", git = "git@github.com:woof-software/compound-capo.git", branch = "lst-lrt-oracles" }
+"@openzeppelin-contracts" = "5.5.0"
