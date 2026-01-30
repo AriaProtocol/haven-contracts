@@ -1,14 +1,16 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.15;
+pragma solidity 0.8.20;
 
 import "../CometWithExtendedAssetList.sol";
 
 contract CometHarnessExtendedAssetList is CometWithExtendedAssetList {
     uint public nowOverride;
 
-    constructor(Configuration memory config) CometWithExtendedAssetList(config) {}
+    constructor(
+        Configuration memory config
+    ) CometWithExtendedAssetList(config) {}
 
-    function getNowInternal() override internal view returns (uint40) {
+    function getNowInternal() internal view override returns (uint40) {
         return nowOverride > 0 ? uint40(nowOverride) : super.getNowInternal();
     }
 
@@ -30,7 +32,10 @@ contract CometHarnessExtendedAssetList is CometWithExtendedAssetList {
         lastAccrualTime = totals.lastAccrualTime;
     }
 
-    function setTotalsCollateral(address asset, TotalsCollateral memory totals) external {
+    function setTotalsCollateral(
+        address asset,
+        TotalsCollateral memory totals
+    ) external {
         totalsCollateral[asset] = totals;
     }
 
@@ -38,7 +43,11 @@ contract CometHarnessExtendedAssetList is CometWithExtendedAssetList {
         userBasic[account].principal = principal;
     }
 
-    function setCollateralBalance(address account, address asset, uint128 balance) external {
+    function setCollateralBalance(
+        address account,
+        address asset,
+        uint128 balance
+    ) external {
         uint128 oldBalance = userCollateral[account][asset].balance;
         userCollateral[account][asset].balance = balance;
         AssetInfo memory assetInfo = getAssetInfoByAddress(asset);
@@ -52,10 +61,17 @@ contract CometHarnessExtendedAssetList is CometWithExtendedAssetList {
         uint128 finalUserBalance
     ) external {
         AssetInfo memory assetInfo = getAssetInfoByAddress(asset);
-        updateAssetsIn(account, assetInfo, initialUserBalance, finalUserBalance);
+        updateAssetsIn(
+            account,
+            assetInfo,
+            initialUserBalance,
+            finalUserBalance
+        );
     }
 
-    function getAssetList(address account) external view returns (address[] memory result) {
+    function getAssetList(
+        address account
+    ) external view returns (address[] memory result) {
         uint16 assetsIn = userBasic[account].assetsIn;
         uint8 _reserved = userBasic[account]._reserved;
 
@@ -87,11 +103,17 @@ contract CometHarnessExtendedAssetList is CometWithExtendedAssetList {
     //                                  RECOVERY                                  //
     //============================================================================//
     /////////////////////////////////// EXTERNAL ///////////////////////////////////
-    function exposed_transferCollateral(address lostAccount, address newAccount) external {
+    function exposed_transferCollateral(
+        address lostAccount,
+        address newAccount
+    ) external {
         _transferCollateral(lostAccount, newAccount);
     }
 
-    function exposed_transferDebt(address lostAccount, address newAccount) external {
+    function exposed_transferDebt(
+        address lostAccount,
+        address newAccount
+    ) external {
         _transferDebt(lostAccount, newAccount);
     }
 }

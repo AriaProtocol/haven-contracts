@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.15;
+pragma solidity 0.8.20;
 
 import "../vendor/@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import "../IPriceFeed.sol";
@@ -18,7 +18,8 @@ contract WBTCPriceFeed is IPriceFeed {
     uint public constant override version = 1;
 
     /// @notice Description of the price feed
-    string public constant override description = "Custom price feed for WBTC / USD";
+    string public constant override description =
+        "Custom price feed for WBTC / USD";
 
     /// @notice Number of decimals for returned prices
     uint8 public immutable override decimals;
@@ -41,12 +42,22 @@ contract WBTCPriceFeed is IPriceFeed {
      * @param BTCToUSDPriceFeed_ The address of the BTC / USD price feed to fetch prices from
      * @param decimals_ The number of decimals for the returned prices
      **/
-    constructor(address WBTCToBTCPriceFeed_, address BTCToUSDPriceFeed_, uint8 decimals_) {
+    constructor(
+        address WBTCToBTCPriceFeed_,
+        address BTCToUSDPriceFeed_,
+        uint8 decimals_
+    ) {
         WBTCToBTCPriceFeed = WBTCToBTCPriceFeed_;
         BTCToUSDPriceFeed = BTCToUSDPriceFeed_;
-        uint8 WBTCToBTCPriceFeedDecimals = AggregatorV3Interface(WBTCToBTCPriceFeed_).decimals();
-        uint8 BTCToUSDPriceFeedDecimals = AggregatorV3Interface(BTCToUSDPriceFeed_).decimals();
-        combinedScale = signed256(10 ** (WBTCToBTCPriceFeedDecimals + BTCToUSDPriceFeedDecimals));
+        uint8 WBTCToBTCPriceFeedDecimals = AggregatorV3Interface(
+            WBTCToBTCPriceFeed_
+        ).decimals();
+        uint8 BTCToUSDPriceFeedDecimals = AggregatorV3Interface(
+            BTCToUSDPriceFeed_
+        ).decimals();
+        combinedScale = signed256(
+            10 ** (WBTCToBTCPriceFeedDecimals + BTCToUSDPriceFeedDecimals)
+        );
 
         if (decimals_ > 18) revert BadDecimals();
         decimals = decimals_;
@@ -61,14 +72,29 @@ contract WBTCPriceFeed is IPriceFeed {
      * @return updatedAt Timestamp when the round was last updated; passed on from the BTC / USD price feed
      * @return answeredInRound Round id in which the answer was computed; passed on from the BTC / USD price feed
      **/
-    function latestRoundData() override external view returns (uint80, int256, uint256, uint256, uint80) {
-        (, int256 WBTCToBTCPrice, , , ) = AggregatorV3Interface(WBTCToBTCPriceFeed).latestRoundData();
-        (uint80 roundId_, int256 BTCToUSDPrice, uint256 startedAt_, uint256 updatedAt_, uint80 answeredInRound_) = AggregatorV3Interface(BTCToUSDPriceFeed).latestRoundData();
+    function latestRoundData()
+        external
+        view
+        override
+        returns (uint80, int256, uint256, uint256, uint80)
+    {
+        (, int256 WBTCToBTCPrice, , , ) = AggregatorV3Interface(
+            WBTCToBTCPriceFeed
+        ).latestRoundData();
+        (
+            uint80 roundId_,
+            int256 BTCToUSDPrice,
+            uint256 startedAt_,
+            uint256 updatedAt_,
+            uint80 answeredInRound_
+        ) = AggregatorV3Interface(BTCToUSDPriceFeed).latestRoundData();
 
         // We return the round data of the BTC / USD price feed because of its shorter heartbeat (1hr vs 24hr)
-        if (WBTCToBTCPrice <= 0 || BTCToUSDPrice <= 0) return (roundId_, 0, startedAt_, updatedAt_, answeredInRound_);
+        if (WBTCToBTCPrice <= 0 || BTCToUSDPrice <= 0)
+            return (roundId_, 0, startedAt_, updatedAt_, answeredInRound_);
 
-        int256 price = WBTCToBTCPrice * BTCToUSDPrice * priceFeedScale / combinedScale;
+        int256 price = (WBTCToBTCPrice * BTCToUSDPrice * priceFeedScale) /
+            combinedScale;
         return (roundId_, price, startedAt_, updatedAt_, answeredInRound_);
     }
 

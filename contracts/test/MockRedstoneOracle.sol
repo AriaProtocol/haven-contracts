@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.15;
+pragma solidity 0.8.20;
 
 import "../vendor/@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
@@ -9,7 +9,6 @@ import "../vendor/@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface
  * @author Compound
  */
 contract MockRedstoneOracle {
-
     /// @notice Number of decimals for returned prices
     uint8 public immutable decimals;
 
@@ -27,7 +26,6 @@ contract MockRedstoneOracle {
         lastPrice = lastPrice_;
     }
 
-
     /**
      * @notice Price for the latest round
      * @return roundId Round id from the underlying price feed
@@ -36,13 +34,17 @@ contract MockRedstoneOracle {
      * @return updatedAt Current timestamp
      * @return answeredInRound Round id in which the answer was computed; passed on from underlying price feed
      **/
-    function latestRoundData() external view returns (
-        uint80 roundId,
-        int256 answer,
-        uint256 startedAt,
-        uint256 updatedAt,
-        uint80 answeredInRound
-    ) {
+    function latestRoundData()
+        external
+        view
+        returns (
+            uint80 roundId,
+            int256 answer,
+            uint256 startedAt,
+            uint256 updatedAt,
+            uint80 answeredInRound
+        )
+    {
         return (1, int256(lastPrice), block.timestamp, block.timestamp, 1);
     }
 }

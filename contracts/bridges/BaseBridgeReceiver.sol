@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.15;
+pragma solidity 0.8.20;
 
 import "../ITimelock.sol";
 
@@ -14,8 +14,19 @@ contract BaseBridgeReceiver {
     error Unauthorized();
 
     /** Events **/
-    event Initialized(address indexed govTimelock, address indexed localTimelock);
-    event ProposalCreated(address indexed rootMessageSender, uint id, address[] targets, uint[] values, string[] signatures, bytes[] calldatas, uint eta);
+    event Initialized(
+        address indexed govTimelock,
+        address indexed localTimelock
+    );
+    event ProposalCreated(
+        address indexed rootMessageSender,
+        uint id,
+        address[] targets,
+        uint[] values,
+        string[] signatures,
+        bytes[] calldatas,
+        uint eta
+    );
     event ProposalExecuted(uint indexed id);
 
     /** Public variables **/
@@ -45,7 +56,7 @@ contract BaseBridgeReceiver {
     }
 
     /// @notice Mapping of proposal ids to their full proposal data
-    mapping (uint => Proposal) public proposals;
+    mapping(uint => Proposal) public proposals;
 
     enum ProposalState {
         Queued,
@@ -62,7 +73,8 @@ contract BaseBridgeReceiver {
      */
     function initialize(address _govTimelock, address _localTimelock) external {
         if (initialized) revert AlreadyInitialized();
-        if (ITimelock(_localTimelock).admin() != address(this)) revert InvalidTimelockAdmin();
+        if (ITimelock(_localTimelock).admin() != address(this))
+            revert InvalidTimelockAdmin();
         govTimelock = _govTimelock;
         localTimelock = _localTimelock;
         initialized = true;
@@ -98,8 +110,26 @@ contract BaseBridgeReceiver {
         uint eta = block.timestamp + delay;
 
         for (uint i = 0; i < targets.length; i++) {
-            if (ITimelock(localTimelock).queuedTransactions(keccak256(abi.encode(targets[i], values[i], signatures[i], calldatas[i], eta)))) revert TransactionAlreadyQueued();
-            ITimelock(localTimelock).queueTransaction(targets[i], values[i], signatures[i], calldatas[i], eta);
+            if (
+                ITimelock(localTimelock).queuedTransactions(
+                    keccak256(
+                        abi.encode(
+                            targets[i],
+                            values[i],
+                            signatures[i],
+                            calldatas[i],
+                            eta
+                        )
+                    )
+                )
+            ) revert TransactionAlreadyQueued();
+            ITimelock(localTimelock).queueTransaction(
+                targets[i],
+                values[i],
+                signatures[i],
+                calldatas[i],
+                eta
+            );
         }
 
         proposalCount++;
@@ -114,7 +144,15 @@ contract BaseBridgeReceiver {
         });
 
         proposals[proposal.id] = proposal;
-        emit ProposalCreated(rootMessageSender, proposal.id, targets, values, signatures, calldatas, eta);
+        emit ProposalCreated(
+            rootMessageSender,
+            proposal.id,
+            targets,
+            values,
+            signatures,
+            calldatas,
+            eta
+        );
     }
 
     /**
@@ -122,11 +160,18 @@ contract BaseBridgeReceiver {
      * @param proposalId The id of the proposal to execute
      */
     function executeProposal(uint proposalId) external {
-        if (state(proposalId) != ProposalState.Queued) revert ProposalNotExecutable();
+        if (state(proposalId) != ProposalState.Queued)
+            revert ProposalNotExecutable();
         Proposal storage proposal = proposals[proposalId];
         proposal.executed = true;
         for (uint i = 0; i < proposal.targets.length; i++) {
-            ITimelock(localTimelock).executeTransaction(proposal.targets[i], proposal.values[i], proposal.signatures[i], proposal.calldatas[i], proposal.eta);
+            ITimelock(localTimelock).executeTransaction(
+                proposal.targets[i],
+                proposal.values[i],
+                proposal.signatures[i],
+                proposal.calldatas[i],
+                proposal.eta
+            );
         }
         emit ProposalExecuted(proposalId);
     }
@@ -137,11 +182,15 @@ contract BaseBridgeReceiver {
      * @return The state of the given proposal (queued, expired or executed)
      */
     function state(uint proposalId) public view returns (ProposalState) {
-        if (proposalId > proposalCount || proposalId == 0) revert InvalidProposalId();
+        if (proposalId > proposalCount || proposalId == 0)
+            revert InvalidProposalId();
         Proposal memory proposal = proposals[proposalId];
         if (proposal.executed) {
             return ProposalState.Executed;
-        } else if (block.timestamp > (proposal.eta + ITimelock(localTimelock).GRACE_PERIOD())) {
+        } else if (
+            block.timestamp >
+            (proposal.eta + ITimelock(localTimelock).GRACE_PERIOD())
+        ) {
             return ProposalState.Expired;
         } else {
             return ProposalState.Queued;

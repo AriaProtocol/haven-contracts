@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.15;
+pragma solidity 0.8.20;
 
 contract Dog {
     bool public initialized;
@@ -12,7 +12,11 @@ contract Dog {
         Dog pup;
     }
 
-    function initializeDog(string memory name_, Dog father_, Dog[] memory pups_) public {
+    function initializeDog(
+        string memory name_,
+        Dog father_,
+        Dog[] memory pups_
+    ) public {
         require(!initialized, "already initialized");
         initialized = true;
         name = name_;
@@ -33,10 +37,7 @@ contract Dog {
     function puppers() public returns (Puppers[] memory) {
         Puppers[] memory puppers = new Puppers[](pups.length);
         for (uint i = 0; i < pups.length; i++) {
-            puppers[i] = Puppers({
-                index: i,
-                pup: pups[i]
-            });
+            puppers[i] = Puppers({index: i, pup: pups[i]});
         }
         return puppers;
     }

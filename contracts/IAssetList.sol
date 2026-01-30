@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.15;
+pragma solidity 0.8.20;
 
 import "./CometCore.sol";
 
@@ -8,6 +8,8 @@ import "./CometCore.sol";
  * @author Compound
  */
 interface IAssetList {
-    function getAssetInfo(uint8 i) external view returns (CometCore.AssetInfo memory);
+    function getAssetInfo(
+        uint8 i
+    ) external view returns (CometCore.AssetInfo memory);
     function numAssets() external view returns (uint8);
 }

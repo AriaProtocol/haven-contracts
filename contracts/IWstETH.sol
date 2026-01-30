@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.15;
+pragma solidity 0.8.20;
 
 import "./ERC20.sol";
 
@@ -15,8 +15,12 @@ interface IWstETH is ERC20 {
 
     function receive() external payable;
 
-    function getWstETHByStETH(uint256 _stETHAmount) external view returns (uint256);
-    function getStETHByWstETH(uint256 _wstETHAmount) external view returns (uint256);
+    function getWstETHByStETH(
+        uint256 _stETHAmount
+    ) external view returns (uint256);
+    function getStETHByWstETH(
+        uint256 _wstETHAmount
+    ) external view returns (uint256);
 
     function stEthPerToken() external view returns (uint256);
     function tokensPerStEth() external view returns (uint256);

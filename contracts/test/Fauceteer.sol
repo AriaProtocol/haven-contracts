@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.15;
+pragma solidity 0.8.20;
 
 import "../ERC20.sol";
 
@@ -17,7 +17,8 @@ contract Fauceteer {
         uint balance = ERC20(token).balanceOf(address(this));
         if (balance <= 0) revert BalanceTooLow();
 
-        if (block.timestamp - lastReceived[msg.sender][token] < 1 days) revert RequestedTooFrequently();
+        if (block.timestamp - lastReceived[msg.sender][token] < 1 days)
+            revert RequestedTooFrequently();
 
         lastReceived[msg.sender][token] = block.timestamp;
 

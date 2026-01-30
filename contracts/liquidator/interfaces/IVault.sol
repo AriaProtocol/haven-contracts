@@ -1,12 +1,15 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.15;
+pragma solidity 0.8.20;
 
 /**
  * @dev Interfaces for interacting with Balancer Vaults
  * Note Not comprehensive
  */
 interface IVault {
-    enum SwapKind { GIVEN_IN, GIVEN_OUT }
+    enum SwapKind {
+        GIVEN_IN,
+        GIVEN_OUT
+    }
 
     struct BatchSwapStep {
         bytes32 poolId;

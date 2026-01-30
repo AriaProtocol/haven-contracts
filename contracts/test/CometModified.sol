@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.15;
+pragma solidity 0.8.20;
 
 import "../Comet.sol";
 
@@ -9,7 +9,6 @@ import "../Comet.sol";
  * @author Compound
  */
 contract CometModified is Comet {
-
     constructor(Configuration memory config) Comet(config) {}
 
     /**

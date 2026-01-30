@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.15;
+pragma solidity 0.8.20;
 
 import "../SweepableBridgeReceiver.sol";
 import "./IScrollMessenger.sol";
@@ -9,7 +9,10 @@ import "./IScrollMessenger.sol";
 contract ScrollBridgeReceiver is SweepableBridgeReceiver {
     error InvalidL2Messenger();
 
-    event NewL2Messenger(address indexed oldL2Messenger, address indexed newL2Messenger);
+    event NewL2Messenger(
+        address indexed oldL2Messenger,
+        address indexed newL2Messenger
+    );
 
     /// @notice Address of Scroll L2 Messenger contract
     address public l2Messenger;
@@ -33,7 +36,8 @@ contract ScrollBridgeReceiver is SweepableBridgeReceiver {
     /// @notice Fallback function to handle messages
     fallback() external payable {
         if (msg.sender != l2Messenger) revert InvalidL2Messenger();
-        address messageSender = IScrollMessenger(msg.sender).xDomainMessageSender();
+        address messageSender = IScrollMessenger(msg.sender)
+            .xDomainMessageSender();
         processMessage(messageSender, msg.data);
     }
 }

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.15;
+pragma solidity 0.8.20;
 
 import "./BaseBulker.sol";
 import "../IWstETH.sol";
@@ -48,12 +48,21 @@ contract MainnetBulker is BaseBulker {
     /**
      * @notice Handles actions specific to the Ethereum mainnet version of Bulker, specifically supplying and withdrawing stETH
      */
-    function handleAction(bytes32 action, bytes calldata data) override internal {
+    function handleAction(
+        bytes32 action,
+        bytes calldata data
+    ) internal override {
         if (action == ACTION_SUPPLY_STETH) {
-            (address comet, address to, uint stETHAmount) = abi.decode(data, (address, address, uint));
+            (address comet, address to, uint stETHAmount) = abi.decode(
+                data,
+                (address, address, uint)
+            );
             supplyStEthTo(comet, to, stETHAmount);
         } else if (action == ACTION_WITHDRAW_STETH) {
-            (address comet, address to, uint wstETHAmount) = abi.decode(data, (address, address, uint));
+            (address comet, address to, uint wstETHAmount) = abi.decode(
+                data,
+                (address, address, uint)
+            );
             withdrawStEthTo(comet, to, wstETHAmount);
         } else {
             revert UnhandledAction();
@@ -65,14 +74,24 @@ contract MainnetBulker is BaseBulker {
      * @dev Note: This contract must have permission to manage msg.sender's Comet account
      * @dev Note: wstETH base asset is NOT supported
      */
-    function supplyStEthTo(address comet, address to, uint stETHAmount) internal {
-        if (CometInterface(comet).baseToken() == wsteth) revert UnsupportedBaseAsset();
+    function supplyStEthTo(
+        address comet,
+        address to,
+        uint stETHAmount
+    ) internal {
+        if (CometInterface(comet).baseToken() == wsteth)
+            revert UnsupportedBaseAsset();
 
         doTransferIn(steth, msg.sender, stETHAmount);
         ERC20(steth).approve(wsteth, stETHAmount);
         uint wstETHAmount = IWstETH(wsteth).wrap(stETHAmount);
         ERC20(wsteth).approve(comet, wstETHAmount);
-        CometInterface(comet).supplyFrom(address(this), to, wsteth, wstETHAmount);
+        CometInterface(comet).supplyFrom(
+            address(this),
+            to,
+            wsteth,
+            wstETHAmount
+        );
     }
 
     /**
@@ -81,13 +100,23 @@ contract MainnetBulker is BaseBulker {
      * @dev Note: wstETH base asset is NOT supported
      * @dev Note: Supports `amount` of `uint256.max` to withdraw all wstETH from Comet
      */
-    function withdrawStEthTo(address comet, address to, uint stETHAmount) internal {
-        if (CometInterface(comet).baseToken() == wsteth) revert UnsupportedBaseAsset();
+    function withdrawStEthTo(
+        address comet,
+        address to,
+        uint stETHAmount
+    ) internal {
+        if (CometInterface(comet).baseToken() == wsteth)
+            revert UnsupportedBaseAsset();
 
         uint wstETHAmount = stETHAmount == type(uint256).max
             ? CometInterface(comet).collateralBalanceOf(msg.sender, wsteth)
             : IWstETH(wsteth).getWstETHByStETH(stETHAmount);
-        CometInterface(comet).withdrawFrom(msg.sender, address(this), wsteth, wstETHAmount);
+        CometInterface(comet).withdrawFrom(
+            msg.sender,
+            address(this),
+            wsteth,
+            wstETHAmount
+        );
         uint unwrappedStETHAmount = IWstETH(wsteth).unwrap(wstETHAmount);
         doTransferOut(steth, to, unwrappedStETHAmount);
     }

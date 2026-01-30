@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.15;
+pragma solidity 0.8.20;
 
 import "../SweepableBridgeReceiver.sol";
 
@@ -11,5 +11,5 @@ contract SweepableBridgeReceiverHarness is SweepableBridgeReceiver {
         processMessage(rootMessageSender, data);
     }
 
-    fallback() external payable { }
+    fallback() external payable {}
 }
