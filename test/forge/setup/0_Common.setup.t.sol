@@ -51,10 +51,13 @@ contract Common_Setup is Test, CometConfiguration {
     bytes32 constant NAME32 = "Compound Comet";
     bytes32 constant SYMBOL32 = "cUSDC";
 
-    bytes4 public constant PAUSE_SELEC = bytes4(keccak256("pause(bool,bool,bool,bool,bool()"));
-    bytes4 public constant ABSORB_SELEC = bytes4(keccak256("absorb(address,address[]()"));
-    bytes4 public constant BUY_COLL_SELEC = bytes4(keccak256("buyCollateral(address,uint256,uint256,address()"));
-    bytes4 public constant RECOVER_SELEC = bytes4(keccak256("recover(address,address()"));
+    // 0x44c35d07
+    bytes4 public PAUSE_SELEC = _compSelector("pause(bool,bool,bool,bool,bool)");
+    // 0xc3cecfd2
+    bytes4 public ABSORB_SELEC = _compSelector("absorb(address,address[])");
+    // 0xe4e6e779
+    bytes4 public BUY_COLL_SELEC = _compSelector("buyCollateral(address,uint256,uint256,address)");
+    bytes4 public RECOVER_SELEC = _compSelector("recover(address,address)");
 
     function setUp() public virtual {
         _createAddr();
@@ -184,5 +187,9 @@ contract Common_Setup is Test, CometConfiguration {
         }
 
         vm.stopPrank();
+    }
+
+    function _compSelector(string memory sel_) internal pure returns (bytes4) {
+        return bytes4(keccak256(bytes(sel_)));
     }
 }
