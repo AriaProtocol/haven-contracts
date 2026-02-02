@@ -8,7 +8,10 @@ import "contracts/test/CometHarness.sol";
 import "contracts/test/SimplePriceFeed.sol";
 import "contracts/test/FaucetToken.sol";
 
+import {AccessManager} from "oz/access/manager/AccessManager.sol";
+
 contract Common_Setup is Test, CometConfiguration {
+    AccessManager public governor;
     CometExt public extensionDelegate;
 
     FaucetToken public baseToken;
@@ -20,8 +23,14 @@ contract Common_Setup is Test, CometConfiguration {
     FaucetToken public wbtc;
     SimplePriceFeed public wbtcPriceFeed;
 
-    address public governor = address(0x1);
-    address public pauseGuardian = address(0x2);
+    address public accessManagerAdmin;
+    address public liquidator;
+    address public pauseGuardian;
+    address public recoverer;
+
+    uint64 public constant PAUSE_GUARDIAN = 1;
+    uint64 public constant LIQUIDATOR = 2;
+    uint64 public constant RECOVERER = 3;
 
     uint64 public constant SUPPLY_KINK = 0.8e18;
     uint64 public constant SUPPLY_PER_YEAR_INTEREST_RATE_SLOPE_LOW = 0.05e18;
@@ -42,7 +51,14 @@ contract Common_Setup is Test, CometConfiguration {
     bytes32 constant NAME32 = "Compound Comet";
     bytes32 constant SYMBOL32 = "cUSDC";
 
+    bytes4 public constant PAUSE_SELEC = bytes4(keccak256("pause(bool,bool,bool,bool,bool()"));
+    bytes4 public constant ABSORB_SELEC = bytes4(keccak256("absorb(address,address[]()"));
+    bytes4 public constant BUY_COLL_SELEC = bytes4(keccak256("buyCollateral(address,uint256,uint256,address()"));
+    bytes4 public constant RECOVER_SELEC = bytes4(keccak256("recover(address,address()"));
+
     function setUp() public virtual {
+        _createAddr();
+
         _deployTokensAndPriceFeed();
         _deployCometExt();
 
@@ -52,7 +68,19 @@ contract Common_Setup is Test, CometConfiguration {
         vm.label(address(baseToken), "USDC");
         vm.label(address(weth), "WETH");
         vm.label(address(wbtc), "WBTC");
-        vm.label(governor, "Governor");
+        vm.label(address(governor), "Governor");
+        vm.label(accessManagerAdmin, "Access Admin");
+        vm.label(liquidator, "Liquidator");
+        vm.label(recoverer, "Recoverer");
+    }
+
+    function _createAddr() internal {
+        accessManagerAdmin = makeAddr("accessManagerAdmin");
+        liquidator = makeAddr("liquidator");
+        pauseGuardian = makeAddr("pauseGuardian");
+        recoverer = makeAddr("recoverer");
+
+        governor = new AccessManager(accessManagerAdmin);
     }
 
     function _deployComet() internal virtual {}
@@ -101,7 +129,7 @@ contract Common_Setup is Test, CometConfiguration {
 
     function _configureComet() internal returns (Configuration memory config) {
         config = Configuration({
-            governor: governor,
+            governor: address(governor),
             pauseGuardian: pauseGuardian,
             baseToken: address(baseToken),
             baseTokenPriceFeed: address(baseTokenPriceFeed),
@@ -123,5 +151,38 @@ contract Common_Setup is Test, CometConfiguration {
             targetReserves: TARGET_RESERVES,
             assetConfigs: _configureAssets()
         });
+    }
+
+    //////// MUST BE called in child contracts ////////
+    bytes4[] internal _selectors; // easier to add data
+
+    function _defineRolesAndGrantDefaultAccess(address comet) internal {
+        vm.startPrank(accessManagerAdmin);
+
+        // set roles on selector
+        {
+            _selectors.push(PAUSE_SELEC);
+            governor.setTargetFunctionRole(comet, _selectors, PAUSE_GUARDIAN);
+            delete _selectors;
+
+            _selectors.push(ABSORB_SELEC);
+            _selectors.push(BUY_COLL_SELEC);
+            governor.setTargetFunctionRole(comet, _selectors, LIQUIDATOR);
+            delete _selectors;
+
+            _selectors.push(RECOVER_SELEC);
+            governor.setTargetFunctionRole(comet, _selectors, RECOVERER);
+            delete _selectors;
+            governor.setGrantDelay(RECOVERER, 12 hours);
+        }
+
+        // grant roles
+        {
+            governor.grantRole(PAUSE_GUARDIAN, pauseGuardian, 0);
+            governor.grantRole(LIQUIDATOR, liquidator, 0);
+            governor.grantRole(RECOVERER, recoverer, 1 days);
+        }
+
+        vm.stopPrank();
     }
 }
