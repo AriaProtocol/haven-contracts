@@ -5,7 +5,8 @@ import {CometExtInterface} from "contracts/CometExtInterface.sol";
 import {CometWithExtendedAssetList_Setup} from "test/forge/setup/CometWithExtendedAssetList.setup.t.sol";
 import {Fixture_3Sup_3Bor} from "test/forge/setup/fixtures/Fixture_3Sup_3Bor.t.sol";
 
-contract CometWExtAssetList_transferCollateral_Test is CometWithExtendedAssetList_Setup, Fixture_3Sup_3Bor {
+/// @dev Internal _transferCollateral(...)
+contract CometWExtAssetList__transferCollateral_Test is CometWithExtendedAssetList_Setup, Fixture_3Sup_3Bor {
     address public newAddr = makeAddr("new address borrower3");
 
     CometExtInterface public cometExt;
