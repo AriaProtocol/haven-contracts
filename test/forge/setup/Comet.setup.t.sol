@@ -69,6 +69,21 @@ contract Comet_Setup is Common_Setup {
             assertEq(recoverExecutionDelay, 1 days, "RECOVERER_ROLE needs 1 days schedule");
         }
 
+        // withdrawer
+        {
+            assertEq(
+                governor.getTargetFunctionRole(address(comet), WITHDRAW_SELECT),
+                WITHDRAWER_ROLE,
+                "WITHDRAWER_ROLE role on withdraw(...)"
+            );
+            assertEq(governor.getRoleAdmin(WITHDRAWER_ROLE), 0x0, "default admin for WITHDRAWER_ROLE");
+            assertEq(governor.getRoleGuardian(WITHDRAWER_ROLE), 0x0, "no guardian for WITHDRAWER_ROLE");
+            assertEq(governor.getRoleGrantDelay(WITHDRAWER_ROLE), 6 days, "WITHDRAWER_ROLE granted after 6 days");
+            (bool isWithdrawMember, uint32 withdrawExecutionDelay) = governor.hasRole(WITHDRAWER_ROLE, withdrawer);
+            assertTrue(isWithdrawMember, "WITHDRAWER_ROLE member");
+            assertEq(withdrawExecutionDelay, 7 days, "WITHDRAWER_ROLE needs 6 days schedule");
+        }
+
         assertEq(governor.getTargetAdminDelay(address(comet)), 0, "no delay for comet");
     }
 

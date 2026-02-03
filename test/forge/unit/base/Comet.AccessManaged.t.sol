@@ -23,6 +23,19 @@ contract Comet_AccessManaged_Test is Comet_Setup {
         comet.absorb(absorber, borrowers);
     }
 
+    function test_approveThis_RoleRestricted() public {
+        address asset = address(weth);
+        uint amount = 1 ether;
+        address caller = makeAddr("caller");
+
+        vm.startPrank(caller);
+        vm.expectRevert(abi.encodeWithSelector(IAccessManaged.AccessManagedUnauthorized.selector, caller));
+        comet.approveThis(makeAddr("random"), asset, amount);
+
+        vm.startPrank(accessManagerAdmin);
+        comet.approveThis(makeAddr("an address"), asset, amount);
+    }
+
     function test_buyCollateral_RoleRestricted() public {
         address absorber = makeAddr("absorber");
         address caller = makeAddr("caller");
@@ -35,6 +48,18 @@ contract Comet_AccessManaged_Test is Comet_Setup {
         vm.startPrank(liquidator);
         vm.expectRevert(abi.encodeWithSelector(CometMainInterface.NotForSale.selector));
         comet.buyCollateral(address(weth), 0.5 ether, 1500 * 1e6, absorber);
+    }
+
+    function test_pause_RoleRestricted() public {
+        address caller = makeAddr("caller");
+
+        vm.startPrank(caller);
+        vm.expectRevert(abi.encodeWithSelector(IAccessManaged.AccessManagedUnauthorized.selector, caller));
+        comet.pause(true, false, true, false, true);
+
+        // works for pause guardian
+        vm.startPrank(pauseGuardian);
+        comet.pause(true, false, true, false, true);
     }
 
     function test_recover_RoleRestricted() public {
@@ -51,5 +76,20 @@ contract Comet_AccessManaged_Test is Comet_Setup {
         bytes32 hash_ = 0x0c2e5ccc6153de54ab6d3605e33fef2a348e4c72cd2d22bb257383256e10aeae;
         vm.expectRevert(abi.encodeWithSelector(IAccessManager.AccessManagerNotScheduled.selector, hash_));
         comet.recover(lostAddr, newAddr);
+    }
+
+    function test_withdrawReserves_RoleRestricted() public {
+        address caller = makeAddr("caller");
+        address to = makeAddr("to");
+
+        vm.startPrank(caller);
+        vm.expectRevert(abi.encodeWithSelector(IAccessManaged.AccessManagedUnauthorized.selector, caller));
+        comet.withdrawReserves(to, 1 ether);
+
+        // works for reserve withdrawer, but reverts as not scheduled
+        vm.startPrank(withdrawer);
+        bytes32 hash_ = 0x8a52565cfdb854a0b1379738b060b30f621eadc91a2245d9b2b8789ad3cfb95a;
+        vm.expectRevert(abi.encodeWithSelector(IAccessManager.AccessManagerNotScheduled.selector, hash_));
+        comet.withdrawReserves(to, 1 ether);
     }
 }

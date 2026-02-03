@@ -27,11 +27,13 @@ contract Common_Setup is Test, CometConfiguration {
     address public liquidator;
     address public pauseGuardian; // in AccessManager, rather than Comet
     address public recoverer;
+    address public withdrawer;
 
     uint64 public constant PAUSE_ROLE = 1;
     uint64 public constant LIQUIDATOR_ROLE = 2;
     uint64 public constant RECOVERER_ROLE = 3;
     uint64 public constant PAUSE_GUARDIAN = 4;
+    uint64 public constant WITHDRAWER_ROLE = 5;
 
     uint64 public constant SUPPLY_KINK = 0.8e18;
     uint64 public constant SUPPLY_PER_YEAR_INTEREST_RATE_SLOPE_LOW = 0.05e18;
@@ -59,6 +61,7 @@ contract Common_Setup is Test, CometConfiguration {
     // 0xe4e6e779
     bytes4 public BUY_COLL_SELEC = _compSelector("buyCollateral(address,uint256,uint256,address)");
     bytes4 public RECOVER_SELEC = _compSelector("recover(address,address)");
+    bytes4 public WITHDRAW_SELECT = _compSelector("withdrawReserves(address,uint256)");
 
     function setUp() public virtual {
         _createAddr();
@@ -76,6 +79,8 @@ contract Common_Setup is Test, CometConfiguration {
         vm.label(accessManagerAdmin, "Access Admin");
         vm.label(liquidator, "Liquidator");
         vm.label(recoverer, "Recoverer");
+        vm.label(pauseGuardian, "Pause Guardian");
+        vm.label(withdrawer, "Withdrawer");
     }
 
     function _createAddr() internal {
@@ -83,6 +88,7 @@ contract Common_Setup is Test, CometConfiguration {
         liquidator = makeAddr("liquidator");
         pauseGuardian = makeAddr("pauseGuardian");
         recoverer = makeAddr("recoverer");
+        withdrawer = makeAddr("withdrawer");
 
         governor = new AccessManager(accessManagerAdmin);
     }
@@ -179,8 +185,14 @@ contract Common_Setup is Test, CometConfiguration {
             governor.setTargetFunctionRole(comet, _selectors, RECOVERER_ROLE);
             delete _selectors;
             governor.setGrantDelay(RECOVERER_ROLE, 12 hours);
-            // timepoint when new grant delay appilies (minSetBack used as new delay is lower)
-            skip(governor.minSetback());
+
+            _selectors.push(WITHDRAW_SELECT);
+            governor.setTargetFunctionRole(comet, _selectors, WITHDRAWER_ROLE);
+            delete _selectors;
+            governor.setGrantDelay(WITHDRAWER_ROLE, 6 days);
+
+            // timepoint when new grant delay appilies, both for recoverer and withdrawer
+            skip(6 days);
         }
 
         // grant roles
@@ -189,8 +201,9 @@ contract Common_Setup is Test, CometConfiguration {
             governor.grantRole(LIQUIDATOR_ROLE, liquidator, 0);
             governor.grantRole(RECOVERER_ROLE, recoverer, 1 days);
             governor.grantRole(PAUSE_GUARDIAN, pauseGuardian, 0);
-            // new delay for recoverer role to apply
-            skip(12 hours);
+            governor.grantRole(WITHDRAWER_ROLE, withdrawer, 7 days);
+            // new delay for roles effect
+            skip(6 days);
         }
 
         vm.stopPrank();
