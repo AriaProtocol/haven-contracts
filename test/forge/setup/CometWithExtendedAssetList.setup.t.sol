@@ -21,14 +21,14 @@ contract CometWithExtendedAssetList_Setup is Common_Setup {
         {
             assertEq(
                 governor.getTargetFunctionRole(address(cometExtAsset), PAUSE_SELEC),
-                PAUSE_GUARDIAN,
-                "PAUSE_GUARDIAN role on pause(...)"
+                PAUSE_ROLE,
+                "PAUSE_ROLE role on pause(...)"
             );
-            assertEq(governor.getRoleAdmin(PAUSE_GUARDIAN), 0x0, "default admin for PAUSE_GUARDIAN");
-            assertEq(governor.getRoleGuardian(PAUSE_GUARDIAN), 0x0, "no guardian for PAUSE_GUARDIAN");
-            assertEq(governor.getRoleGrantDelay(PAUSE_GUARDIAN), 0, "PAUSE_GUARDIAN immediately granted");
-            (bool isPauseMember, uint32 pauseExecutionDelay) = governor.hasRole(PAUSE_GUARDIAN, pauseGuardian);
-            assertTrue(isPauseMember, "PAUSE_GUARDIAN member");
+            assertEq(governor.getRoleAdmin(PAUSE_ROLE), 0x0, "default admin for PAUSE_ROLE");
+            assertEq(governor.getRoleGuardian(PAUSE_ROLE), 0x0, "no guardian for PAUSE_ROLE");
+            assertEq(governor.getRoleGrantDelay(PAUSE_ROLE), 0, "PAUSE_ROLE immediately granted");
+            (bool isPauseMember, uint32 pauseExecutionDelay) = governor.hasRole(PAUSE_ROLE, pauseGuardian);
+            assertTrue(isPauseMember, "PAUSE_ROLE member");
             assertEq(pauseExecutionDelay, 0, "immediately executed");
         }
 
@@ -37,35 +37,35 @@ contract CometWithExtendedAssetList_Setup is Common_Setup {
             // absorb & buyCollateral access grouped into same role
             assertEq(
                 governor.getTargetFunctionRole(address(cometExtAsset), ABSORB_SELEC),
-                LIQUIDATOR,
-                "LIQUIDATOR role on absorb(...)"
+                LIQUIDATOR_ROLE,
+                "LIQUIDATOR_ROLE role on absorb(...)"
             );
             assertEq(
                 governor.getTargetFunctionRole(address(cometExtAsset), BUY_COLL_SELEC),
-                LIQUIDATOR,
-                "LIQUIDATOR role on buyCollateral(...)"
+                LIQUIDATOR_ROLE,
+                "LIQUIDATOR_ROLE role on buyCollateral(...)"
             );
-            assertEq(governor.getRoleAdmin(LIQUIDATOR), 0x0, "default admin for LIQUIDATOR");
-            assertEq(governor.getRoleGuardian(LIQUIDATOR), 0x0, "no guardian for LIQUIDATOR");
-            assertEq(governor.getRoleGrantDelay(LIQUIDATOR), 0, "LIQUIDATOR immediately granted");
-            (bool isLiquidationMember, uint32 liquidationExecutionDelay) = governor.hasRole(LIQUIDATOR, liquidator);
-            assertTrue(isLiquidationMember, "LIQUIDATOR member");
-            assertEq(liquidationExecutionDelay, 0, "LIQUIDATOR immediately executed");
+            assertEq(governor.getRoleAdmin(LIQUIDATOR_ROLE), 0x0, "default admin for LIQUIDATOR_ROLE");
+            assertEq(governor.getRoleGuardian(LIQUIDATOR_ROLE), 0x0, "no guardian for LIQUIDATOR_ROLE");
+            assertEq(governor.getRoleGrantDelay(LIQUIDATOR_ROLE), 0, "LIQUIDATOR_ROLE immediately granted");
+            (bool isLiquidationMember, uint32 liquidationExecutionDelay) = governor.hasRole(LIQUIDATOR_ROLE, liquidator);
+            assertTrue(isLiquidationMember, "LIQUIDATOR_ROLE member");
+            assertEq(liquidationExecutionDelay, 0, "LIQUIDATOR_ROLE immediately executed");
         }
 
         // recover
         {
             assertEq(
                 governor.getTargetFunctionRole(address(cometExtAsset), RECOVER_SELEC),
-                RECOVERER,
-                "RECOVERER role on recover(...)"
+                RECOVERER_ROLE,
+                "RECOVERER_ROLE role on recover(...)"
             );
-            assertEq(governor.getRoleAdmin(RECOVERER), 0x0, "default admin for RECOVERER");
-            assertEq(governor.getRoleGuardian(RECOVERER), 0x0, "no guardian for RECOVERER");
-            assertEq(governor.getRoleGrantDelay(RECOVERER), 12 hours, "RECOVERER granted after 12h");
-            (bool isRecoverMember, uint32 recoverExecutionDelay) = governor.hasRole(RECOVERER, recoverer);
-            assertTrue(isRecoverMember, "RECOVERER member");
-            assertEq(recoverExecutionDelay, 1 days, "RECOVERER needs 1 days schedule");
+            assertEq(governor.getRoleAdmin(RECOVERER_ROLE), 0x0, "default admin for RECOVERER_ROLE");
+            assertEq(governor.getRoleGuardian(RECOVERER_ROLE), 0x0, "no guardian for RECOVERER_ROLE");
+            assertEq(governor.getRoleGrantDelay(RECOVERER_ROLE), 12 hours, "RECOVERER_ROLE granted after 12h");
+            (bool isRecoverMember, uint32 recoverExecutionDelay) = governor.hasRole(RECOVERER_ROLE, recoverer);
+            assertTrue(isRecoverMember, "RECOVERER_ROLE member");
+            assertEq(recoverExecutionDelay, 1 days, "RECOVERER_ROLE needs 1 days schedule");
         }
 
         assertEq(governor.getTargetAdminDelay(address(cometExtAsset)), 0, "no delay for CometExtAsset");

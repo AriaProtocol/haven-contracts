@@ -28,9 +28,9 @@ contract Common_Setup is Test, CometConfiguration {
     address public pauseGuardian;
     address public recoverer;
 
-    uint64 public constant PAUSE_GUARDIAN = 1;
-    uint64 public constant LIQUIDATOR = 2;
-    uint64 public constant RECOVERER = 3;
+    uint64 public constant PAUSE_ROLE = 1;
+    uint64 public constant LIQUIDATOR_ROLE = 2;
+    uint64 public constant RECOVERER_ROLE = 3;
 
     uint64 public constant SUPPLY_KINK = 0.8e18;
     uint64 public constant SUPPLY_PER_YEAR_INTEREST_RATE_SLOPE_LOW = 0.05e18;
@@ -165,27 +165,28 @@ contract Common_Setup is Test, CometConfiguration {
         // set roles on selector
         {
             _selectors.push(PAUSE_SELEC);
-            governor.setTargetFunctionRole(comet, _selectors, PAUSE_GUARDIAN);
+            governor.setTargetFunctionRole(comet, _selectors, PAUSE_ROLE);
+            governor.setRoleGuardian(PAUSE_ROLE, PAUSE_ROLE);
             delete _selectors;
 
             _selectors.push(ABSORB_SELEC);
             _selectors.push(BUY_COLL_SELEC);
-            governor.setTargetFunctionRole(comet, _selectors, LIQUIDATOR);
+            governor.setTargetFunctionRole(comet, _selectors, LIQUIDATOR_ROLE);
             delete _selectors;
 
             _selectors.push(RECOVER_SELEC);
-            governor.setTargetFunctionRole(comet, _selectors, RECOVERER);
+            governor.setTargetFunctionRole(comet, _selectors, RECOVERER_ROLE);
             delete _selectors;
-            governor.setGrantDelay(RECOVERER, 12 hours);
+            governor.setGrantDelay(RECOVERER_ROLE, 12 hours);
             // timepoint when new grant delay appilies (minSetBack used as new delay is lower)
             skip(governor.minSetback());
         }
 
         // grant roles
         {
-            governor.grantRole(PAUSE_GUARDIAN, pauseGuardian, 0);
-            governor.grantRole(LIQUIDATOR, liquidator, 0);
-            governor.grantRole(RECOVERER, recoverer, 1 days);
+            governor.grantRole(PAUSE_ROLE, pauseGuardian, 0);
+            governor.grantRole(LIQUIDATOR_ROLE, liquidator, 0);
+            governor.grantRole(RECOVERER_ROLE, recoverer, 1 days);
             // new delay for recoverer role to apply
             skip(12 hours);
         }
