@@ -1689,4 +1689,6 @@ contract ScrollComet is CometMainInterface {
             }
         }
     }
+
+    function recover(address, address) external override {}
 }

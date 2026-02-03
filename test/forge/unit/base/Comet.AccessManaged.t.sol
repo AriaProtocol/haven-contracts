@@ -1,11 +1,13 @@
 pragma solidity ^0.8.15;
 
 import {IAccessManaged} from "oz/access/manager/IAccessManaged.sol";
+import {IAccessManager} from "oz/access/manager/IAccessManager.sol";
 import {CometMainInterface} from "contracts/CometMainInterface.sol";
 
 import {Comet_Setup} from "test/forge/setup/Comet.setup.t.sol";
 
-contract Comet_restricted_Test is Comet_Setup {
+/// @dev Test `AccessManaged` managed config in Comet, on function with `restricted` modifier
+contract Comet_AccessManaged_Test is Comet_Setup {
     function test_absorb_RoleRestricted() public {
         address[] memory borrowers = new address[](1);
         address absorber = makeAddr("absorber");
@@ -33,5 +35,21 @@ contract Comet_restricted_Test is Comet_Setup {
         vm.startPrank(liquidator);
         vm.expectRevert(abi.encodeWithSelector(CometMainInterface.NotForSale.selector));
         comet.buyCollateral(address(weth), 0.5 ether, 1500 * 1e6, absorber);
+    }
+
+    function test_recover_RoleRestricted() public {
+        address caller = makeAddr("caller");
+        address lostAddr = makeAddr("lostAddr");
+        address newAddr = makeAddr("newAddr");
+
+        vm.startPrank(caller);
+        vm.expectRevert(abi.encodeWithSelector(IAccessManaged.AccessManagedUnauthorized.selector, caller));
+        comet.recover(lostAddr, newAddr);
+
+        // works for recoverer, but reverts as operation not scheduled
+        vm.startPrank(recoverer);
+        bytes32 hash_ = 0x0c2e5ccc6153de54ab6d3605e33fef2a348e4c72cd2d22bb257383256e10aeae;
+        vm.expectRevert(abi.encodeWithSelector(IAccessManager.AccessManagerNotScheduled.selector, hash_));
+        comet.recover(lostAddr, newAddr);
     }
 }

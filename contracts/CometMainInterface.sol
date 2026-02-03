@@ -23,6 +23,7 @@ abstract contract CometMainInterface is CometCore {
     error NoSelfTransfer();
     error NotCollateralized();
     error NotForSale();
+    error NothingToRecover();
     error NotLiquidatable();
     error Paused();
     error ReentrantCallBlocked();
@@ -93,6 +94,14 @@ abstract contract CometMainInterface is CometCore {
 
     /// @notice Event emitted when reserves are withdrawn by the governor
     event WithdrawReserves(address indexed to, uint amount);
+
+    /**
+     * @notice Event emitted when collateral and debt are recovered (force tranfered) by a
+     *         recoverer. Does not liquidate the account at all.
+     */
+    event Recovered(address indexed lostAccount, address indexed newAccount);
+
+    function recover(address lostAccount, address newAccount) external virtual;
 
     function supply(address asset, uint amount) external virtual;
     function supplyTo(address dst, address asset, uint amount) external virtual;

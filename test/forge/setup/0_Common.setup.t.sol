@@ -177,6 +177,8 @@ contract Common_Setup is Test, CometConfiguration {
             governor.setTargetFunctionRole(comet, _selectors, RECOVERER);
             delete _selectors;
             governor.setGrantDelay(RECOVERER, 12 hours);
+            // timepoint when new grant delay appilies (minSetBack used as new delay is lower)
+            skip(governor.minSetback());
         }
 
         // grant roles
@@ -184,6 +186,8 @@ contract Common_Setup is Test, CometConfiguration {
             governor.grantRole(PAUSE_GUARDIAN, pauseGuardian, 0);
             governor.grantRole(LIQUIDATOR, liquidator, 0);
             governor.grantRole(RECOVERER, recoverer, 1 days);
+            // new delay for recoverer role to apply
+            skip(12 hours);
         }
 
         vm.stopPrank();

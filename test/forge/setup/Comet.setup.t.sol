@@ -51,6 +51,21 @@ contract Comet_Setup is Common_Setup {
             assertEq(liquidationExecutionDelay, 0, "LIQUIDATOR immediately executed");
         }
 
+        // recover
+        {
+            assertEq(
+                governor.getTargetFunctionRole(address(comet), RECOVER_SELEC),
+                RECOVERER,
+                "RECOVERER role on recover(...)"
+            );
+            assertEq(governor.getRoleAdmin(RECOVERER), 0x0, "default admin for RECOVERER");
+            assertEq(governor.getRoleGuardian(RECOVERER), 0x0, "no guardian for RECOVERER");
+            assertEq(governor.getRoleGrantDelay(RECOVERER), 12 hours, "RECOVERER granted after 12h");
+            (bool isRecoverMember, uint32 recoverExecutionDelay) = governor.hasRole(RECOVERER, recoverer);
+            assertTrue(isRecoverMember, "RECOVERER member");
+            assertEq(recoverExecutionDelay, 1 days, "RECOVERER needs 1 days schedule");
+        }
+
         assertEq(governor.getTargetAdminDelay(address(comet)), 0, "no delay for comet");
     }
 
