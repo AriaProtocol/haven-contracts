@@ -13,7 +13,7 @@ contract CometConfiguration {
 
     struct Configuration {
         address governor;
-        address pauseGuardian;
+        address pauseGuardian; // DEPRECATED
         address baseToken;
         address baseTokenPriceFeed;
         address extensionDelegate;

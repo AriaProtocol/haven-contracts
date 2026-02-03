@@ -8,7 +8,7 @@ import {CometMainInterface} from "contracts/CometMainInterface.sol";
 import {CometWithExtendedAssetList_Setup} from "test/forge/setup/CometWithExtendedAssetList.setup.t.sol";
 
 /// @dev Test `AccessManaged` managed config in Comet, on function with `restricted` modifier
-contract CometWExtAssetList_restricted_Test is CometWithExtendedAssetList_Setup {
+contract CometWExtAssetList_AccessManaged_Test is CometWithExtendedAssetList_Setup {
     function test_absorb_RoleRestricted() public {
         address[] memory borrowers = new address[](1);
         address absorber = makeAddr("absorber");

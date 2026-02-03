@@ -18,7 +18,7 @@ contract Comet is CometMainInterface, AccessManaged {
     /// @notice The admin of the protocol
     address public immutable override governor;
 
-    /// @notice The account which may trigger pauses
+    /// @notice The account which may trigger pauses - DEPRECATED due to AccessManaged & AccessManager
     address public immutable override pauseGuardian;
 
     /// @notice The address of the base token contract
@@ -782,7 +782,6 @@ contract Comet is CometMainInterface, AccessManaged {
         }
     }
 
-    // TODO: Careful as Governor is now AccessManager + pauseGuardian shall be configured there too
     /**
      * @notice Pauses different actions within Comet
      * @param supplyPaused Boolean for pausing supply actions
@@ -797,10 +796,7 @@ contract Comet is CometMainInterface, AccessManaged {
         bool withdrawPaused,
         bool absorbPaused,
         bool buyPaused
-    ) external override {
-        if (msg.sender != governor && msg.sender != pauseGuardian)
-            revert Unauthorized();
-
+    ) external override restricted {
         pauseFlags =
             uint8(0) |
             (toUInt8(supplyPaused) << PAUSE_SUPPLY_OFFSET) |
@@ -1637,15 +1633,12 @@ contract Comet is CometMainInterface, AccessManaged {
             baseScale;
     }
 
-    // TODO: Careful as Governor is now AccessManager + pauseGuardian shall be configured there too
     /**
      * @notice Withdraws base token reserves if called by the governor
      * @param to An address of the receiver of withdrawn reserves
      * @param amount The amount of reserves to be withdrawn from the protocol
      */
-    function withdrawReserves(address to, uint amount) external override {
-        if (msg.sender != governor) revert Unauthorized();
-
+    function withdrawReserves(address to, uint amount) external override restricted {
         int reserves = getReserves();
         if (reserves < 0 || amount > unsigned256(reserves))
             revert InsufficientReserves();
@@ -1655,7 +1648,6 @@ contract Comet is CometMainInterface, AccessManaged {
         emit WithdrawReserves(to, amount);
     }
 
-    // TODO: Careful as Governor is now AccessManager + pauseGuardian shall be configured there too
     /**
      * @notice Sets Comet's ERC20 allowance of an asset for a manager
      * @dev Only callable by governor
@@ -1670,9 +1662,7 @@ contract Comet is CometMainInterface, AccessManaged {
         address manager,
         address asset,
         uint amount
-    ) external override {
-        if (msg.sender != governor) revert Unauthorized();
-
+    ) external override restricted {
         IERC20NonStandard(asset).approve(manager, amount);
     }
 

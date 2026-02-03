@@ -25,12 +25,13 @@ contract Common_Setup is Test, CometConfiguration {
 
     address public accessManagerAdmin;
     address public liquidator;
-    address public pauseGuardian;
+    address public pauseGuardian; // in AccessManager, rather than Comet
     address public recoverer;
 
     uint64 public constant PAUSE_ROLE = 1;
     uint64 public constant LIQUIDATOR_ROLE = 2;
     uint64 public constant RECOVERER_ROLE = 3;
+    uint64 public constant PAUSE_GUARDIAN = 4;
 
     uint64 public constant SUPPLY_KINK = 0.8e18;
     uint64 public constant SUPPLY_PER_YEAR_INTEREST_RATE_SLOPE_LOW = 0.05e18;
@@ -133,7 +134,7 @@ contract Common_Setup is Test, CometConfiguration {
     function _configureComet() internal returns (Configuration memory config) {
         config = Configuration({
             governor: address(governor),
-            pauseGuardian: pauseGuardian,
+            pauseGuardian: address(0),
             baseToken: address(baseToken),
             baseTokenPriceFeed: address(baseTokenPriceFeed),
             extensionDelegate: address(extensionDelegate),
@@ -166,7 +167,7 @@ contract Common_Setup is Test, CometConfiguration {
         {
             _selectors.push(PAUSE_SELEC);
             governor.setTargetFunctionRole(comet, _selectors, PAUSE_ROLE);
-            governor.setRoleGuardian(PAUSE_ROLE, PAUSE_ROLE);
+            governor.setRoleGuardian(PAUSE_ROLE, PAUSE_GUARDIAN);
             delete _selectors;
 
             _selectors.push(ABSORB_SELEC);
@@ -187,6 +188,7 @@ contract Common_Setup is Test, CometConfiguration {
             governor.grantRole(PAUSE_ROLE, pauseGuardian, 0);
             governor.grantRole(LIQUIDATOR_ROLE, liquidator, 0);
             governor.grantRole(RECOVERER_ROLE, recoverer, 1 days);
+            governor.grantRole(PAUSE_GUARDIAN, pauseGuardian, 0);
             // new delay for recoverer role to apply
             skip(12 hours);
         }

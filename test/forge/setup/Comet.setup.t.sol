@@ -15,17 +15,22 @@ contract Comet_Setup is Common_Setup {
     }
 
     function test_SetUpState_Comet() public {
-        // pause guardian
+        // pause role
         {
             assertEq(
                 governor.getTargetFunctionRole(address(comet), PAUSE_SELEC), PAUSE_ROLE, "PAUSE_ROLE role on pause(...)"
             );
             assertEq(governor.getRoleAdmin(PAUSE_ROLE), 0x0, "default admin for PAUSE_ROLE");
-            assertEq(governor.getRoleGuardian(PAUSE_ROLE), 0x0, "no guardian for PAUSE_ROLE");
+            assertEq(governor.getRoleGuardian(PAUSE_ROLE), PAUSE_GUARDIAN, "PAUSE_GUARDIAN for PAUSE_ROLE");
             assertEq(governor.getRoleGrantDelay(PAUSE_ROLE), 0, "PAUSE_ROLE immediately granted");
             (bool isPauseMember, uint32 pauseExecutionDelay) = governor.hasRole(PAUSE_ROLE, pauseGuardian);
             assertTrue(isPauseMember, "PAUSE_ROLE member");
             assertEq(pauseExecutionDelay, 0, "immediately executed");
+            // pause guardian role
+            assertEq(governor.getRoleGrantDelay(PAUSE_GUARDIAN), 0, "PAUSE_GUARDIAN immediately granted");
+            (bool isPauseGuardianMember, uint32 pauseGuardianExecutionDelay) = governor.hasRole(PAUSE_GUARDIAN, pauseGuardian);
+            assertTrue(isPauseGuardianMember, "PAUSE_GUARDIAN member");
+            assertEq(pauseGuardianExecutionDelay, 0, "PAUSE_GUARDIAN immediately executed");
         }
 
         // liquidator

@@ -605,7 +605,6 @@ contract CometWithExtendedAssetList is CometMainInterface, AccessManaged {
         }
     }
 
-    // TODO: Careful as Governor is now AccessManager + pauseGuardian shall be configured there too
     /**
      * @notice Pauses different actions within Comet
      * @param supplyPaused Boolean for pausing supply actions
@@ -620,10 +619,7 @@ contract CometWithExtendedAssetList is CometMainInterface, AccessManaged {
         bool withdrawPaused,
         bool absorbPaused,
         bool buyPaused
-    ) external override {
-        if (msg.sender != governor && msg.sender != pauseGuardian)
-            revert Unauthorized();
-
+    ) external override restricted{
         pauseFlags =
             uint8(0) |
             (toUInt8(supplyPaused) << PAUSE_SUPPLY_OFFSET) |
@@ -1485,15 +1481,12 @@ contract CometWithExtendedAssetList is CometMainInterface, AccessManaged {
             baseScale;
     }
 
-    // TODO: Careful as Governor is now AccessManager + pauseGuardian shall be configured there too
     /**
      * @notice Withdraws base token reserves if called by the governor
      * @param to An address of the receiver of withdrawn reserves
      * @param amount The amount of reserves to be withdrawn from the protocol
      */
-    function withdrawReserves(address to, uint amount) external override {
-        if (msg.sender != governor) revert Unauthorized();
-
+    function withdrawReserves(address to, uint amount) external override restricted {
         int reserves = getReserves();
         if (reserves < 0 || amount > unsigned256(reserves))
             revert InsufficientReserves();
@@ -1503,7 +1496,6 @@ contract CometWithExtendedAssetList is CometMainInterface, AccessManaged {
         emit WithdrawReserves(to, amount);
     }
 
-    // TODO: Careful as Governor is now AccessManager + pauseGuardian shall be configured there too
     /**
      * @notice Sets Comet's ERC20 allowance of an asset for a manager
      * @dev Only callable by governor
@@ -1518,9 +1510,7 @@ contract CometWithExtendedAssetList is CometMainInterface, AccessManaged {
         address manager,
         address asset,
         uint amount
-    ) external override {
-        if (msg.sender != governor) revert Unauthorized();
-
+    ) external override restricted {
         IERC20NonStandard(asset).approve(manager, amount);
     }
 
