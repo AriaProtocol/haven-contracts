@@ -4,10 +4,10 @@ import {IAccessManaged} from "oz/access/manager/IAccessManaged.sol";
 import {IAccessManager} from "oz/access/manager/IAccessManager.sol";
 import {CometMainInterface} from "contracts/CometMainInterface.sol";
 
-import {Comet_Setup} from "test/forge/setup/Comet.setup.t.sol";
+import {Common_Setup} from "test/forge/setup/0_Common.setup.t.sol";
 
 /// @dev Test `AccessManaged` managed config in Comet, on function with `restricted` modifier
-contract Comet_AccessManaged_Test is Comet_Setup {
+contract Comet_AccessManaged_Test is Common_Setup {
     function test_absorb_RoleRestricted() public {
         address[] memory borrowers = new address[](1);
         address absorber = makeAddr("absorber");

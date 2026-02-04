@@ -2,11 +2,10 @@ pragma solidity ^0.8.15;
 
 import {CometExtInterface} from "contracts/CometExtInterface.sol";
 
-import {CometWithExtendedAssetList_Setup} from "test/forge/setup/CometWithExtendedAssetList.setup.t.sol";
 import {Fixture_3Sup_3Bor} from "test/forge/setup/fixtures/Fixture_3Sup_3Bor.t.sol";
 
 /// @dev Internal _transferCollateral(...)
-contract CometWExtAssetList__transferCollateral_Test is CometWithExtendedAssetList_Setup, Fixture_3Sup_3Bor {
+contract CometWExtAssetList__transferCollateral_Test is Fixture_3Sup_3Bor {
     address public newAddr = makeAddr("new address borrower3");
 
     CometExtInterface public cometExt;
@@ -14,16 +13,16 @@ contract CometWExtAssetList__transferCollateral_Test is CometWithExtendedAssetLi
     function setUp() public override {
         super.setUp();
 
-        _loadFixture(cometExtAsset, baseToken, weth, wbtc);
+        _loadFixture(cometExtendedAssetList);
 
-        cometExt = CometExtInterface(address(cometExtAsset));
+        cometExt = CometExtInterface(address(cometExtendedAssetList));
     }
 
     function test_transferCollateral() public {
         (uint128 lostWethCollBalance, uint128 lostWeth_reserved) = cometExt.userCollateral(borrower3, address(weth));
         (uint128 lostWbtcCollBalance, uint128 lostWbtc_reserved) = cometExt.userCollateral(borrower3, address(wbtc));
 
-        cometExtAsset.exposed_transferCollateral(borrower3, newAddr);
+        cometExtendedAssetList.exposed_transferCollateral(borrower3, newAddr);
 
         // newAddr has borrower3 collateral data
         {

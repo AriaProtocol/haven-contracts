@@ -1,25 +1,21 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.15;
 
-import {CometHarness} from "contracts/test/CometHarness.sol";
+import "test/forge/setup/0_Common.setup.t.sol";
 
-import "./0_Common.setup.t.sol";
-
-contract Comet_Setup is Common_Setup {
-    CometHarness public comet;
-
-    function setUp() public virtual override {
-        super.setUp();
-
-        _defineRolesAndGrantDefaultAccess(address(comet));
+/// @dev solely testing setup state
+contract Comet_setup_Test is Common_Setup {
+    function test_SetUpState_Governor_Comet() public {
+        __checkOnCometInstance(address(comet));
     }
 
-    function test_SetUpState_Comet() public {
+    function test_SetUpState_Governor_CometExtendedAssetList() public {
+        __checkOnCometInstance(address(cometExtendedAssetList));
+    }
+
+    function test_SetUpState_Governor() public {
         // pause role
         {
-            assertEq(
-                governor.getTargetFunctionRole(address(comet), PAUSE_SELEC), PAUSE_ROLE, "PAUSE_ROLE role on pause(...)"
-            );
             assertEq(governor.getRoleAdmin(PAUSE_ROLE), 0x0, "default admin for PAUSE_ROLE");
             assertEq(governor.getRoleGuardian(PAUSE_ROLE), PAUSE_GUARDIAN, "PAUSE_GUARDIAN for PAUSE_ROLE");
             assertEq(governor.getRoleGrantDelay(PAUSE_ROLE), 0, "PAUSE_ROLE immediately granted");
@@ -28,24 +24,14 @@ contract Comet_Setup is Common_Setup {
             assertEq(pauseExecutionDelay, 0, "immediately executed");
             // pause guardian role
             assertEq(governor.getRoleGrantDelay(PAUSE_GUARDIAN), 0, "PAUSE_GUARDIAN immediately granted");
-            (bool isPauseGuardianMember, uint32 pauseGuardianExecutionDelay) = governor.hasRole(PAUSE_GUARDIAN, pauseGuardian);
+            (bool isPauseGuardianMember, uint32 pauseGuardianExecutionDelay) =
+                governor.hasRole(PAUSE_GUARDIAN, pauseGuardian);
             assertTrue(isPauseGuardianMember, "PAUSE_GUARDIAN member");
             assertEq(pauseGuardianExecutionDelay, 0, "PAUSE_GUARDIAN immediately executed");
         }
 
         // liquidator
         {
-            // absorb & buyCollateral access grouped into same role
-            assertEq(
-                governor.getTargetFunctionRole(address(comet), ABSORB_SELEC),
-                LIQUIDATOR_ROLE,
-                "LIQUIDATOR_ROLE role on absorb(...)"
-            );
-            assertEq(
-                governor.getTargetFunctionRole(address(comet), BUY_COLL_SELEC),
-                LIQUIDATOR_ROLE,
-                "LIQUIDATOR_ROLE role on buyCollateral(...)"
-            );
             assertEq(governor.getRoleAdmin(LIQUIDATOR_ROLE), 0x0, "default admin for LIQUIDATOR_ROLE");
             assertEq(governor.getRoleGuardian(LIQUIDATOR_ROLE), 0x0, "no guardian for LIQUIDATOR_ROLE");
             assertEq(governor.getRoleGrantDelay(LIQUIDATOR_ROLE), 0, "LIQUIDATOR_ROLE immediately granted");
@@ -56,11 +42,6 @@ contract Comet_Setup is Common_Setup {
 
         // recover
         {
-            assertEq(
-                governor.getTargetFunctionRole(address(comet), RECOVER_SELEC),
-                RECOVERER_ROLE,
-                "RECOVERER_ROLE role on recover(...)"
-            );
             assertEq(governor.getRoleAdmin(RECOVERER_ROLE), 0x0, "default admin for RECOVERER_ROLE");
             assertEq(governor.getRoleGuardian(RECOVERER_ROLE), 0x0, "no guardian for RECOVERER_ROLE");
             assertEq(governor.getRoleGrantDelay(RECOVERER_ROLE), 12 hours, "RECOVERER_ROLE granted after 12h");
@@ -71,11 +52,6 @@ contract Comet_Setup is Common_Setup {
 
         // withdrawer
         {
-            assertEq(
-                governor.getTargetFunctionRole(address(comet), WITHDRAW_SELECT),
-                WITHDRAWER_ROLE,
-                "WITHDRAWER_ROLE role on withdraw(...)"
-            );
             assertEq(governor.getRoleAdmin(WITHDRAWER_ROLE), 0x0, "default admin for WITHDRAWER_ROLE");
             assertEq(governor.getRoleGuardian(WITHDRAWER_ROLE), 0x0, "no guardian for WITHDRAWER_ROLE");
             assertEq(governor.getRoleGrantDelay(WITHDRAWER_ROLE), 6 days, "WITHDRAWER_ROLE granted after 6 days");
@@ -83,19 +59,34 @@ contract Comet_Setup is Common_Setup {
             assertTrue(isWithdrawMember, "WITHDRAWER_ROLE member");
             assertEq(withdrawExecutionDelay, 7 days, "WITHDRAWER_ROLE needs 6 days schedule");
         }
-
-        assertEq(governor.getTargetAdminDelay(address(comet)), 0, "no delay for comet");
     }
 
-    function _deployComet() internal override {
-        comet = new CometHarness(_configureComet());
-        comet.initializeStorage();
-        vm.label(address(comet), "Comet");
-    }
+    function __checkOnCometInstance(address comet) private {
+        // pause
+        assertEq(governor.getTargetFunctionRole(comet, PAUSE_SELEC), PAUSE_ROLE, "PAUSE_ROLE role on pause(...)");
 
-    function _deployCometExt() internal override {
-        CometConfiguration.ExtConfiguration memory extConfig =
-            CometConfiguration.ExtConfiguration({name32: NAME32, symbol32: SYMBOL32});
-        extensionDelegate = new CometExt(extConfig);
+        // liquidator: `absorb` & `buyCollateral` accesses grouped into same role
+        assertEq(
+            governor.getTargetFunctionRole(comet, ABSORB_SELEC), LIQUIDATOR_ROLE, "LIQUIDATOR_ROLE role on absorb(...)"
+        );
+        assertEq(
+            governor.getTargetFunctionRole(comet, BUY_COLL_SELEC),
+            LIQUIDATOR_ROLE,
+            "LIQUIDATOR_ROLE role on buyCollateral(...)"
+        );
+
+        // recover
+        assertEq(
+            governor.getTargetFunctionRole(comet, RECOVER_SELEC), RECOVERER_ROLE, "RECOVERER_ROLE role on recover(...)"
+        );
+
+        // withdrawer
+        assertEq(
+            governor.getTargetFunctionRole(comet, WITHDRAW_SELECT),
+            WITHDRAWER_ROLE,
+            "WITHDRAWER_ROLE role on withdraw(...)"
+        );
+
+        assertEq(governor.getTargetAdminDelay(comet), 0, "no delay for comet");
     }
 }

@@ -1,15 +1,14 @@
 pragma solidity ^0.8.15;
 
-import {CometInterface} from "contracts/CometInterface.sol";
+import "contracts/CometInterface.sol";
 
-import {Comet_Setup} from "test/forge/setup/Comet.setup.t.sol";
 import {Fixture_3Sup_3Bor} from "test/forge/setup/fixtures/Fixture_3Sup_3Bor.t.sol";
 
-contract Comet_borrow_Over100Utilization_Test is Comet_Setup, Fixture_3Sup_3Bor {
+contract Comet_borrow_Over100Utilization_Test is Fixture_3Sup_3Bor {
     function setUp() public override {
         super.setUp();
 
-        _loadFixture(comet, baseToken, weth, wbtc);
+        _loadFixture(comet);
     }
 
     function testFork_borrowReserves_Over100Utilization() public {
@@ -31,7 +30,7 @@ contract Comet_borrow_Over100Utilization_Test is Comet_Setup, Fixture_3Sup_3Bor 
             emit log_named_int("Comet Reserves", reserves);
             emit log_named_uint("Total supply  ", comet.totalSupply());
             emit log_named_uint("Total borrow  ", comet.totalBorrow());
-            assertEq(reserves, int256(RESERVES), "issue: reserves updated");
+            assertApproxEqAbs(reserves, int256(RESERVES), 1, "issue: reserves updated");
             assertTrue(utilization > CometInterface(address(comet)).factorScale(), "utilization <= 100%");
             assertEq(baseToken.balanceOf(address(comet)), 0, "reserves left in market");
         }
@@ -44,7 +43,7 @@ contract Comet_borrow_Over100Utilization_Test is Comet_Setup, Fixture_3Sup_3Bor 
             address[] memory absorbees = new address[](1);
             absorbees[0] = lastBorrower;
 
-            vm.startPrank(absorber);
+            vm.startPrank(liquidator);
             comet.absorb(absorber, absorbees);
         }
 

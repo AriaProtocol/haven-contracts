@@ -1,6 +1,11 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.15;
 
+import {CometHarness} from "contracts/test/CometHarness.sol";
+import {CometHarnessExtendedAssetList} from "contracts/test/CometHarnessExtendedAssetList.sol";
+import {CometExtAssetList} from "contracts/CometExtAssetList.sol";
+import {AssetListFactory} from "contracts/AssetListFactory.sol";
+
 import "forge-std/Test.sol";
 import "contracts/CometExt.sol";
 import "contracts/CometConfiguration.sol";
@@ -12,29 +17,32 @@ import {AccessManager} from "oz/access/manager/AccessManager.sol";
 
 contract Common_Setup is Test, CometConfiguration {
     AccessManager public governor;
-    CometExt public extensionDelegate;
+    CometHarness public comet;
+    CometHarnessExtendedAssetList public cometExtendedAssetList;
 
+    //////// tokens & feeds ////////
     FaucetToken public baseToken;
     SimplePriceFeed public baseTokenPriceFeed;
-
     FaucetToken public weth;
     SimplePriceFeed public wethPriceFeed;
-
     FaucetToken public wbtc;
     SimplePriceFeed public wbtcPriceFeed;
 
+    //////// users ////////
     address public accessManagerAdmin;
     address public liquidator;
     address public pauseGuardian; // in AccessManager, rather than Comet
     address public recoverer;
     address public withdrawer;
 
+    //////// roles ////////
     uint64 public constant PAUSE_ROLE = 1;
     uint64 public constant LIQUIDATOR_ROLE = 2;
     uint64 public constant RECOVERER_ROLE = 3;
     uint64 public constant PAUSE_GUARDIAN = 4;
     uint64 public constant WITHDRAWER_ROLE = 5;
 
+    //////// market config ////////
     uint64 public constant SUPPLY_KINK = 0.8e18;
     uint64 public constant SUPPLY_PER_YEAR_INTEREST_RATE_SLOPE_LOW = 0.05e18;
     uint64 public constant SUPPLY_PER_YEAR_INTEREST_RATE_SLOPE_HIGH = 2e18;
@@ -51,9 +59,7 @@ contract Common_Setup is Test, CometConfiguration {
     uint104 public constant BASE_BORROW_MIN = 1e6;
     uint104 public constant TARGET_RESERVES = 0;
 
-    bytes32 constant NAME32 = "Compound Comet";
-    bytes32 constant SYMBOL32 = "cUSDC";
-
+    //////// FUNCTION SELECTORS ////////
     // 0x44c35d07
     bytes4 public PAUSE_SELEC = _compSelector("pause(bool,bool,bool,bool,bool)");
     // 0xc3cecfd2
@@ -63,55 +69,72 @@ contract Common_Setup is Test, CometConfiguration {
     bytes4 public RECOVER_SELEC = _compSelector("recover(address,address)");
     bytes4 public WITHDRAW_SELECT = _compSelector("withdrawReserves(address,uint256)");
 
+    AssetConfig[] private __assetsConfig;
+    bytes4[] internal _selectors; // easier to add data
+
     function setUp() public virtual {
-        _createAddr();
+        // shared setup
+        __createAddr();
+        __deployTokensAndPriceFeed();
+        __assetsConfig = __configureAssets();
 
-        _deployTokensAndPriceFeed();
-        _deployCometExt();
+        // standard Comet
+        address cometExt_ = _deployCometExt();
+        Configuration memory config_ = __configureComet(cometExt_);
+        comet = _deployComet(config_);
+        __defineRolesAndGrantDefaultAccess(address(comet));
 
-        _deployComet();
+        // extended asset list Comet
+        cometExt_ = _deployCometExt_ExtendedAssetList();
+        config_ = __configureComet(cometExt_);
+        cometExtendedAssetList = _deployComet_ExtendedAssetList(config_);
+        __defineRolesAndGrantDefaultAccess(address(cometExtendedAssetList));
 
-        // Labels
-        vm.label(address(baseToken), "USDC");
-        vm.label(address(weth), "WETH");
-        vm.label(address(wbtc), "WBTC");
-        vm.label(address(governor), "Governor");
-        vm.label(accessManagerAdmin, "Access Admin");
-        vm.label(liquidator, "Liquidator");
-        vm.label(recoverer, "Recoverer");
-        vm.label(pauseGuardian, "Pause Guardian");
-        vm.label(withdrawer, "Withdrawer");
+        ___labelAddresses();
     }
 
-    function _createAddr() internal {
-        accessManagerAdmin = makeAddr("accessManagerAdmin");
-        liquidator = makeAddr("liquidator");
-        pauseGuardian = makeAddr("pauseGuardian");
-        recoverer = makeAddr("recoverer");
-        withdrawer = makeAddr("withdrawer");
-
-        governor = new AccessManager(accessManagerAdmin);
+    ////////////////////////////////////////////////////////////////
+    //////// Deploy markets, which contains everything else ////////
+    ////////////////////////////////////////////////////////////////
+    function _deployComet(Configuration memory config_) internal returns (CometHarness comet_) {
+        comet_ = new CometHarness(config_);
+        comet_.initializeStorage();
     }
 
-    function _deployComet() internal virtual {}
-
-    function _deployCometExt() internal virtual {}
-
-    function _deployTokensAndPriceFeed() internal {
-        // Deploy Base Token (USDC)
-        baseToken = new FaucetToken(1000000 * 1e6, "USD Coin", 6, "USDC");
-        baseTokenPriceFeed = new SimplePriceFeed(1e8, 8); // $1
-
-        // Deploy WETH
-        weth = new FaucetToken(1000 * 1e18, "Wrapped Ether", 18, "WETH");
-        wethPriceFeed = new SimplePriceFeed(3_000 * 1e8, 8); // $3000
-
-        // Deploy WBTC
-        wbtc = new FaucetToken(100 * 1e8, "Wrapped Bitcoin", 8, "WBTC");
-        wbtcPriceFeed = new SimplePriceFeed(90_000 * 1e8, 8); // $90000
+    function _deployComet_ExtendedAssetList(Configuration memory config_)
+        internal
+        returns (CometHarnessExtendedAssetList cometExtAsset_)
+    {
+        cometExtAsset_ = new CometHarnessExtendedAssetList(config_);
+        cometExtAsset_.initializeStorage();
     }
 
-    function _configureAssets() internal returns (AssetConfig[] memory config) {
+    ////////////////////////////////////////////////////////////////
+    //// Deploy extension delegates, which contains hToken info ////
+    ////////////////////////////////////////////////////////////////
+    function _deployCometExt() internal returns (address) {
+        CometConfiguration.ExtConfiguration memory extConfig =
+            CometConfiguration.ExtConfiguration({name32: "Compound Comet", symbol32: "cUSDC"});
+        return address(new CometExt(extConfig));
+    }
+
+    function _deployCometExt_ExtendedAssetList() internal returns (address) {
+        CometConfiguration.ExtConfiguration memory extConfig = CometConfiguration.ExtConfiguration({
+            name32: "Compound Comet_ExtendedAssetList", symbol32: "cUSDC_ExtendedAssetList"
+        });
+
+        return address(new CometExtAssetList(extConfig, address(new AssetListFactory())));
+    }
+
+    //// PURE
+    function _compSelector(string memory sel_) internal pure returns (bytes4) {
+        return bytes4(keccak256(bytes(sel_)));
+    }
+
+    //==========================================================================//
+    //                                 PRIVATE                                  //
+    //==========================================================================//
+    function __configureAssets() private returns (AssetConfig[] memory config) {
         config = new AssetConfig[](2);
 
         // WETH Config
@@ -137,13 +160,13 @@ contract Common_Setup is Test, CometConfiguration {
         });
     }
 
-    function _configureComet() internal returns (Configuration memory config) {
+    function __configureComet(address extensionDelegate_) private returns (Configuration memory config) {
         config = Configuration({
             governor: address(governor),
             pauseGuardian: address(0),
             baseToken: address(baseToken),
             baseTokenPriceFeed: address(baseTokenPriceFeed),
-            extensionDelegate: address(extensionDelegate),
+            extensionDelegate: extensionDelegate_,
             supplyKink: SUPPLY_KINK,
             supplyPerYearInterestRateSlopeLow: SUPPLY_PER_YEAR_INTEREST_RATE_SLOPE_LOW,
             supplyPerYearInterestRateSlopeHigh: SUPPLY_PER_YEAR_INTEREST_RATE_SLOPE_HIGH,
@@ -159,14 +182,21 @@ contract Common_Setup is Test, CometConfiguration {
             baseMinForRewards: BASE_MIN_FOR_REWARDS,
             baseBorrowMin: BASE_BORROW_MIN,
             targetReserves: TARGET_RESERVES,
-            assetConfigs: _configureAssets()
+            assetConfigs: __assetsConfig
         });
     }
 
-    //////// MUST BE called in child contracts ////////
-    bytes4[] internal _selectors; // easier to add data
+    function __createAddr() private {
+        accessManagerAdmin = makeAddr("accessManagerAdmin");
+        liquidator = makeAddr("liquidator");
+        pauseGuardian = makeAddr("pauseGuardian");
+        recoverer = makeAddr("recoverer");
+        withdrawer = makeAddr("withdrawer");
 
-    function _defineRolesAndGrantDefaultAccess(address comet) internal {
+        governor = new AccessManager(accessManagerAdmin);
+    }
+
+    function __defineRolesAndGrantDefaultAccess(address comet) private {
         vm.startPrank(accessManagerAdmin);
 
         // set roles on selector
@@ -209,7 +239,31 @@ contract Common_Setup is Test, CometConfiguration {
         vm.stopPrank();
     }
 
-    function _compSelector(string memory sel_) internal pure returns (bytes4) {
-        return bytes4(keccak256(bytes(sel_)));
+    function __deployTokensAndPriceFeed() private {
+        // Deploy Base Token (USDC)
+        baseToken = new FaucetToken(1000000 * 1e6, "USD Coin", 6, "USDC");
+        baseTokenPriceFeed = new SimplePriceFeed(1e8, 8); // $1
+
+        // Deploy WETH
+        weth = new FaucetToken(1000 * 1e18, "Wrapped Ether", 18, "WETH");
+        wethPriceFeed = new SimplePriceFeed(3_000 * 1e8, 8); // $3000
+
+        // Deploy WBTC
+        wbtc = new FaucetToken(100 * 1e8, "Wrapped Bitcoin", 8, "WBTC");
+        wbtcPriceFeed = new SimplePriceFeed(90_000 * 1e8, 8); // $90000
+    }
+
+    function ___labelAddresses() internal {
+        vm.label(address(comet), "Comet");
+        vm.label(address(cometExtendedAssetList), "CometExtendedAssetList");
+        vm.label(address(baseToken), "USDC");
+        vm.label(address(weth), "WETH");
+        vm.label(address(wbtc), "WBTC");
+        vm.label(address(governor), "Governor");
+        vm.label(accessManagerAdmin, "Access Admin");
+        vm.label(liquidator, "Liquidator");
+        vm.label(recoverer, "Recoverer");
+        vm.label(pauseGuardian, "Pause Guardian");
+        vm.label(withdrawer, "Withdrawer");
     }
 }
