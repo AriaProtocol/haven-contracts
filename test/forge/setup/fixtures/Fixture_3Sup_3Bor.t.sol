@@ -41,9 +41,7 @@ contract Fixture_3Sup_3Bor is Common_Setup {
     //============================================================================//
     //                                  INTERNAL                                  //
     //============================================================================//
-    function _loadFixture(CometMainInterface comet_)
-        internal
-    {
+    function _loadFixture(CometMainInterface comet_) internal {
         _comet = comet_;
 
         _setupSuppliers();

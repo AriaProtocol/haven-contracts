@@ -266,4 +266,9 @@ contract Common_Setup is Test, CometConfiguration {
         vm.label(pauseGuardian, "Pause Guardian");
         vm.label(withdrawer, "Withdrawer");
     }
+
+    ////// Utils //////
+    function _concat(string memory str1, string memory str2) internal pure returns (string memory) {
+        return string.concat(str1, str2);
+    }
 }
