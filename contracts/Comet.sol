@@ -1753,12 +1753,14 @@ contract Comet is CometMainInterface, AccessManaged {
         address newAccount
     ) external override restricted {
         if (lostAccount == newAccount) revert NoSelfTransfer();
+        if (newAccount == address(0)) revert ZeroAddress();
+        if (
+            borrowBalanceOf(newAccount) != 0 ||
+            balanceOf(newAccount) != 0 ||
+            userBasic[newAccount].assetsIn != 0
+        ) revert AccountNotEmpty();
 
-        bool hasCollateral = _transferCollateral(lostAccount, newAccount);
-
-        // save gas by reverting earlier (no collateral, nor lend/borrow)
-        if (!hasCollateral && userBasic[lostAccount].principal == 0) revert NothingToRecover();
-
+        _transferCollateral(lostAccount, newAccount);
         _transferDebt(lostAccount, newAccount);
 
         emit Recovered(lostAccount, newAccount);
@@ -1768,7 +1770,7 @@ contract Comet is CometMainInterface, AccessManaged {
     function _transferCollateral(
         address lostAccount,
         address newAccount
-    ) internal returns(bool hasCollateral) {
+    ) internal {
         uint16 assetsIn = userBasic[lostAccount].assetsIn;
         // further optimization with typeof(i) = typeof(assetsIn)
         for (uint8 i; i < numAssets; ++i) {
@@ -1781,7 +1783,6 @@ contract Comet is CometMainInterface, AccessManaged {
                 ];
 
                 delete userCollateral[lostAccount][asset];
-                hasCollateral = true;
             }
         }
     }

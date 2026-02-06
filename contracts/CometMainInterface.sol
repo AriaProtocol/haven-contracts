@@ -10,6 +10,7 @@ import "./CometCore.sol";
  */
 abstract contract CometMainInterface is CometCore {
     error Absurd();
+    error AccountNotEmpty();
     error AlreadyInitialized();
     error BadAsset();
     error BadDecimals();
@@ -23,7 +24,6 @@ abstract contract CometMainInterface is CometCore {
     error NoSelfTransfer();
     error NotCollateralized();
     error NotForSale();
-    error NothingToRecover();
     error NotLiquidatable();
     error Paused();
     error ReentrantCallBlocked();
@@ -34,6 +34,7 @@ abstract contract CometMainInterface is CometCore {
     error TransferInFailed();
     error TransferOutFailed();
     error Unauthorized();
+    error ZeroAddress();
 
     event Supply(address indexed from, address indexed dst, uint amount);
     event Transfer(address indexed from, address indexed to, uint amount);

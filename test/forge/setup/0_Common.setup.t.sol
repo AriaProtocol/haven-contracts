@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.15;
 
+import {Strings} from "oz-4.9.0/utils/Strings.sol";
+
 import {CometHarness} from "contracts/test/CometHarness.sol";
 import {CometHarnessExtendedAssetList} from "contracts/test/CometHarnessExtendedAssetList.sol";
 import {CometExtAssetList} from "contracts/CometExtAssetList.sol";
@@ -16,6 +18,8 @@ import "contracts/test/FaucetToken.sol";
 import {AccessManager} from "oz/access/manager/AccessManager.sol";
 
 contract Common_Setup is Test, CometConfiguration {
+    using Strings for uint256;
+
     AccessManager public governor;
     CometHarness public comet;
     CometHarnessExtendedAssetList public cometExtendedAssetList;
@@ -27,6 +31,7 @@ contract Common_Setup is Test, CometConfiguration {
     SimplePriceFeed public wethPriceFeed;
     FaucetToken public wbtc;
     SimplePriceFeed public wbtcPriceFeed;
+    FaucetToken[] public extraTokens;
 
     //////// users ////////
     address public accessManagerAdmin;
@@ -71,23 +76,25 @@ contract Common_Setup is Test, CometConfiguration {
     bytes4 public WITHDRAW_SELECT = _compSelector("withdrawReserves(address,uint256)");
 
     AssetConfig[] private __assetsConfig;
+    AssetConfig[] private __assetsConfigExtended;
     bytes4[] internal _selectors; // easier to add data
 
     function setUp() public virtual {
         // shared setup
         __createAddr();
         __deployTokensAndPriceFeed();
-        __assetsConfig = __configureAssets();
 
         // standard Comet
+        __assetsConfig = __configureAssets();
         address cometExt_ = _deployCometExt();
-        Configuration memory config_ = __configureComet(cometExt_);
+        Configuration memory config_ = __configureComet(cometExt_, __assetsConfig);
         comet = _deployComet(config_);
         __defineRolesAndGrantDefaultAccess(address(comet));
 
         // extended asset list Comet
+        __assetsConfigExtended = __configureAssetsExtended();
         cometExt_ = _deployCometExt_ExtendedAssetList();
-        config_ = __configureComet(cometExt_);
+        config_ = __configureComet(cometExt_, __assetsConfigExtended);
         cometExtendedAssetList = _deployComet_ExtendedAssetList(config_);
         __defineRolesAndGrantDefaultAccess(address(cometExtendedAssetList));
 
@@ -161,7 +168,46 @@ contract Common_Setup is Test, CometConfiguration {
         });
     }
 
-    function __configureComet(address extensionDelegate_) private returns (Configuration memory config) {
+    function __configureAssetsExtended() private returns (AssetConfig[] memory config) {
+        config = new AssetConfig[](20);
+
+        config[0] = __assetsConfig[0];
+        config[1] = __assetsConfig[1];
+
+        FaucetToken newToken;
+        string memory number;
+        uint64 borrowCF;
+        uint64 liquidateCF;
+        uint64 liquidationF;
+
+        for (uint16 i = 2; i < 20; ++i) {
+            number = uint256(i).toString();
+            newToken = new FaucetToken(0, string.concat(number, "Coin"), 18, string.concat(number, "C"));
+
+            extraTokens.push(newToken);
+
+            // Calculate collateral factors: base + i%
+            // For i=2: 52%, 57%, 62%; for i=19: 69%, 74%, 79%
+            uint64 borrowCF = uint64((50 * 1e16) + (uint256(i) * 1e16));
+            uint64 liquidateCF = uint64((55 * 1e16) + (uint256(i) * 1e16));
+            uint64 liquidationF = uint64((60 * 1e16) + (uint256(i) * 1e16));
+
+            config[i] = AssetConfig({
+                asset: address(newToken),
+                priceFeed: address(new SimplePriceFeed(int(uint(i)) * 1e8, 8)),
+                decimals: 18,
+                borrowCollateralFactor: borrowCF,
+                liquidateCollateralFactor: liquidateCF,
+                liquidationFactor: liquidationF,
+                supplyCap: 100_000 * 1e18
+            });
+        }
+    }
+
+    function __configureComet(address extensionDelegate_, AssetConfig[] memory assetsConfig_)
+        private
+        returns (Configuration memory config)
+    {
         config = Configuration({
             governor: address(governor),
             pauseGuardian: address(0),
@@ -183,7 +229,7 @@ contract Common_Setup is Test, CometConfiguration {
             baseMinForRewards: BASE_MIN_FOR_REWARDS,
             baseBorrowMin: BASE_BORROW_MIN,
             targetReserves: TARGET_RESERVES,
-            assetConfigs: __assetsConfig
+            assetConfigs: assetsConfig_
         });
     }
 
