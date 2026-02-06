@@ -33,6 +33,7 @@ contract Common_Setup is Test, CometConfiguration {
     address public liquidator;
     address public pauseGuardian; // in AccessManager, rather than Comet
     address public recoverer;
+    address public recovererDelayed;
     address public withdrawer;
 
     //////// roles ////////
@@ -229,7 +230,8 @@ contract Common_Setup is Test, CometConfiguration {
         {
             governor.grantRole(PAUSE_ROLE, pauseGuardian, 0);
             governor.grantRole(LIQUIDATOR_ROLE, liquidator, 0);
-            governor.grantRole(RECOVERER_ROLE, recoverer, 1 days);
+            governor.grantRole(RECOVERER_ROLE, recoverer, 0);
+            governor.grantRole(RECOVERER_ROLE, recovererDelayed, 1 days);
             governor.grantRole(PAUSE_GUARDIAN, pauseGuardian, 0);
             governor.grantRole(WITHDRAWER_ROLE, withdrawer, 7 days);
             // new delay for roles effect

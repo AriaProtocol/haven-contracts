@@ -47,12 +47,12 @@ contract Comet_AccessManaged_Test is Common_Setup {
 
     // recover()
     function test_recover_RoleRestricted_Comet() public {
-        bytes32 cometHash = 0x0c2e5ccc6153de54ab6d3605e33fef2a348e4c72cd2d22bb257383256e10aeae;
+        bytes32 cometHash = 0x074bc775ab1d19244d6a7eb37f9a3a1922378fa6e72ce44768bf8e6396e48bfc;
         _test_recover_RoleRestricted(comet, cometHash);
     }
 
     function test_recover_RoleRestricted_CometExtendedAssetList() public {
-        bytes32 cometExtendedHash = 0x9d7a8ff24c3ddc092fb8162e75d9c0e600771a65cd01a6906553871e20e09f3b;
+        bytes32 cometExtendedHash = 0xc67a56eb072af7bdb6188c50747888d836345c2cba0efa9bc9b5dad4ba3a2540;
         _test_recover_RoleRestricted(cometExtendedAssetList, cometExtendedHash);
     }
 
@@ -134,7 +134,7 @@ contract Comet_AccessManaged_Test is Common_Setup {
         cometX.recover(lostAddr, newAddr);
 
         // works for recoverer, but reverts as operation not scheduled
-        vm.startPrank(recoverer);
+        vm.startPrank(recovererDelayed);
         vm.expectRevert(abi.encodeWithSelector(IAccessManager.AccessManagerNotScheduled.selector, hash_));
         cometX.recover(lostAddr, newAddr);
     }

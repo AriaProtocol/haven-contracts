@@ -45,7 +45,12 @@ contract Comet_setup_Test is Common_Setup {
             assertEq(governor.getRoleAdmin(RECOVERER_ROLE), 0x0, "default admin for RECOVERER_ROLE");
             assertEq(governor.getRoleGuardian(RECOVERER_ROLE), 0x0, "no guardian for RECOVERER_ROLE");
             assertEq(governor.getRoleGrantDelay(RECOVERER_ROLE), 12 hours, "RECOVERER_ROLE granted after 12h");
+            // immediate recoverer
             (bool isRecoverMember, uint32 recoverExecutionDelay) = governor.hasRole(RECOVERER_ROLE, recoverer);
+            assertTrue(isRecoverMember, "RECOVERER_ROLE member");
+            assertEq(recoverExecutionDelay, 0, "RECOVERER_ROLE immediately executed");
+            // delayed recoverer
+            (isRecoverMember, recoverExecutionDelay) = governor.hasRole(RECOVERER_ROLE, recovererDelayed);
             assertTrue(isRecoverMember, "RECOVERER_ROLE member");
             assertEq(recoverExecutionDelay, 1 days, "RECOVERER_ROLE needs 1 days schedule");
         }
