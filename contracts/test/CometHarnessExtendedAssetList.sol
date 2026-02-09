@@ -110,10 +110,10 @@ contract CometHarnessExtendedAssetList is CometWithExtendedAssetList {
         _transferCollateral(lostAccount, newAccount);
     }
 
-    function exposed_transferDebt(
+    function exposed_transferDebtOrSupply(
         address lostAccount,
         address newAccount
     ) external {
-        _transferDebt(lostAccount, newAccount);
+        _transferDebtOrSupply(lostAccount, newAccount);
     }
 }

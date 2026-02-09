@@ -5,7 +5,7 @@ import {CometStorage} from "contracts/CometStorage.sol";
 
 import {Fixture_3Sup_3Bor} from "test/forge/setup/fixtures/Fixture_3Sup_3Bor.t.sol";
 
-/// @dev Internal _transferDebt(...)
+/// @dev Internal _transferDebtOrSupply(...)
 contract Comet__transferDebt_Test is Fixture_3Sup_3Bor, CometStorage {
     address public newAddr = makeAddr("new address borrower3");
 
@@ -16,18 +16,18 @@ contract Comet__transferDebt_Test is Fixture_3Sup_3Bor, CometStorage {
         _loadFixture(cometExtendedAssetList);
     }
 
-    function test_transferDebt() public {
-        _test_transferDebt(comet, " - Comet.sol");
-        _test_transferDebt(cometExtendedAssetList, " - CometExtendedWithAssetList.sol");
+    function test_transferDebtOrSupply() public {
+        _test_transferDebtOrSupply(comet, " - Comet.sol");
+        _test_transferDebtOrSupply(cometExtendedAssetList, " - CometExtendedWithAssetList.sol");
     }
 
-    function _test_transferDebt(CometMainInterface cometX, string memory type_) internal {
+    function _test_transferDebtOrSupply(CometMainInterface cometX, string memory type_) internal {
         // debt before admin transfer
         UserBasic memory lostUserBasic;
         uint256 lostAddrBorrow = cometX.borrowBalanceOf(borrower3);
         lostUserBasic = _userBasic(cometX, borrower3);
 
-        bytes4 selector = bytes4(keccak256("exposed_transferDebt(address,address)"));
+        bytes4 selector = bytes4(keccak256("exposed_transferDebtOrSupply(address,address)"));
         address(cometX).call(abi.encodeWithSelector(selector, borrower3, newAddr));
 
         // after debt transfer

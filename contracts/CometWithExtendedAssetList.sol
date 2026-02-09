@@ -1610,7 +1610,7 @@ contract CometWithExtendedAssetList is CometMainInterface, AccessManaged {
         ) revert AccountNotEmpty();
 
         _transferCollateral(lostAccount, newAccount);
-        _transferDebt(lostAccount, newAccount);
+        _transferDebtOrSupply(lostAccount, newAccount);
 
         emit Recovered(lostAccount, newAccount);
     }
@@ -1637,7 +1637,7 @@ contract CometWithExtendedAssetList is CometMainInterface, AccessManaged {
         }
     }
 
-    function _transferDebt(address lostAccount, address newAccount) internal {
+    function _transferDebtOrSupply(address lostAccount, address newAccount) internal {
         userBasic[newAccount] = userBasic[lostAccount];
 
         delete userBasic[lostAccount];
