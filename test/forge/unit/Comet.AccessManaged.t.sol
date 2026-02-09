@@ -47,24 +47,51 @@ contract Comet_AccessManaged_Test is Common_Setup {
 
     // recover()
     function test_recover_RoleRestricted_Comet() public {
-        bytes32 cometHash = 0x074bc775ab1d19244d6a7eb37f9a3a1922378fa6e72ce44768bf8e6396e48bfc;
-        _test_recover_RoleRestricted(comet, cometHash);
+        _test_recover_RoleRestricted(comet);
     }
 
     function test_recover_RoleRestricted_CometExtendedAssetList() public {
-        bytes32 cometExtendedHash = 0xc67a56eb072af7bdb6188c50747888d836345c2cba0efa9bc9b5dad4ba3a2540;
-        _test_recover_RoleRestricted(cometExtendedAssetList, cometExtendedHash);
+        _test_recover_RoleRestricted(cometExtendedAssetList);
     }
 
     // withdrawReserves()
     function test_withdrawReserves_RoleRestricted_Comet() public {
-        bytes32 cometHash = 0x8a52565cfdb854a0b1379738b060b30f621eadc91a2245d9b2b8789ad3cfb95a;
-        _test_withdrawReserves_RoleRestricted(comet, cometHash);
+        _test_withdrawReserves_RoleRestricted(comet);
     }
 
     function test_withdrawReserves_RoleRestricted_CometExtendedAssetList() public {
-        bytes32 cometExtendedHash = 0xcd87a02568d242e326d0d1468207dea06228c24781c31f30049ef80ad4f7c9d2;
-        _test_withdrawReserves_RoleRestricted(cometExtendedAssetList, cometExtendedHash);
+        _test_withdrawReserves_RoleRestricted(cometExtendedAssetList);
+    }
+
+    // ------------------------------------------ //
+    // -------------- Revert Cases -------------- //
+    // ------------------------------------------ //
+    /// @dev Revert because no execution delay set for `recoverer` address
+    function testRevert_schedule_DelayMustBeSet() public {
+        vm.startPrank(recoverer);
+
+        address oldAddr = makeAddr("oldAddr");
+        address newAddr = makeAddr("newAddr");
+        bytes memory data = abi.encodeWithSelector(RECOVER_SELEC, oldAddr, newAddr);
+
+        // comet
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                IAccessManager.AccessManagerUnauthorizedCall.selector, recoverer, address(comet), RECOVER_SELEC
+            )
+        );
+        governor.schedule(address(comet), data, 0);
+
+        // comet extended asset list
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                IAccessManager.AccessManagerUnauthorizedCall.selector,
+                recoverer,
+                address(cometExtendedAssetList),
+                RECOVER_SELEC
+            )
+        );
+        governor.schedule(address(cometExtendedAssetList), data, 0);
     }
 
     //============================================= //
@@ -74,6 +101,16 @@ contract Comet_AccessManaged_Test is Common_Setup {
         address[] memory borrowers = new address[](1);
         address absorber = makeAddr("absorber");
         address caller = makeAddr("caller");
+
+        // schedule
+        vm.startPrank(liquidator);
+        {
+            bytes memory data = abi.encodeWithSelector(ABSORB_SELEC, absorber, borrowers);
+            governor.schedule(address(cometX), data, 0);
+
+            // setback required for liquidator delay
+            skip(LIQUIDATOR_DELAY);
+        }
 
         vm.startPrank(caller);
         vm.expectRevert(abi.encodeWithSelector(IAccessManaged.AccessManagedUnauthorized.selector, caller));
@@ -92,9 +129,6 @@ contract Comet_AccessManaged_Test is Common_Setup {
 
         vm.startPrank(caller);
         vm.expectRevert(abi.encodeWithSelector(IAccessManaged.AccessManagedUnauthorized.selector, caller));
-        cometX.approveThis(makeAddr("random"), asset, amount);
-
-        vm.startPrank(accessManagerAdmin);
         cometX.approveThis(makeAddr("an address"), asset, amount);
     }
 
@@ -102,9 +136,19 @@ contract Comet_AccessManaged_Test is Common_Setup {
         address absorber = makeAddr("absorber");
         address caller = makeAddr("caller");
 
+        // schedule
+        vm.startPrank(liquidator);
+        {
+            bytes memory data = abi.encodeWithSelector(BUY_COLL_SELEC, address(weth), 0.5 ether, 1500 * 1e6, absorber);
+            governor.schedule(address(cometX), data, 0);
+
+            // setback required for liquidator delay
+            skip(LIQUIDATOR_DELAY);
+        }
+
         vm.startPrank(caller);
         vm.expectRevert(abi.encodeWithSelector(IAccessManaged.AccessManagedUnauthorized.selector, caller));
-        cometX.buyCollateral(address(weth), 0.5 ether, 1500 * 1e6, caller);
+        cometX.buyCollateral(address(weth), 0.5 ether, 1500 * 1e6, absorber);
 
         // works for liquidator, but reverts because nothing to buy
         vm.startPrank(liquidator);
@@ -115,6 +159,16 @@ contract Comet_AccessManaged_Test is Common_Setup {
     function _test_pause_RoleRestricted(CometMainInterface cometX) internal {
         address caller = makeAddr("caller");
 
+        // schedule
+        vm.startPrank(pauseGuardian);
+        {
+            bytes memory data = abi.encodeWithSelector(PAUSE_SELEC, true, false, true, false, true);
+            governor.schedule(address(cometX), data, 0);
+
+            // setback required for pause delay
+            skip(PAUSE_DELAY);
+        }
+
         vm.startPrank(caller);
         vm.expectRevert(abi.encodeWithSelector(IAccessManaged.AccessManagedUnauthorized.selector, caller));
         cometX.pause(true, false, true, false, true);
@@ -124,24 +178,43 @@ contract Comet_AccessManaged_Test is Common_Setup {
         cometX.pause(true, false, true, false, true);
     }
 
-    function _test_recover_RoleRestricted(CometMainInterface cometX, bytes32 hash_) internal {
+    function _test_recover_RoleRestricted(CometMainInterface cometX) internal {
         address caller = makeAddr("caller");
         address lostAddr = makeAddr("lostAddr");
         address newAddr = makeAddr("newAddr");
+
+        // schedule
+        vm.startPrank(recovererDelayed);
+        {
+            bytes memory data = abi.encodeWithSelector(RECOVER_SELEC, lostAddr, newAddr);
+            governor.schedule(address(cometX), data, 0);
+
+            // setback required for recoverer delay
+            skip(RECOVER_DELAY);
+        }
 
         vm.startPrank(caller);
         vm.expectRevert(abi.encodeWithSelector(IAccessManaged.AccessManagedUnauthorized.selector, caller));
         cometX.recover(lostAddr, newAddr);
 
-        // works for recoverer, but reverts as operation not scheduled
+        // works for recoverer
         vm.startPrank(recovererDelayed);
-        vm.expectRevert(abi.encodeWithSelector(IAccessManager.AccessManagerNotScheduled.selector, hash_));
         cometX.recover(lostAddr, newAddr);
     }
 
-    function _test_withdrawReserves_RoleRestricted(CometMainInterface cometX, bytes32 hash_) internal {
+    function _test_withdrawReserves_RoleRestricted(CometMainInterface cometX) internal {
         address caller = makeAddr("caller");
         address to = makeAddr("to");
+
+        // schedule
+        vm.startPrank(withdrawer);
+        {
+            bytes memory data = abi.encodeWithSelector(WITHDRAW_SELECT, to, 1 ether);
+            governor.schedule(address(cometX), data, 0);
+
+            // setback required for withdrawer delay
+            skip(WITHDRAWER_DELAY);
+        }
 
         vm.startPrank(caller);
         vm.expectRevert(abi.encodeWithSelector(IAccessManaged.AccessManagedUnauthorized.selector, caller));
@@ -149,7 +222,7 @@ contract Comet_AccessManaged_Test is Common_Setup {
 
         // works for reserve withdrawer, but reverts as not scheduled
         vm.startPrank(withdrawer);
-        vm.expectRevert(abi.encodeWithSelector(IAccessManager.AccessManagerNotScheduled.selector, hash_));
+        vm.expectRevert(abi.encodeWithSelector(CometMainInterface.InsufficientReserves.selector));
         cometX.withdrawReserves(to, 1 ether);
     }
 }

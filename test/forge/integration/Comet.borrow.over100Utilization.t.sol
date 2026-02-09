@@ -44,6 +44,14 @@ contract Comet_borrow_Over100Utilization_Test is Fixture_3Sup_3Bor {
             absorbees[0] = lastBorrower;
 
             vm.startPrank(liquidator);
+            // schedule
+            {
+                bytes memory data = abi.encodeWithSelector(ABSORB_SELEC, absorber, absorbees);
+                governor.schedule(address(comet), data, 0);
+
+                // setback required for recovererDelayed
+                skip(LIQUIDATOR_DELAY);
+            }
             comet.absorb(absorber, absorbees);
         }
 

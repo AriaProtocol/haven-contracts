@@ -21,13 +21,13 @@ contract Comet_setup_Test is Common_Setup {
             assertEq(governor.getRoleGrantDelay(PAUSE_ROLE), 0, "PAUSE_ROLE immediately granted");
             (bool isPauseMember, uint32 pauseExecutionDelay) = governor.hasRole(PAUSE_ROLE, pauseGuardian);
             assertTrue(isPauseMember, "PAUSE_ROLE member");
-            assertEq(pauseExecutionDelay, 0, "immediately executed");
+            assertEq(pauseExecutionDelay, PAUSE_DELAY, "immediately executed");
             // pause guardian role
             assertEq(governor.getRoleGrantDelay(PAUSE_GUARDIAN), 0, "PAUSE_GUARDIAN immediately granted");
             (bool isPauseGuardianMember, uint32 pauseGuardianExecutionDelay) =
                 governor.hasRole(PAUSE_GUARDIAN, pauseGuardian);
             assertTrue(isPauseGuardianMember, "PAUSE_GUARDIAN member");
-            assertEq(pauseGuardianExecutionDelay, 0, "PAUSE_GUARDIAN immediately executed");
+            assertEq(pauseGuardianExecutionDelay, PAUSE_DELAY, "PAUSE_GUARDIAN immediately executed");
         }
 
         // liquidator
@@ -37,14 +37,16 @@ contract Comet_setup_Test is Common_Setup {
             assertEq(governor.getRoleGrantDelay(LIQUIDATOR_ROLE), 0, "LIQUIDATOR_ROLE immediately granted");
             (bool isLiquidationMember, uint32 liquidationExecutionDelay) = governor.hasRole(LIQUIDATOR_ROLE, liquidator);
             assertTrue(isLiquidationMember, "LIQUIDATOR_ROLE member");
-            assertEq(liquidationExecutionDelay, 0, "LIQUIDATOR_ROLE immediately executed");
+            assertEq(liquidationExecutionDelay, LIQUIDATOR_DELAY, "LIQUIDATOR_ROLE immediately executed");
         }
 
         // recover
         {
             assertEq(governor.getRoleAdmin(RECOVERER_ROLE), 0x0, "default admin for RECOVERER_ROLE");
             assertEq(governor.getRoleGuardian(RECOVERER_ROLE), 0x0, "no guardian for RECOVERER_ROLE");
-            assertEq(governor.getRoleGrantDelay(RECOVERER_ROLE), 12 hours, "RECOVERER_ROLE granted after 12h");
+            assertEq(
+                governor.getRoleGrantDelay(RECOVERER_ROLE), RECOVERER_GRANT_DELAY, "RECOVERER_ROLE granted after 12h"
+            );
             // immediate recoverer
             (bool isRecoverMember, uint32 recoverExecutionDelay) = governor.hasRole(RECOVERER_ROLE, recoverer);
             assertTrue(isRecoverMember, "RECOVERER_ROLE member");
@@ -52,17 +54,21 @@ contract Comet_setup_Test is Common_Setup {
             // delayed recoverer
             (isRecoverMember, recoverExecutionDelay) = governor.hasRole(RECOVERER_ROLE, recovererDelayed);
             assertTrue(isRecoverMember, "RECOVERER_ROLE member");
-            assertEq(recoverExecutionDelay, 1 days, "RECOVERER_ROLE needs 1 days schedule");
+            assertEq(recoverExecutionDelay, RECOVER_DELAY, "RECOVERER_ROLE needs 1 days schedule");
         }
 
         // withdrawer
         {
             assertEq(governor.getRoleAdmin(WITHDRAWER_ROLE), 0x0, "default admin for WITHDRAWER_ROLE");
             assertEq(governor.getRoleGuardian(WITHDRAWER_ROLE), 0x0, "no guardian for WITHDRAWER_ROLE");
-            assertEq(governor.getRoleGrantDelay(WITHDRAWER_ROLE), 6 days, "WITHDRAWER_ROLE granted after 6 days");
+            assertEq(
+                governor.getRoleGrantDelay(WITHDRAWER_ROLE),
+                WITHDRAWER_GRANT_DELAY,
+                "WITHDRAWER_ROLE granted after 6 days"
+            );
             (bool isWithdrawMember, uint32 withdrawExecutionDelay) = governor.hasRole(WITHDRAWER_ROLE, withdrawer);
             assertTrue(isWithdrawMember, "WITHDRAWER_ROLE member");
-            assertEq(withdrawExecutionDelay, 7 days, "WITHDRAWER_ROLE needs 6 days schedule");
+            assertEq(withdrawExecutionDelay, WITHDRAWER_DELAY, "WITHDRAWER_ROLE needs 6 days schedule");
         }
     }
 

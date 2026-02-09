@@ -65,15 +65,23 @@ contract Common_Setup is Test, CometConfiguration {
     uint104 public constant BASE_BORROW_MIN = 1e6;
     uint104 public constant TARGET_RESERVES = 0;
 
+    // delays
+    uint32 public constant RECOVERER_GRANT_DELAY = 12 hours;
+    uint32 public constant WITHDRAWER_GRANT_DELAY = 6 days;
+    uint32 public constant PAUSE_DELAY = 1;
+    uint32 public constant LIQUIDATOR_DELAY = 1;
+    uint32 public constant RECOVER_DELAY = 1 days;
+    uint32 public constant WITHDRAWER_DELAY = 7 days;
+
     //////// FUNCTION SELECTORS ////////
     // 0x44c35d07
-    bytes4 public PAUSE_SELEC = _compSelector("pause(bool,bool,bool,bool,bool)");
+    bytes4 public PAUSE_SELEC = CometMainInterface.pause.selector;
     // 0xc3cecfd2
-    bytes4 public ABSORB_SELEC = _compSelector("absorb(address,address[])");
+    bytes4 public ABSORB_SELEC = CometMainInterface.absorb.selector;
     // 0xe4e6e779
-    bytes4 public BUY_COLL_SELEC = _compSelector("buyCollateral(address,uint256,uint256,address)");
-    bytes4 public RECOVER_SELEC = _compSelector("recover(address,address)");
-    bytes4 public WITHDRAW_SELECT = _compSelector("withdrawReserves(address,uint256)");
+    bytes4 public BUY_COLL_SELEC = CometMainInterface.buyCollateral.selector;
+    bytes4 public RECOVER_SELEC = CometMainInterface.recover.selector;
+    bytes4 public WITHDRAW_SELECT = CometMainInterface.withdrawReserves.selector;
 
     AssetConfig[] private __assetsConfig;
     AssetConfig[] private __assetsConfigExtended;
@@ -132,11 +140,6 @@ contract Common_Setup is Test, CometConfiguration {
         });
 
         return address(new CometExtAssetList(extConfig, address(new AssetListFactory())));
-    }
-
-    //// PURE
-    function _compSelector(string memory sel_) internal pure returns (bytes4) {
-        return bytes4(keccak256(bytes(sel_)));
     }
 
     //==========================================================================//
@@ -239,6 +242,7 @@ contract Common_Setup is Test, CometConfiguration {
         pauseGuardian = makeAddr("pauseGuardian");
         recoverer = makeAddr("recoverer");
         withdrawer = makeAddr("withdrawer");
+        recovererDelayed = makeAddr("recovererDelayed");
 
         governor = new AccessManager(accessManagerAdmin);
     }
@@ -261,25 +265,25 @@ contract Common_Setup is Test, CometConfiguration {
             _selectors.push(RECOVER_SELEC);
             governor.setTargetFunctionRole(comet, _selectors, RECOVERER_ROLE);
             delete _selectors;
-            governor.setGrantDelay(RECOVERER_ROLE, 12 hours);
+            governor.setGrantDelay(RECOVERER_ROLE, RECOVERER_GRANT_DELAY);
 
             _selectors.push(WITHDRAW_SELECT);
             governor.setTargetFunctionRole(comet, _selectors, WITHDRAWER_ROLE);
             delete _selectors;
-            governor.setGrantDelay(WITHDRAWER_ROLE, 6 days);
+            governor.setGrantDelay(WITHDRAWER_ROLE, WITHDRAWER_GRANT_DELAY);
 
             // timepoint when new grant delay appilies, both for recoverer and withdrawer
-            skip(6 days);
+            skip(WITHDRAWER_GRANT_DELAY);
         }
 
         // grant roles
         {
-            governor.grantRole(PAUSE_ROLE, pauseGuardian, 0);
-            governor.grantRole(LIQUIDATOR_ROLE, liquidator, 0);
+            governor.grantRole(PAUSE_ROLE, pauseGuardian, PAUSE_DELAY);
+            governor.grantRole(LIQUIDATOR_ROLE, liquidator, LIQUIDATOR_DELAY);
             governor.grantRole(RECOVERER_ROLE, recoverer, 0);
-            governor.grantRole(RECOVERER_ROLE, recovererDelayed, 1 days);
-            governor.grantRole(PAUSE_GUARDIAN, pauseGuardian, 0);
-            governor.grantRole(WITHDRAWER_ROLE, withdrawer, 7 days);
+            governor.grantRole(RECOVERER_ROLE, recovererDelayed, RECOVER_DELAY);
+            governor.grantRole(PAUSE_GUARDIAN, pauseGuardian, PAUSE_DELAY);
+            governor.grantRole(WITHDRAWER_ROLE, withdrawer, WITHDRAWER_DELAY);
             // new delay for roles effect
             skip(6 days);
         }
