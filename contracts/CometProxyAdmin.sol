@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.15;
+pragma solidity 0.8.20;
 
 import "./vendor/proxy/transparent/ProxyAdmin.sol";
 
 interface Deployable {
-  function deploy(address cometProxy) external returns (address);
+    function deploy(address cometProxy) external returns (address);
 }
 
 contract CometProxyAdmin is ProxyAdmin {
@@ -13,7 +13,10 @@ contract CometProxyAdmin is ProxyAdmin {
      *  Requirements:
      *   - This contract must be the admin of `CometProxy`
      */
-    function deployAndUpgradeTo(Deployable configuratorProxy, TransparentUpgradeableProxy cometProxy) public virtual onlyOwner {
+    function deployAndUpgradeTo(
+        Deployable configuratorProxy,
+        TransparentUpgradeableProxy cometProxy
+    ) public virtual onlyOwner {
         address newCometImpl = configuratorProxy.deploy(address(cometProxy));
         upgrade(cometProxy, newCometImpl);
     }
@@ -23,7 +26,11 @@ contract CometProxyAdmin is ProxyAdmin {
      *  Requirements:
      *   - This contract must be the admin of `CometProxy`
      */
-    function deployUpgradeToAndCall(Deployable configuratorProxy, TransparentUpgradeableProxy cometProxy, bytes memory data) public virtual onlyOwner {
+    function deployUpgradeToAndCall(
+        Deployable configuratorProxy,
+        TransparentUpgradeableProxy cometProxy,
+        bytes memory data
+    ) public virtual onlyOwner {
         address newCometImpl = configuratorProxy.deploy(address(cometProxy));
         upgradeAndCall(cometProxy, newCometImpl, data);
     }

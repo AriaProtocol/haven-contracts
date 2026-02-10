@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.15;
+pragma solidity 0.8.20;
 
 interface IWETH9 {
     function name() external view returns (string memory);
@@ -24,7 +24,9 @@ interface IWETH9 {
 
     function transfer(address dst, uint wad) external returns (bool);
 
-    function transferFrom(address src, address dst, uint wad)
-    external
-    returns (bool);
+    function transferFrom(
+        address src,
+        address dst,
+        uint wad
+    ) external returns (bool);
 }

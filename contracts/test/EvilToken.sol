@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.15;
+pragma solidity 0.8.20;
 
 import "./../ERC20.sol";
 import "./../Comet.sol";
@@ -53,16 +53,23 @@ contract EvilToken is FaucetToken {
         attack = attack_;
     }
 
-    function transfer(address dst, uint256 amount) public override returns (bool) {
+    function transfer(
+        address dst,
+        uint256 amount
+    ) public override returns (bool) {
         numberOfCalls++;
-        if (numberOfCalls > attack.maxCalls){
+        if (numberOfCalls > attack.maxCalls) {
             return super.transfer(dst, amount);
         } else {
             return performAttack(address(this), dst, amount);
         }
     }
 
-    function transferFrom(address src, address dst, uint256 amount) public override returns (bool) {
+    function transferFrom(
+        address src,
+        address dst,
+        uint256 amount
+    ) public override returns (bool) {
         numberOfCalls++;
         if (numberOfCalls > attack.maxCalls) {
             return super.transferFrom(src, dst, amount);
@@ -71,9 +78,13 @@ contract EvilToken is FaucetToken {
         }
     }
 
-    function performAttack(address src, address dst, uint256 amount) internal returns (bool) {
+    function performAttack(
+        address src,
+        address dst,
+        uint256 amount
+    ) internal returns (bool) {
         ReentryAttack memory reentryAttack = attack;
-       if (reentryAttack.attackType == AttackType.TRANSFER_FROM) {
+        if (reentryAttack.attackType == AttackType.TRANSFER_FROM) {
             Comet(payable(msg.sender)).transferFrom(
                 reentryAttack.source,
                 reentryAttack.destination,
@@ -93,7 +104,7 @@ contract EvilToken is FaucetToken {
                 reentryAttack.asset,
                 reentryAttack.amount
             );
-        }  else if (reentryAttack.attackType == AttackType.BUY_COLLATERAL) {
+        } else if (reentryAttack.attackType == AttackType.BUY_COLLATERAL) {
             Comet(payable(msg.sender)).buyCollateral(
                 reentryAttack.asset,
                 0,
@@ -105,5 +116,4 @@ contract EvilToken is FaucetToken {
         }
         return true;
     }
-
 }

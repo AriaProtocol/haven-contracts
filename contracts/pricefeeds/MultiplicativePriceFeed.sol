@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.15;
+pragma solidity 0.8.20;
 
 import "../vendor/@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import "../IPriceFeed.sol";
@@ -42,12 +42,21 @@ contract MultiplicativePriceFeed is IPriceFeed {
      * @param decimals_ The number of decimals for the returned prices
      * @param description_ The description of the price feed
      **/
-    constructor(address priceFeedA_, address priceFeedB_, uint8 decimals_, string memory description_) {
+    constructor(
+        address priceFeedA_,
+        address priceFeedB_,
+        uint8 decimals_,
+        string memory description_
+    ) {
         priceFeedA = priceFeedA_;
         priceFeedB = priceFeedB_;
-        uint8 priceFeedADecimals = AggregatorV3Interface(priceFeedA_).decimals();
-        uint8 priceFeedBDecimals = AggregatorV3Interface(priceFeedB_).decimals();
-        combinedScale = signed256(10 ** (priceFeedADecimals + priceFeedBDecimals));
+        uint8 priceFeedADecimals = AggregatorV3Interface(priceFeedA_)
+            .decimals();
+        uint8 priceFeedBDecimals = AggregatorV3Interface(priceFeedB_)
+            .decimals();
+        combinedScale = signed256(
+            10 ** (priceFeedADecimals + priceFeedBDecimals)
+        );
 
         if (decimals_ > 18) revert BadDecimals();
         decimals = decimals_;
@@ -64,13 +73,26 @@ contract MultiplicativePriceFeed is IPriceFeed {
      * @return answeredInRound Round id in which the answer was computed; passed on from price feed B
      * @dev Note: Only the `answer` really matters for downstream contracts that use this price feed (e.g. Comet)
      **/
-    function latestRoundData() override external view returns (uint80, int256, uint256, uint256, uint80) {
-        (, int256 priceA, , , ) = AggregatorV3Interface(priceFeedA).latestRoundData();
-        (uint80 roundId_, int256 priceB, uint256 startedAt_, uint256 updatedAt_, uint80 answeredInRound_) = AggregatorV3Interface(priceFeedB).latestRoundData();
+    function latestRoundData()
+        external
+        view
+        override
+        returns (uint80, int256, uint256, uint256, uint80)
+    {
+        (, int256 priceA, , , ) = AggregatorV3Interface(priceFeedA)
+            .latestRoundData();
+        (
+            uint80 roundId_,
+            int256 priceB,
+            uint256 startedAt_,
+            uint256 updatedAt_,
+            uint80 answeredInRound_
+        ) = AggregatorV3Interface(priceFeedB).latestRoundData();
 
-        if (priceA <= 0 || priceB <= 0) return (roundId_, 0, startedAt_, updatedAt_, answeredInRound_);
+        if (priceA <= 0 || priceB <= 0)
+            return (roundId_, 0, startedAt_, updatedAt_, answeredInRound_);
 
-        int256 price = priceA * priceB * priceFeedScale / combinedScale;
+        int256 price = (priceA * priceB * priceFeedScale) / combinedScale;
         return (roundId_, price, startedAt_, updatedAt_, answeredInRound_);
     }
 

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.15;
+pragma solidity 0.8.20;
 
 import "../Comet.sol";
 
@@ -8,7 +8,7 @@ contract CometHarness is Comet {
 
     constructor(Configuration memory config) Comet(config) {}
 
-    function getNowInternal() override internal view returns (uint40) {
+    function getNowInternal() internal view override returns (uint40) {
         return nowOverride > 0 ? uint40(nowOverride) : super.getNowInternal();
     }
 
@@ -30,7 +30,10 @@ contract CometHarness is Comet {
         lastAccrualTime = totals.lastAccrualTime;
     }
 
-    function setTotalsCollateral(address asset, TotalsCollateral memory totals) external {
+    function setTotalsCollateral(
+        address asset,
+        TotalsCollateral memory totals
+    ) external {
         totalsCollateral[asset] = totals;
     }
 
@@ -38,7 +41,11 @@ contract CometHarness is Comet {
         userBasic[account].principal = principal;
     }
 
-    function setCollateralBalance(address account, address asset, uint128 balance) external {
+    function setCollateralBalance(
+        address account,
+        address asset,
+        uint128 balance
+    ) external {
         uint128 oldBalance = userCollateral[account][asset].balance;
         userCollateral[account][asset].balance = balance;
         AssetInfo memory assetInfo = getAssetInfoByAddress(asset);
@@ -52,10 +59,17 @@ contract CometHarness is Comet {
         uint128 finalUserBalance
     ) external {
         AssetInfo memory assetInfo = getAssetInfoByAddress(asset);
-        updateAssetsIn(account, assetInfo, initialUserBalance, finalUserBalance);
+        updateAssetsIn(
+            account,
+            assetInfo,
+            initialUserBalance,
+            finalUserBalance
+        );
     }
 
-    function getAssetList(address account) external view returns (address[] memory result) {
+    function getAssetList(
+        address account
+    ) external view returns (address[] memory result) {
         uint16 assetsIn = userBasic[account].assetsIn;
 
         uint8 count = 0;
@@ -80,5 +94,23 @@ contract CometHarness is Comet {
 
     function accrue() external {
         accrueInternal();
+    }
+
+    //============================================================================//
+    //                                  RECOVERY                                  //
+    //============================================================================//
+    /////////////////////////////////// EXTERNAL ///////////////////////////////////
+    function exposed_transferCollateral(
+        address lostAccount,
+        address newAccount
+    ) external {
+        _transferCollateral(lostAccount, newAccount);
+    }
+
+    function exposed_transferDebtOrSupply(
+        address lostAccount,
+        address newAccount
+    ) external {
+        _transferDebtOrSupply(lostAccount, newAccount);
     }
 }

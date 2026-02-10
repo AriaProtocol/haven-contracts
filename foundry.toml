@@ -4,12 +4,14 @@ out = 'forge/out'
 libs = ["dependencies"]
 test = 'test/forge'
 cache_path  = 'forge/cache'
-solc = "0.8.15"
+solc = "0.8.20"
 ignored_warnings_from = ["dependencies"]
 dynamic_test_linking = true
 remappings = [
   "forge-std/=dependencies/forge-std-1.11.0/src/",
   "capo/=dependencies/woof-software-compound-capo-lst-lrt-oracles/",
+  "oz/=dependencies/@openzeppelin-contracts-5.5.0/",
+  "oz-4.9.0/=dependencies/@openzeppelin-contracts-4.9.0/"
 ]
 via_ir = true
 optimizer = true
@@ -26,12 +28,18 @@ libs = ["dependencies"]
 no_match_test = "test.*SwapVia"
 
 [fmt]
-single_line_statement_blocks = "single"
-sort_imports = true
-contract_new_lines = false
-override_spacing = false
-number_underscore = "thousands"
+line_length = 120
+tab_width = 4
+bracket_spacing = false
+int_types = 'preserve'
+func_attrs_with_params_multiline = false
+quote_style = 'double'
+number_underscore = 'preserve'
+single_line_statement_blocks = 'preserve'
+multiline_func_header= 'attributes_first'
+ignore = ["contracts/"]
 
 [dependencies]
 forge-std = "1.11.0"
 "woof-software/compound-capo" = { version = "lst-lrt-oracles", git = "git@github.com:woof-software/compound-capo.git", branch = "lst-lrt-oracles" }
+"@openzeppelin-contracts" = "4.9.0"

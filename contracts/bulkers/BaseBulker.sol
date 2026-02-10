@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.15;
+pragma solidity 0.8.20;
 
 import "../CometInterface.sol";
 import "../IERC20NonStandard.sol";
@@ -11,7 +11,12 @@ import "../IWETH9.sol";
 interface IClaimable {
     function claim(address comet, address src, bool shouldAccrue) external;
 
-    function claimTo(address comet, address src, address to, bool shouldAccrue) external;
+    function claimTo(
+        address comet,
+        address src,
+        address to,
+        bool shouldAccrue
+    ) external;
 }
 
 /**
@@ -39,7 +44,8 @@ contract BaseBulker {
     bytes32 public constant ACTION_SUPPLY_ASSET = "ACTION_SUPPLY_ASSET";
 
     /// @notice The action for supplying a native asset (e.g. ETH on Ethereum mainnet) to Comet
-    bytes32 public constant ACTION_SUPPLY_NATIVE_TOKEN = "ACTION_SUPPLY_NATIVE_TOKEN";
+    bytes32 public constant ACTION_SUPPLY_NATIVE_TOKEN =
+        "ACTION_SUPPLY_NATIVE_TOKEN";
 
     /// @notice The action for transferring an asset within Comet
     bytes32 public constant ACTION_TRANSFER_ASSET = "ACTION_TRANSFER_ASSET";
@@ -48,7 +54,8 @@ contract BaseBulker {
     bytes32 public constant ACTION_WITHDRAW_ASSET = "ACTION_WITHDRAW_ASSET";
 
     /// @notice The action for withdrawing a native asset from Comet
-    bytes32 public constant ACTION_WITHDRAW_NATIVE_TOKEN = "ACTION_WITHDRAW_NATIVE_TOKEN";
+    bytes32 public constant ACTION_WITHDRAW_NATIVE_TOKEN =
+        "ACTION_WITHDRAW_NATIVE_TOKEN";
 
     /// @notice The action for claiming rewards from the Comet rewards contract
     bytes32 public constant ACTION_CLAIM_REWARD = "ACTION_CLAIM_REWARD";
@@ -99,7 +106,7 @@ contract BaseBulker {
         if (msg.sender != admin) revert Unauthorized();
 
         uint256 balance = address(this).balance;
-        (bool success, ) = recipient.call{ value: balance }("");
+        (bool success, ) = recipient.call{value: balance}("");
         if (!success) revert FailedToSendNativeToken();
     }
 
@@ -121,40 +128,63 @@ contract BaseBulker {
      * @param actions The list of actions to execute in order
      * @param data The list of calldata to use for each action
      */
-    function invoke(bytes32[] calldata actions, bytes[] calldata data) external payable {
+    function invoke(
+        bytes32[] calldata actions,
+        bytes[] calldata data
+    ) external payable {
         if (actions.length != data.length) revert InvalidArgument();
 
         uint unusedNativeToken = msg.value;
         for (uint i = 0; i < actions.length; ) {
             bytes32 action = actions[i];
             if (action == ACTION_SUPPLY_ASSET) {
-                (address comet, address to, address asset, uint amount) = abi.decode(data[i], (address, address, address, uint));
+                (address comet, address to, address asset, uint amount) = abi
+                    .decode(data[i], (address, address, address, uint));
                 supplyTo(comet, to, asset, amount);
             } else if (action == ACTION_SUPPLY_NATIVE_TOKEN) {
-                (address comet, address to, uint amount) = abi.decode(data[i], (address, address, uint));
-                uint256 nativeTokenUsed = supplyNativeTokenTo(comet, to, amount);
+                (address comet, address to, uint amount) = abi.decode(
+                    data[i],
+                    (address, address, uint)
+                );
+                uint256 nativeTokenUsed = supplyNativeTokenTo(
+                    comet,
+                    to,
+                    amount
+                );
                 unusedNativeToken -= nativeTokenUsed;
             } else if (action == ACTION_TRANSFER_ASSET) {
-                (address comet, address to, address asset, uint amount) = abi.decode(data[i], (address, address, address, uint));
+                (address comet, address to, address asset, uint amount) = abi
+                    .decode(data[i], (address, address, address, uint));
                 transferTo(comet, to, asset, amount);
             } else if (action == ACTION_WITHDRAW_ASSET) {
-                (address comet, address to, address asset, uint amount) = abi.decode(data[i], (address, address, address, uint));
+                (address comet, address to, address asset, uint amount) = abi
+                    .decode(data[i], (address, address, address, uint));
                 withdrawTo(comet, to, asset, amount);
             } else if (action == ACTION_WITHDRAW_NATIVE_TOKEN) {
-                (address comet, address to, uint amount) = abi.decode(data[i], (address, address, uint));
+                (address comet, address to, uint amount) = abi.decode(
+                    data[i],
+                    (address, address, uint)
+                );
                 withdrawNativeTokenTo(comet, to, amount);
             } else if (action == ACTION_CLAIM_REWARD) {
-                (address comet, address rewards, address src, bool shouldAccrue) = abi.decode(data[i], (address, address, address, bool));
+                (
+                    address comet,
+                    address rewards,
+                    address src,
+                    bool shouldAccrue
+                ) = abi.decode(data[i], (address, address, address, bool));
                 claimReward(comet, rewards, src, shouldAccrue);
             } else {
                 handleAction(action, data[i]);
             }
-            unchecked { i++; }
+            unchecked {
+                i++;
+            }
         }
 
         // Refund unused native token back to msg.sender
         if (unusedNativeToken > 0) {
-            (bool success, ) = msg.sender.call{ value: unusedNativeToken }("");
+            (bool success, ) = msg.sender.call{value: unusedNativeToken}("");
             if (!success) revert FailedToSendNativeToken();
         }
     }
@@ -163,7 +193,10 @@ contract BaseBulker {
      * @notice Handles any actions not handled by the BaseBulker implementation
      * @dev Note: Meant to be overridden by contracts that extend BaseBulker and want to support more actions
      */
-    function handleAction(bytes32 action, bytes calldata data) virtual internal {
+    function handleAction(
+        bytes32 action,
+        bytes calldata data
+    ) internal virtual {
         revert UnhandledAction();
     }
 
@@ -171,7 +204,12 @@ contract BaseBulker {
      * @notice Supplies an asset to a user in Comet
      * @dev Note: This contract must have permission to manage msg.sender's Comet account
      */
-    function supplyTo(address comet, address to, address asset, uint amount) internal {
+    function supplyTo(
+        address comet,
+        address to,
+        address asset,
+        uint amount
+    ) internal {
         CometInterface(comet).supplyFrom(msg.sender, to, asset, amount);
     }
 
@@ -180,15 +218,26 @@ contract BaseBulker {
      * @return The amount of the native token wrapped and supplied to Comet
      * @dev Note: Supports `amount` of `uint256.max` implies max only for base asset
      */
-    function supplyNativeTokenTo(address comet, address to, uint amount) internal returns (uint256) {
+    function supplyNativeTokenTo(
+        address comet,
+        address to,
+        uint amount
+    ) internal returns (uint256) {
         uint256 supplyAmount = amount;
         if (wrappedNativeToken == CometInterface(comet).baseToken()) {
             if (amount == type(uint256).max)
-                supplyAmount = CometInterface(comet).borrowBalanceOf(msg.sender);
+                supplyAmount = CometInterface(comet).borrowBalanceOf(
+                    msg.sender
+                );
         }
-        IWETH9(wrappedNativeToken).deposit{ value: supplyAmount }();
+        IWETH9(wrappedNativeToken).deposit{value: supplyAmount}();
         IWETH9(wrappedNativeToken).approve(comet, supplyAmount);
-        CometInterface(comet).supplyFrom(address(this), to, wrappedNativeToken, supplyAmount);
+        CometInterface(comet).supplyFrom(
+            address(this),
+            to,
+            wrappedNativeToken,
+            supplyAmount
+        );
         return supplyAmount;
     }
 
@@ -196,7 +245,12 @@ contract BaseBulker {
      * @notice Transfers an asset to a user in Comet
      * @dev Note: This contract must have permission to manage msg.sender's Comet account
      */
-    function transferTo(address comet, address to, address asset, uint amount) internal {
+    function transferTo(
+        address comet,
+        address to,
+        address asset,
+        uint amount
+    ) internal {
         CometInterface(comet).transferAssetFrom(msg.sender, to, asset, amount);
     }
 
@@ -204,7 +258,12 @@ contract BaseBulker {
      * @notice Withdraws an asset to a user in Comet
      * @dev Note: This contract must have permission to manage msg.sender's Comet account
      */
-    function withdrawTo(address comet, address to, address asset, uint amount) internal {
+    function withdrawTo(
+        address comet,
+        address to,
+        address asset,
+        uint amount
+    ) internal {
         CometInterface(comet).withdrawFrom(msg.sender, to, asset, amount);
     }
 
@@ -213,22 +272,36 @@ contract BaseBulker {
      * @dev Note: This contract must have permission to manage msg.sender's Comet account
      * @dev Note: Supports `amount` of `uint256.max` only for the base asset. Should revert for a collateral asset
      */
-    function withdrawNativeTokenTo(address comet, address to, uint amount) internal {
+    function withdrawNativeTokenTo(
+        address comet,
+        address to,
+        uint amount
+    ) internal {
         uint256 withdrawAmount = amount;
         if (wrappedNativeToken == CometInterface(comet).baseToken()) {
             if (amount == type(uint256).max)
                 withdrawAmount = CometInterface(comet).balanceOf(msg.sender);
         }
-        CometInterface(comet).withdrawFrom(msg.sender, address(this), wrappedNativeToken, withdrawAmount);
+        CometInterface(comet).withdrawFrom(
+            msg.sender,
+            address(this),
+            wrappedNativeToken,
+            withdrawAmount
+        );
         IWETH9(wrappedNativeToken).withdraw(withdrawAmount);
-        (bool success, ) = to.call{ value: withdrawAmount }("");
+        (bool success, ) = to.call{value: withdrawAmount}("");
         if (!success) revert FailedToSendNativeToken();
     }
 
     /**
      * @notice Claims rewards for a user
      */
-    function claimReward(address comet, address rewards, address src, bool shouldAccrue) internal {
+    function claimReward(
+        address comet,
+        address rewards,
+        address src,
+        bool shouldAccrue
+    ) internal {
         IClaimable(rewards).claim(comet, src, shouldAccrue);
     }
 
@@ -246,16 +319,19 @@ contract BaseBulker {
         bool success;
         assembly {
             switch returndatasize()
-                case 0 {                       // This is a non-standard ERC-20
-                    success := not(0)          // set success to true
-                }
-                case 32 {                      // This is a compliant ERC-20
-                    returndatacopy(0, 0, 32)
-                    success := mload(0)        // Set `success = returndata` of override external call
-                }
-                default {                      // This is an excessively non-compliant ERC-20, revert.
-                    revert(0, 0)
-                }
+            case 0 {
+                // This is a non-standard ERC-20
+                success := not(0) // set success to true
+            }
+            case 32 {
+                // This is a compliant ERC-20
+                returndatacopy(0, 0, 32)
+                success := mload(0) // Set `success = returndata` of override external call
+            }
+            default {
+                // This is an excessively non-compliant ERC-20, revert.
+                revert(0, 0)
+            }
         }
         if (!success) revert TransferInFailed();
     }
@@ -273,16 +349,19 @@ contract BaseBulker {
         bool success;
         assembly {
             switch returndatasize()
-                case 0 {                      // This is a non-standard ERC-20
-                    success := not(0)         // set success to true
-                }
-                case 32 {                     // This is a compliant ERC-20
-                    returndatacopy(0, 0, 32)
-                    success := mload(0)       // Set `success = returndata` of override external call
-                }
-                default {                     // This is an excessively non-compliant ERC-20, revert.
-                    revert(0, 0)
-                }
+            case 0 {
+                // This is a non-standard ERC-20
+                success := not(0) // set success to true
+            }
+            case 32 {
+                // This is a compliant ERC-20
+                returndatacopy(0, 0, 32)
+                success := mload(0) // Set `success = returndata` of override external call
+            }
+            default {
+                // This is an excessively non-compliant ERC-20, revert.
+                revert(0, 0)
+            }
         }
         if (!success) revert TransferOutFailed();
     }

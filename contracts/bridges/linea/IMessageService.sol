@@ -1,5 +1,5 @@
-pragma solidity 0.8.15;
+pragma solidity 0.8.20;
 
 interface IMessageService {
-  function sender() external view returns (address);
+    function sender() external view returns (address);
 }

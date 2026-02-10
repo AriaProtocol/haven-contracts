@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.15;
+pragma solidity 0.8.20;
 
 import "../vendor/@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import "../vendor/kelp/ILRTOracle.sol";
@@ -38,7 +38,11 @@ contract RsETHScalingPriceFeed is IPriceFeed {
      * @param underlyingPriceFeed_ The address of the underlying price feed to fetch prices from
      * @param decimals_ The number of decimals for the returned prices
      **/
-    constructor(address underlyingPriceFeed_, uint8 decimals_, string memory description_) {
+    constructor(
+        address underlyingPriceFeed_,
+        uint8 decimals_,
+        string memory description_
+    ) {
         underlyingPriceFeed = underlyingPriceFeed_;
         if (decimals_ > 18) revert BadDecimals();
         decimals = decimals_;
@@ -47,9 +51,10 @@ contract RsETHScalingPriceFeed is IPriceFeed {
         uint8 underlyingPriceFeedDecimals = 18;
         // Note: Solidity does not allow setting immutables in if/else statements
         shouldUpscale = underlyingPriceFeedDecimals < decimals_ ? true : false;
-        rescaleFactor = (shouldUpscale
-            ? signed256(10 ** (decimals_ - underlyingPriceFeedDecimals))
-            : signed256(10 ** (underlyingPriceFeedDecimals - decimals_))
+        rescaleFactor = (
+            shouldUpscale
+                ? signed256(10 ** (decimals_ - underlyingPriceFeedDecimals))
+                : signed256(10 ** (underlyingPriceFeedDecimals - decimals_))
         );
     }
 
@@ -61,13 +66,18 @@ contract RsETHScalingPriceFeed is IPriceFeed {
      * @return updatedAt Timestamp when the round was last updated; passed on from underlying price feed
      * @return answeredInRound Round id in which the answer was computed; passed on from underlying price feed
      **/
-    function latestRoundData() override external view returns (
-        uint80 roundId,
-        int256 answer,
-        uint256 startedAt,
-        uint256 updatedAt,
-        uint80 answeredInRound
-    ) {
+    function latestRoundData()
+        external
+        view
+        override
+        returns (
+            uint80 roundId,
+            int256 answer,
+            uint256 startedAt,
+            uint256 updatedAt,
+            uint80 answeredInRound
+        )
+    {
         int256 price = signed256(ILRTOracle(underlyingPriceFeed).rsETHPrice());
         return (1, scalePrice(price), block.timestamp, block.timestamp, 1);
     }
@@ -86,7 +96,7 @@ contract RsETHScalingPriceFeed is IPriceFeed {
         }
         return scaledPrice;
     }
-    
+
     /**
      * @notice Current version of the price feed
      * @return The version of the price feed contract
