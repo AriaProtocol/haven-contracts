@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.20;
+pragma solidity 0.8.26;
 
 import "./CometMainInterface.sol";
 import "./IERC20NonStandard.sol";
@@ -1638,7 +1638,10 @@ contract Comet is CometMainInterface, AccessManaged {
      * @param to An address of the receiver of withdrawn reserves
      * @param amount The amount of reserves to be withdrawn from the protocol
      */
-    function withdrawReserves(address to, uint amount) external override restricted {
+    function withdrawReserves(
+        address to,
+        uint amount
+    ) external override restricted {
         int reserves = getReserves();
         if (reserves < 0 || amount > unsigned256(reserves))
             revert InsufficientReserves();

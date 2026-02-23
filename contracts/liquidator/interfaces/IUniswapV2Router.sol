@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.20;
+pragma solidity 0.8.26;
 
 /**
  * @dev Interface for interacting with Uniswap and SushiSwap Routers

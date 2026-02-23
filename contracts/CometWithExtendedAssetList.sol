@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.20;
+pragma solidity 0.8.26;
 
 import "./CometMainInterface.sol";
 import "./IERC20NonStandard.sol";
@@ -619,7 +619,7 @@ contract CometWithExtendedAssetList is CometMainInterface, AccessManaged {
         bool withdrawPaused,
         bool absorbPaused,
         bool buyPaused
-    ) external override restricted{
+    ) external override restricted {
         pauseFlags =
             uint8(0) |
             (toUInt8(supplyPaused) << PAUSE_SUPPLY_OFFSET) |
@@ -1486,7 +1486,10 @@ contract CometWithExtendedAssetList is CometMainInterface, AccessManaged {
      * @param to An address of the receiver of withdrawn reserves
      * @param amount The amount of reserves to be withdrawn from the protocol
      */
-    function withdrawReserves(address to, uint amount) external override restricted {
+    function withdrawReserves(
+        address to,
+        uint amount
+    ) external override restricted {
         int reserves = getReserves();
         if (reserves < 0 || amount > unsigned256(reserves))
             revert InsufficientReserves();
@@ -1601,8 +1604,8 @@ contract CometWithExtendedAssetList is CometMainInterface, AccessManaged {
         address newAccount
     ) external override restricted {
         if (lostAccount == newAccount) revert NoSelfTransfer();
-        if(newAccount == address(0)) revert ZeroAddress();
-        if(
+        if (newAccount == address(0)) revert ZeroAddress();
+        if (
             borrowBalanceOf(newAccount) != 0 ||
             balanceOf(newAccount) != 0 ||
             userBasic[newAccount].assetsIn != 0 ||
@@ -1637,7 +1640,10 @@ contract CometWithExtendedAssetList is CometMainInterface, AccessManaged {
         }
     }
 
-    function _transferDebtOrSupply(address lostAccount, address newAccount) internal {
+    function _transferDebtOrSupply(
+        address lostAccount,
+        address newAccount
+    ) internal {
         userBasic[newAccount] = userBasic[lostAccount];
 
         delete userBasic[lostAccount];
