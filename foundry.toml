@@ -13,7 +13,7 @@ remappings = [
   "oz/=dependencies/@openzeppelin-contracts-5.5.0/",
   # For Aria dependency
   "openzeppelin-contracts/=dependencies/@openzeppelin-contracts-5.5.0/",
-  "aria/=dependencies/aria-pre-v1.0.17/contracts/"
+  "aria/=dependencies/aria-v1.1.0/contracts/"
 ]
 via_ir = true
 optimizer = true
@@ -47,5 +47,5 @@ remappings_location = "config"
 [dependencies]
 forge-std = "1.11.0"
 "woof-software/compound-capo" = { version = "lst-lrt-oracles", git = "git@github.com:woof-software/compound-capo.git", branch = "lst-lrt-oracles" }
-aria = { version = "pre-v1.0.17", git = "git@github.com:AriaProtocol/main-contracts.git", rev = "5737c87fbae51eb2e3c2bb5507705308f587dd8e" }
+aria = { version = "v1.1.0", git = "git@github.com:AriaProtocol/main-contracts.git", branch = "main" }
 "@openzeppelin-contracts" = "5.5.0"
