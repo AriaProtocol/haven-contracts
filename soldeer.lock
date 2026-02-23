@@ -6,6 +6,12 @@ checksum = "93ceee9fa908d9ce9776c11884961a5161f28c49339774599aaaeda960e52aff"
 integrity = "f1e3f1853ec75ffd561bf39a3ca5c443ee62b010d98db7692f0cc7f673b9a3df"
 
 [[dependencies]]
+name = "aria"
+version = "pre-v1.0.17"
+git = "git@github.com:AriaProtocol/main-contracts.git"
+rev = "5737c87fbae51eb2e3c2bb5507705308f587dd8e"
+
+[[dependencies]]
 name = "forge-std"
 version = "1.11.0"
 url = "https://soldeer-revisions.s3.amazonaws.com/forge-std/1_11_0_09-10-2025_06:23:22_forge-std-1.11.zip"
