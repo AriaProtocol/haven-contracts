@@ -1,7 +1,7 @@
 pragma solidity ^0.8.15;
 
 import {IAccessManaged} from "oz/access/manager/IAccessManaged.sol";
-import {IAccessManager} from "oz/access/manager/IAccessManager.sol";
+import {IAccessManagerCustom} from "aria/access/interfaces/IAccessManagerCustom.sol";
 
 import {CometMainInterface} from "contracts/CometMainInterface.sol";
 
@@ -66,8 +66,8 @@ contract Comet_AccessManaged_Test is Common_Setup {
     // ------------------------------------------ //
     // -------------- Revert Cases -------------- //
     // ------------------------------------------ //
-    /// @dev Revert because no execution delay set for `recoverer` address
-    function testRevert_schedule_DelayMustBeSet() public {
+    /// @dev Revert because `recoverer` address does not hold the RECOVERER_ROLE (execution delay is per-role)
+    function testRevert_schedule_Unauthorized() public {
         vm.startPrank(recoverer);
 
         address oldAddr = makeAddr("oldAddr");
@@ -77,7 +77,7 @@ contract Comet_AccessManaged_Test is Common_Setup {
         // comet
         vm.expectRevert(
             abi.encodeWithSelector(
-                IAccessManager.AccessManagerUnauthorizedCall.selector, recoverer, address(comet), RECOVER_SELEC
+                IAccessManagerCustom.AccessManagerUnauthorizedCall.selector, recoverer, address(comet), RECOVER_SELEC
             )
         );
         governor.schedule(address(comet), data, 0);
@@ -85,7 +85,7 @@ contract Comet_AccessManaged_Test is Common_Setup {
         // comet extended asset list
         vm.expectRevert(
             abi.encodeWithSelector(
-                IAccessManager.AccessManagerUnauthorizedCall.selector,
+                IAccessManagerCustom.AccessManagerUnauthorizedCall.selector,
                 recoverer,
                 address(cometExtendedAssetList),
                 RECOVER_SELEC

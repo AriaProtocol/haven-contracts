@@ -15,12 +15,12 @@ import "contracts/test/CometHarness.sol";
 import "contracts/test/SimplePriceFeed.sol";
 import "contracts/test/FaucetToken.sol";
 
-import {AccessManager} from "oz/access/manager/AccessManager.sol";
+import {AccessManagerSingleAdmin} from "aria/access/AccessManagerSingleAdmin.sol";
 
 contract Common_Setup is Test, CometConfiguration {
     using Strings for uint256;
 
-    AccessManager public governor;
+    AccessManagerSingleAdmin public governor;
     CometHarness public comet;
     CometHarnessExtendedAssetList public cometExtendedAssetList;
 
@@ -66,6 +66,7 @@ contract Common_Setup is Test, CometConfiguration {
     uint104 public constant TARGET_RESERVES = 0;
 
     // delays
+    uint48 public constant ADMIN_TRANSFER_DELAY = 2 days;
     uint32 public constant RECOVERER_GRANT_DELAY = 12 hours;
     uint32 public constant WITHDRAWER_GRANT_DELAY = 6 days;
     uint32 public constant PAUSE_DELAY = 1;
@@ -244,48 +245,52 @@ contract Common_Setup is Test, CometConfiguration {
         withdrawer = makeAddr("withdrawer");
         recovererDelayed = makeAddr("recovererDelayed");
 
-        governor = new AccessManager(accessManagerAdmin);
+        governor = new AccessManagerSingleAdmin(ADMIN_TRANSFER_DELAY, accessManagerAdmin);
     }
 
     function __defineRolesAndGrantDefaultAccess(address comet) private {
         vm.startPrank(accessManagerAdmin);
 
-        // set roles on selector
+        // set roles on selector & configure delays
         {
             _selectors.push(PAUSE_SELEC);
             governor.setTargetFunctionRole(comet, _selectors, PAUSE_ROLE);
             governor.setRoleGuardian(PAUSE_ROLE, PAUSE_GUARDIAN);
+            governor.setExecutionDelay(PAUSE_ROLE, PAUSE_DELAY);
+            governor.setExecutionDelay(PAUSE_GUARDIAN, PAUSE_DELAY);
             delete _selectors;
 
             _selectors.push(ABSORB_SELEC);
             _selectors.push(BUY_COLL_SELEC);
             governor.setTargetFunctionRole(comet, _selectors, LIQUIDATOR_ROLE);
+            governor.setExecutionDelay(LIQUIDATOR_ROLE, LIQUIDATOR_DELAY);
             delete _selectors;
 
             _selectors.push(RECOVER_SELEC);
             governor.setTargetFunctionRole(comet, _selectors, RECOVERER_ROLE);
-            delete _selectors;
             governor.setGrantDelay(RECOVERER_ROLE, RECOVERER_GRANT_DELAY);
+            governor.setExecutionDelay(RECOVERER_ROLE, RECOVER_DELAY);
+            delete _selectors;
 
             _selectors.push(WITHDRAW_SELECT);
             governor.setTargetFunctionRole(comet, _selectors, WITHDRAWER_ROLE);
-            delete _selectors;
             governor.setGrantDelay(WITHDRAWER_ROLE, WITHDRAWER_GRANT_DELAY);
+            governor.setExecutionDelay(WITHDRAWER_ROLE, WITHDRAWER_DELAY);
+            delete _selectors;
 
-            // timepoint when new grant delay appilies, both for recoverer and withdrawer
-            skip(WITHDRAWER_GRANT_DELAY);
+            // timepoint when new grant/execution delays apply
+            skip(WITHDRAWER_GRANT_DELAY + WITHDRAWER_DELAY);
         }
 
-        // grant roles
+        // grant roles (execution delay is per-role, set above)
         {
-            governor.grantRole(PAUSE_ROLE, pauseGuardian, PAUSE_DELAY);
-            governor.grantRole(LIQUIDATOR_ROLE, liquidator, LIQUIDATOR_DELAY);
-            governor.grantRole(RECOVERER_ROLE, recoverer, 0);
-            governor.grantRole(RECOVERER_ROLE, recovererDelayed, RECOVER_DELAY);
-            governor.grantRole(PAUSE_GUARDIAN, pauseGuardian, PAUSE_DELAY);
-            governor.grantRole(WITHDRAWER_ROLE, withdrawer, WITHDRAWER_DELAY);
-            // new delay for roles effect
-            skip(6 days);
+            governor.grantRole(PAUSE_ROLE, pauseGuardian);
+            governor.grantRole(LIQUIDATOR_ROLE, liquidator);
+            governor.grantRole(RECOVERER_ROLE, recovererDelayed);
+            governor.grantRole(PAUSE_GUARDIAN, pauseGuardian);
+            governor.grantRole(WITHDRAWER_ROLE, withdrawer);
+            // skip for grant delays to take effect
+            skip(WITHDRAWER_GRANT_DELAY + WITHDRAWER_DELAY);
         }
 
         vm.stopPrank();

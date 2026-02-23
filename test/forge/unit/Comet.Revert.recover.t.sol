@@ -59,31 +59,46 @@ contract Comet_Revert_recover_Test is Fixture_3Sup_3Bor, CometStorage {
     // ============ Internal Functions ============ //
     //============================================= //
     function _test_RevertOn_SelfTransfer_recover(CometMainInterface cometX) internal {
-        vm.startPrank(recoverer);
+        vm.startPrank(recovererDelayed);
+        bytes memory data = abi.encodeWithSelector(RECOVER_SELEC, borrower3, borrower3);
+        governor.schedule(address(cometX), data, 0);
+        skip(governor.minSetback());
         vm.expectRevert(abi.encodeWithSelector(CometMainInterface.NoSelfTransfer.selector));
         cometX.recover(borrower3, borrower3);
     }
 
     function _test_RevertOn_ZeroAddress_recover(CometMainInterface cometX) internal {
-        vm.startPrank(recoverer);
+        vm.startPrank(recovererDelayed);
+        bytes memory data = abi.encodeWithSelector(RECOVER_SELEC, borrower3, address(0));
+        governor.schedule(address(cometX), data, 0);
+        skip(governor.minSetback());
         vm.expectRevert(abi.encodeWithSelector(CometMainInterface.ZeroAddress.selector));
         cometX.recover(borrower3, address(0));
     }
 
     function _test_RevertWhen_NewAccountIsNotEmpty_AlreadyABorrower(CometMainInterface cometX) internal {
-        vm.startPrank(recoverer);
+        vm.startPrank(recovererDelayed);
+        bytes memory data = abi.encodeWithSelector(RECOVER_SELEC, borrower3, borrower1);
+        governor.schedule(address(cometX), data, 0);
+        skip(governor.minSetback());
         vm.expectRevert(abi.encodeWithSelector(CometMainInterface.AccountNotEmpty.selector));
         cometX.recover(borrower3, borrower1);
     }
 
     function _test_RevertWhen_NewAccountIsNotEmpty_AlreadyASupplier(CometMainInterface cometX) internal {
-        vm.startPrank(recoverer);
+        vm.startPrank(recovererDelayed);
+        bytes memory data = abi.encodeWithSelector(RECOVER_SELEC, borrower3, supplier3);
+        governor.schedule(address(cometX), data, 0);
+        skip(governor.minSetback());
         vm.expectRevert(abi.encodeWithSelector(CometMainInterface.AccountNotEmpty.selector));
         cometX.recover(borrower3, supplier3);
     }
 
     function _test_RevertWhen_NewAccountIsNotEmpty_HasCollateralWithoutBorrowings(CometMainInterface cometX) internal {
-        vm.startPrank(recoverer);
+        vm.startPrank(recovererDelayed);
+        bytes memory data = abi.encodeWithSelector(RECOVER_SELEC, borrower3, collateral_er);
+        governor.schedule(address(cometX), data, 0);
+        skip(governor.minSetback());
         vm.expectRevert(abi.encodeWithSelector(CometMainInterface.AccountNotEmpty.selector));
         cometX.recover(borrower3, collateral_er);
     }
