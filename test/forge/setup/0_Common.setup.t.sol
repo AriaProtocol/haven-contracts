@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.15;
 
-import {Strings} from "oz-4.9.0/utils/Strings.sol";
+import {Strings} from "oz/utils/Strings.sol";
 
 import {CometHarness} from "contracts/test/CometHarness.sol";
 import {CometHarnessExtendedAssetList} from "contracts/test/CometHarnessExtendedAssetList.sol";

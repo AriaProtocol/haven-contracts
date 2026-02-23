@@ -11,7 +11,8 @@ remappings = [
   "forge-std/=dependencies/forge-std-1.11.0/src/",
   "capo/=dependencies/woof-software-compound-capo-lst-lrt-oracles/",
   "oz/=dependencies/@openzeppelin-contracts-5.5.0/",
-  "oz-4.9.0/=dependencies/@openzeppelin-contracts-4.9.0/",
+  # For Aria dependency
+  "openzeppelin-contracts/=dependencies/@openzeppelin-contracts-5.5.0/",
   "aria/=dependencies/aria-pre-v1.0.17/contracts/"
 ]
 via_ir = true
@@ -40,8 +41,11 @@ single_line_statement_blocks = 'preserve'
 multiline_func_header= 'attributes_first'
 ignore = ["contracts/"]
 
+[soldeer]
+remappings_location = "config"
+
 [dependencies]
 forge-std = "1.11.0"
 "woof-software/compound-capo" = { version = "lst-lrt-oracles", git = "git@github.com:woof-software/compound-capo.git", branch = "lst-lrt-oracles" }
-"@openzeppelin-contracts" = "4.9.0"
-aria = { version = "pre-v1.0.17", git = "git@github.com:AriaProtocol/main-contracts.git", branch = "dev" }
+aria = { version = "pre-v1.0.17", git = "git@github.com:AriaProtocol/main-contracts.git", rev = "5737c87fbae51eb2e3c2bb5507705308f587dd8e" }
+"@openzeppelin-contracts" = "5.5.0"
