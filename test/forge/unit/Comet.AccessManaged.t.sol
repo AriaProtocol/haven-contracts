@@ -66,9 +66,9 @@ contract Comet_AccessManaged_Test is Common_Setup {
     // ------------------------------------------ //
     // -------------- Revert Cases -------------- //
     // ------------------------------------------ //
-    /// @dev Revert because `recoverer` address does not hold the RECOVERER_ROLE (execution delay is per-role)
+    /// @dev Revert because `notRecoverer` address does not hold the RECOVERER_ROLE (execution delay is per-role)
     function testRevert_schedule_Unauthorized() public {
-        vm.startPrank(recoverer);
+        vm.startPrank(notRecoverer);
 
         address oldAddr = makeAddr("oldAddr");
         address newAddr = makeAddr("newAddr");
@@ -77,7 +77,7 @@ contract Comet_AccessManaged_Test is Common_Setup {
         // comet
         vm.expectRevert(
             abi.encodeWithSelector(
-                IAccessManagerCustom.AccessManagerUnauthorizedCall.selector, recoverer, address(comet), RECOVER_SELEC
+                IAccessManagerCustom.AccessManagerUnauthorizedCall.selector, notRecoverer, address(comet), RECOVER_SELEC
             )
         );
         governor.schedule(address(comet), data, 0);
@@ -86,7 +86,7 @@ contract Comet_AccessManaged_Test is Common_Setup {
         vm.expectRevert(
             abi.encodeWithSelector(
                 IAccessManagerCustom.AccessManagerUnauthorizedCall.selector,
-                recoverer,
+                notRecoverer,
                 address(cometExtendedAssetList),
                 RECOVER_SELEC
             )
@@ -160,7 +160,7 @@ contract Comet_AccessManaged_Test is Common_Setup {
         address caller = makeAddr("caller");
 
         // schedule
-        vm.startPrank(pauseGuardian);
+        vm.startPrank(pauser);
         {
             bytes memory data = abi.encodeWithSelector(PAUSE_SELEC, true, false, true, false, true);
             governor.schedule(address(cometX), data, 0);
@@ -173,8 +173,8 @@ contract Comet_AccessManaged_Test is Common_Setup {
         vm.expectRevert(abi.encodeWithSelector(IAccessManaged.AccessManagedUnauthorized.selector, caller));
         cometX.pause(true, false, true, false, true);
 
-        // works for pause guardian
-        vm.startPrank(pauseGuardian);
+        // works for pauser
+        vm.startPrank(pauser);
         cometX.pause(true, false, true, false, true);
     }
 

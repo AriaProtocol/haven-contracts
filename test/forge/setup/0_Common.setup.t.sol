@@ -36,8 +36,9 @@ contract Common_Setup is Test, CometConfiguration {
     //////// users ////////
     address public accessManagerAdmin;
     address public liquidator;
+    address public pauser; // in AccessManager, rather than Comet
     address public pauseGuardian; // in AccessManager, rather than Comet
-    address public recoverer;
+    address public notRecoverer;
     address public recovererDelayed;
     address public withdrawer;
 
@@ -240,8 +241,9 @@ contract Common_Setup is Test, CometConfiguration {
     function __createAddr() private {
         accessManagerAdmin = makeAddr("accessManagerAdmin");
         liquidator = makeAddr("liquidator");
+        pauser = makeAddr("pauser");
         pauseGuardian = makeAddr("pauseGuardian");
-        recoverer = makeAddr("recoverer");
+        notRecoverer = makeAddr("notRecoverer");
         withdrawer = makeAddr("withdrawer");
         recovererDelayed = makeAddr("recovererDelayed");
 
@@ -257,7 +259,6 @@ contract Common_Setup is Test, CometConfiguration {
             governor.setTargetFunctionRole(comet, _selectors, PAUSE_ROLE);
             governor.setRoleGuardian(PAUSE_ROLE, PAUSE_GUARDIAN);
             governor.setExecutionDelay(PAUSE_ROLE, PAUSE_DELAY);
-            governor.setExecutionDelay(PAUSE_GUARDIAN, PAUSE_DELAY);
             delete _selectors;
 
             _selectors.push(ABSORB_SELEC);
@@ -284,7 +285,7 @@ contract Common_Setup is Test, CometConfiguration {
 
         // grant roles (execution delay is per-role, set above)
         {
-            governor.grantRole(PAUSE_ROLE, pauseGuardian);
+            governor.grantRole(PAUSE_ROLE, pauser);
             governor.grantRole(LIQUIDATOR_ROLE, liquidator);
             governor.grantRole(RECOVERER_ROLE, recovererDelayed);
             governor.grantRole(PAUSE_GUARDIAN, pauseGuardian);
@@ -319,7 +320,8 @@ contract Common_Setup is Test, CometConfiguration {
         vm.label(address(governor), "Governor");
         vm.label(accessManagerAdmin, "Access Admin");
         vm.label(liquidator, "Liquidator");
-        vm.label(recoverer, "Recoverer");
+        vm.label(pauser, "Pauser");
+        vm.label(notRecoverer, "Not Recoverer");
         vm.label(pauseGuardian, "Pause Guardian");
         vm.label(withdrawer, "Withdrawer");
     }

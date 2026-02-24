@@ -19,7 +19,7 @@ contract Comet_setup_Test is Common_Setup {
             assertEq(governor.getRoleAdmin(PAUSE_ROLE), 0x0, "default admin for PAUSE_ROLE");
             assertEq(governor.getRoleGuardian(PAUSE_ROLE), PAUSE_GUARDIAN, "PAUSE_GUARDIAN for PAUSE_ROLE");
             assertEq(governor.getRoleGrantDelay(PAUSE_ROLE), 0, "PAUSE_ROLE immediately granted");
-            (bool isPauseMember, uint32 pauseExecutionDelay) = governor.hasRole(PAUSE_ROLE, pauseGuardian);
+            (bool isPauseMember, uint32 pauseExecutionDelay) = governor.hasRole(PAUSE_ROLE, pauser);
             assertTrue(isPauseMember, "PAUSE_ROLE member");
             assertEq(pauseExecutionDelay, PAUSE_DELAY, "immediately executed");
             // pause guardian role
@@ -27,7 +27,7 @@ contract Comet_setup_Test is Common_Setup {
             (bool isPauseGuardianMember, uint32 pauseGuardianExecutionDelay) =
                 governor.hasRole(PAUSE_GUARDIAN, pauseGuardian);
             assertTrue(isPauseGuardianMember, "PAUSE_GUARDIAN member");
-            assertEq(pauseGuardianExecutionDelay, PAUSE_DELAY, "PAUSE_GUARDIAN immediately executed");
+            assertEq(pauseGuardianExecutionDelay, 0, "PAUSE_GUARDIAN immediately executed");
         }
 
         // liquidator
@@ -48,8 +48,8 @@ contract Comet_setup_Test is Common_Setup {
                 governor.getRoleGrantDelay(RECOVERER_ROLE), RECOVERER_GRANT_DELAY, "RECOVERER_ROLE granted after 12h"
             );
             // unauthorized recoverer (not granted role)
-            (bool isRecoverMember, uint32 recoverExecutionDelay) = governor.hasRole(RECOVERER_ROLE, recoverer);
-            assertFalse(isRecoverMember, "recoverer is NOT a RECOVERER_ROLE member");
+            (bool isRecoverMember, uint32 recoverExecutionDelay) = governor.hasRole(RECOVERER_ROLE, notRecoverer);
+            assertFalse(isRecoverMember, "notRecoverer is NOT a RECOVERER_ROLE member");
             assertEq(recoverExecutionDelay, RECOVER_DELAY, "RECOVERER_ROLE always has the same delay");
             // delayed recoverer
             (isRecoverMember, recoverExecutionDelay) = governor.hasRole(RECOVERER_ROLE, recovererDelayed);
