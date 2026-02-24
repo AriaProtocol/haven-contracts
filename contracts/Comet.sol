@@ -387,7 +387,7 @@ contract Comet is CometMainInterface, AccessManaged {
             word_a = asset11_a;
             word_b = asset11_b;
         } else {
-            revert Absurd();
+            revert BadAsset();
         }
 
         address asset = address(uint160(word_a & type(uint160).max));

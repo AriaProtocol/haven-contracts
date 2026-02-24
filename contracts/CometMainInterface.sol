@@ -9,7 +9,6 @@ import "./CometCore.sol";
  * @author Compound
  */
 abstract contract CometMainInterface is CometCore {
-    error Absurd();
     error AccountNotEmpty();
     error AlreadyInitialized();
     error BadAsset();
