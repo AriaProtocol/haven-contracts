@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.20;
+pragma solidity 0.8.26;
 
 import "./CometMainInterface.sol";
 import "./IERC20NonStandard.sol";
@@ -16,10 +16,9 @@ contract Comet is CometMainInterface, AccessManaged {
     /** General configuration constants **/
 
     /// @notice The admin of the protocol
-    address public immutable override governor;
-
-    /// @notice The account which may trigger pauses - DEPRECATED due to AccessManaged & AccessManager
-    address public immutable override pauseGuardian;
+    function governor() external view override returns (address) {
+        return authority();
+    }
 
     /// @notice The address of the base token contract
     address public immutable override baseToken;
@@ -100,7 +99,9 @@ contract Comet is CometMainInterface, AccessManaged {
     uint8 public immutable override numAssets;
 
     /// @notice Factor to divide by when accruing rewards in order to preserve 6 decimals (i.e. baseScale / 1e6)
-    uint internal immutable accrualDescaleFactor;
+    function _accrualDescaleFactor() internal view returns (uint) {
+        return baseScale / BASE_ACCRUAL_SCALE;
+    }
 
     /** Collateral asset configuration (packed) **/
 
@@ -137,9 +138,9 @@ contract Comet is CometMainInterface, AccessManaged {
         // Sanity checks
         uint8 decimals_ = IERC20NonStandard(config.baseToken).decimals();
         if (decimals_ > MAX_BASE_DECIMALS) revert BadDecimals();
-        if (config.storeFrontPriceFactor > FACTOR_SCALE) revert BadDiscount();
-        if (config.assetConfigs.length > MAX_ASSETS) revert TooManyAssets();
-        if (config.baseMinForRewards == 0) revert BadMinimum();
+        if (config.storeFrontPriceFactor > FACTOR_SCALE) revert BadDecimals();
+        if (config.assetConfigs.length > MAX_ASSETS) revert BadDecimals();
+        if (config.baseMinForRewards == 0) revert BadDecimals();
         if (
             IPriceFeed(config.baseTokenPriceFeed).decimals() !=
             PRICE_FEED_DECIMALS
@@ -147,8 +148,6 @@ contract Comet is CometMainInterface, AccessManaged {
 
         // Copy configuration
         unchecked {
-            governor = config.governor;
-            pauseGuardian = config.pauseGuardian;
             baseToken = config.baseToken;
             baseTokenPriceFeed = config.baseTokenPriceFeed;
             extensionDelegate = config.extensionDelegate;
@@ -158,7 +157,6 @@ contract Comet is CometMainInterface, AccessManaged {
             baseScale = uint64(10 ** decimals_);
             trackingIndexScale = config.trackingIndexScale;
             if (baseScale < BASE_ACCRUAL_SCALE) revert BadDecimals();
-            accrualDescaleFactor = baseScale / BASE_ACCRUAL_SCALE;
 
             baseMinForRewards = config.baseMinForRewards;
             baseTrackingSupplySpeed = config.baseTrackingSupplySpeed;
@@ -216,6 +214,15 @@ contract Comet is CometMainInterface, AccessManaged {
     }
 
     /**
+     * @dev Override to remove OZ's EXTCODESIZE check. The AccessManager validates its own operations.
+     */
+    function setAuthority(address newAuthority) public override {
+        address caller = _msgSender();
+        if (caller != authority()) revert AccessManagedUnauthorized(caller);
+        _setAuthority(newAuthority);
+    }
+
+    /**
      * @dev Prevents marked functions from being reentered
      * Note: this restrict contracts from calling comet functions in their hooks.
      * Doing so will cause the transaction to revert.
@@ -247,7 +254,6 @@ contract Comet is CometMainInterface, AccessManaged {
      */
     function nonReentrantAfter() internal {
         bytes32 slot = REENTRANCY_GUARD_FLAG_SLOT;
-        uint256 status;
         assembly ("memory-safe") {
             sstore(slot, REENTRANCY_GUARD_NOT_ENTERED)
         }
@@ -392,7 +398,7 @@ contract Comet is CometMainInterface, AccessManaged {
             word_a = asset11_a;
             word_b = asset11_b;
         } else {
-            revert Absurd();
+            revert BadAsset();
         }
 
         address asset = address(uint160(word_a & type(uint160).max));
@@ -516,6 +522,28 @@ contract Comet is CometMainInterface, AccessManaged {
     }
 
     /**
+     * @dev Shared interest rate calculation
+     */
+    function _getRate(
+        uint utilization,
+        uint kink,
+        uint base,
+        uint slopeLow,
+        uint slopeHigh
+    ) internal pure returns (uint64) {
+        if (utilization <= kink) {
+            return safe64(base + mulFactor(slopeLow, utilization));
+        } else {
+            return
+                safe64(
+                    base +
+                        mulFactor(slopeLow, kink) +
+                        mulFactor(slopeHigh, utilization - kink)
+                );
+        }
+    }
+
+    /**
      * @dev Note: Does not accrue interest first
      * @param utilization The utilization to check the supply rate for
      * @return The per second supply rate at `utilization`
@@ -523,31 +551,14 @@ contract Comet is CometMainInterface, AccessManaged {
     function getSupplyRate(
         uint utilization
     ) public view override returns (uint64) {
-        if (utilization <= supplyKink) {
-            // interestRateBase + interestRateSlopeLow * utilization
-            return
-                safe64(
-                    supplyPerSecondInterestRateBase +
-                        mulFactor(
-                            supplyPerSecondInterestRateSlopeLow,
-                            utilization
-                        )
-                );
-        } else {
-            // interestRateBase + interestRateSlopeLow * kink + interestRateSlopeHigh * (utilization - kink)
-            return
-                safe64(
-                    supplyPerSecondInterestRateBase +
-                        mulFactor(
-                            supplyPerSecondInterestRateSlopeLow,
-                            supplyKink
-                        ) +
-                        mulFactor(
-                            supplyPerSecondInterestRateSlopeHigh,
-                            (utilization - supplyKink)
-                        )
-                );
-        }
+        return
+            _getRate(
+                utilization,
+                supplyKink,
+                supplyPerSecondInterestRateBase,
+                supplyPerSecondInterestRateSlopeLow,
+                supplyPerSecondInterestRateSlopeHigh
+            );
     }
 
     /**
@@ -558,31 +569,14 @@ contract Comet is CometMainInterface, AccessManaged {
     function getBorrowRate(
         uint utilization
     ) public view override returns (uint64) {
-        if (utilization <= borrowKink) {
-            // interestRateBase + interestRateSlopeLow * utilization
-            return
-                safe64(
-                    borrowPerSecondInterestRateBase +
-                        mulFactor(
-                            borrowPerSecondInterestRateSlopeLow,
-                            utilization
-                        )
-                );
-        } else {
-            // interestRateBase + interestRateSlopeLow * kink + interestRateSlopeHigh * (utilization - kink)
-            return
-                safe64(
-                    borrowPerSecondInterestRateBase +
-                        mulFactor(
-                            borrowPerSecondInterestRateSlopeLow,
-                            borrowKink
-                        ) +
-                        mulFactor(
-                            borrowPerSecondInterestRateSlopeHigh,
-                            (utilization - borrowKink)
-                        )
-                );
-        }
+        return
+            _getRate(
+                utilization,
+                borrowKink,
+                borrowPerSecondInterestRateBase,
+                borrowPerSecondInterestRateSlopeLow,
+                borrowPerSecondInterestRateSlopeHigh
+            );
     }
 
     /**
@@ -632,13 +626,20 @@ contract Comet is CometMainInterface, AccessManaged {
     }
 
     /**
+     * @dev Helper to get accrued interest indices as of now
+     */
+    function _currentAccruedIndices() internal view returns (uint64, uint64) {
+        return accruedInterestIndices(getNowInternal() - lastAccrualTime);
+    }
+
+    /**
      * @notice Gets the total amount of protocol reserves of the base asset
      */
     function getReserves() public view override returns (int) {
         (
             uint64 baseSupplyIndex_,
             uint64 baseBorrowIndex_
-        ) = accruedInterestIndices(getNowInternal() - lastAccrualTime);
+        ) = _currentAccruedIndices();
         uint balance = IERC20NonStandard(baseToken).balanceOf(address(this));
         uint totalSupply_ = presentValueSupply(
             baseSupplyIndex_,
@@ -942,7 +943,7 @@ contract Comet is CometMainInterface, AccessManaged {
             basic.baseTrackingAccrued += safe64(
                 (uint104(principal) * indexDelta) /
                     trackingIndexScale /
-                    accrualDescaleFactor
+                    _accrualDescaleFactor()
             );
         } else {
             uint indexDelta = uint256(
@@ -951,7 +952,7 @@ contract Comet is CometMainInterface, AccessManaged {
             basic.baseTrackingAccrued += safe64(
                 (uint104(-principal) * indexDelta) /
                     trackingIndexScale /
-                    accrualDescaleFactor
+                    _accrualDescaleFactor()
             );
         }
 
@@ -965,9 +966,29 @@ contract Comet is CometMainInterface, AccessManaged {
     }
 
     /**
-     * @dev Safe ERC20 transfer in and returns the final amount transferred (taking into account any fees)
+     * @dev Safe ERC20 transfer (in and out)
      * @dev Note: Safely handles non-standard ERC-20 tokens that do not return a value. See here: https://medium.com/coinmonks/missing-return-value-bug-at-least-130-tokens-affected-d67bf08521ca
      */
+    function _checkTransferReturn() internal pure returns (bool success) {
+        assembly ("memory-safe") {
+            switch returndatasize()
+            case 0 {
+                // This is a non-standard ERC-20
+                success := not(0) // set success to true
+            }
+            case 32 {
+                // This is a compliant ERC-20
+                returndatacopy(0, 0, 32)
+                success := mload(0) // Set `success = returndata` of override external call
+            }
+            default {
+                // This is an excessively non-compliant ERC-20, revert.
+                revert(0, 0)
+            }
+        }
+    }
+
+    /// Safe ERC20 transfer in and returns the final amount transferred (taking into account any fees)
     function doTransferIn(
         address asset,
         address from,
@@ -977,53 +998,16 @@ contract Comet is CometMainInterface, AccessManaged {
             address(this)
         );
         IERC20NonStandard(asset).transferFrom(from, address(this), amount);
-        bool success;
-        assembly ("memory-safe") {
-            switch returndatasize()
-            case 0 {
-                // This is a non-standard ERC-20
-                success := not(0) // set success to true
-            }
-            case 32 {
-                // This is a compliant ERC-20
-                returndatacopy(0, 0, 32)
-                success := mload(0) // Set `success = returndata` of override external call
-            }
-            default {
-                // This is an excessively non-compliant ERC-20, revert.
-                revert(0, 0)
-            }
-        }
-        if (!success) revert TransferInFailed();
+        if (!_checkTransferReturn()) revert TransferInFailed();
         return
             IERC20NonStandard(asset).balanceOf(address(this)) -
             preTransferBalance;
     }
 
-    /**
-     * @dev Safe ERC20 transfer out
-     * @dev Note: Safely handles non-standard ERC-20 tokens that do not return a value. See here: https://medium.com/coinmonks/missing-return-value-bug-at-least-130-tokens-affected-d67bf08521ca
-     */
+    /// @dev Safe ERC20 transfer out
     function doTransferOut(address asset, address to, uint amount) internal {
         IERC20NonStandard(asset).transfer(to, amount);
-        bool success;
-        assembly ("memory-safe") {
-            switch returndatasize()
-            case 0 {
-                // This is a non-standard ERC-20
-                success := not(0) // set success to true
-            }
-            case 32 {
-                // This is a compliant ERC-20
-                returndatacopy(0, 0, 32)
-                success := mload(0) // Set `success = returndata` of override external call
-            }
-            default {
-                // This is an excessively non-compliant ERC-20, revert.
-                revert(0, 0)
-            }
-        }
-        if (!success) revert TransferOutFailed();
+        if (!_checkTransferReturn()) revert TransferOutFailed();
     }
 
     /**
@@ -1638,7 +1622,10 @@ contract Comet is CometMainInterface, AccessManaged {
      * @param to An address of the receiver of withdrawn reserves
      * @param amount The amount of reserves to be withdrawn from the protocol
      */
-    function withdrawReserves(address to, uint amount) external override restricted {
+    function withdrawReserves(
+        address to,
+        uint amount
+    ) external override restricted {
         int reserves = getReserves();
         if (reserves < 0 || amount > unsigned256(reserves))
             revert InsufficientReserves();
@@ -1672,9 +1659,7 @@ contract Comet is CometMainInterface, AccessManaged {
      * @return The supply of tokens
      **/
     function totalSupply() external view override returns (uint256) {
-        (uint64 baseSupplyIndex_, ) = accruedInterestIndices(
-            getNowInternal() - lastAccrualTime
-        );
+        (uint64 baseSupplyIndex_, ) = _currentAccruedIndices();
         return presentValueSupply(baseSupplyIndex_, totalSupplyBase);
     }
 
@@ -1684,9 +1669,7 @@ contract Comet is CometMainInterface, AccessManaged {
      * @return The amount of debt
      **/
     function totalBorrow() external view override returns (uint256) {
-        (, uint64 baseBorrowIndex_) = accruedInterestIndices(
-            getNowInternal() - lastAccrualTime
-        );
+        (, uint64 baseBorrowIndex_) = _currentAccruedIndices();
         return presentValueBorrow(baseBorrowIndex_, totalBorrowBase);
     }
 
@@ -1697,9 +1680,7 @@ contract Comet is CometMainInterface, AccessManaged {
      * @return The present day base balance magnitude of the account, if positive
      */
     function balanceOf(address account) public view override returns (uint256) {
-        (uint64 baseSupplyIndex_, ) = accruedInterestIndices(
-            getNowInternal() - lastAccrualTime
-        );
+        (uint64 baseSupplyIndex_, ) = _currentAccruedIndices();
         int104 principal = userBasic[account].principal;
         return
             principal > 0
@@ -1716,9 +1697,7 @@ contract Comet is CometMainInterface, AccessManaged {
     function borrowBalanceOf(
         address account
     ) public view override returns (uint256) {
-        (, uint64 baseBorrowIndex_) = accruedInterestIndices(
-            getNowInternal() - lastAccrualTime
-        );
+        (, uint64 baseBorrowIndex_) = _currentAccruedIndices();
         int104 principal = userBasic[account].principal;
         return
             principal < 0
@@ -1772,7 +1751,7 @@ contract Comet is CometMainInterface, AccessManaged {
         address newAccount
     ) internal {
         uint16 assetsIn = userBasic[lostAccount].assetsIn;
-        // further optimization with typeof(i) = typeof(assetsIn)
+        // since 0.8.22 increment is unchecked by default
         for (uint8 i; i < numAssets; ++i) {
             if (isInAsset(assetsIn, i)) {
                 AssetInfo memory assetInfo = getAssetInfo(i);

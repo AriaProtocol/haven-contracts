@@ -1,7 +1,7 @@
 pragma solidity ^0.8.15;
 
 import {IAccessManaged} from "oz/access/manager/IAccessManaged.sol";
-import {IAccessManager} from "oz/access/manager/IAccessManager.sol";
+import {IAccessManagerCustom} from "aria/access/interfaces/IAccessManagerCustom.sol";
 
 import {CometMainInterface} from "contracts/CometMainInterface.sol";
 
@@ -66,9 +66,9 @@ contract Comet_AccessManaged_Test is Common_Setup {
     // ------------------------------------------ //
     // -------------- Revert Cases -------------- //
     // ------------------------------------------ //
-    /// @dev Revert because no execution delay set for `recoverer` address
-    function testRevert_schedule_DelayMustBeSet() public {
-        vm.startPrank(recoverer);
+    /// @dev Revert because `notRecoverer` address does not hold the RECOVERER_ROLE (execution delay is per-role)
+    function testRevert_schedule_Unauthorized() public {
+        vm.startPrank(notRecoverer);
 
         address oldAddr = makeAddr("oldAddr");
         address newAddr = makeAddr("newAddr");
@@ -77,7 +77,7 @@ contract Comet_AccessManaged_Test is Common_Setup {
         // comet
         vm.expectRevert(
             abi.encodeWithSelector(
-                IAccessManager.AccessManagerUnauthorizedCall.selector, recoverer, address(comet), RECOVER_SELEC
+                IAccessManagerCustom.AccessManagerUnauthorizedCall.selector, notRecoverer, address(comet), RECOVER_SELEC
             )
         );
         governor.schedule(address(comet), data, 0);
@@ -85,8 +85,8 @@ contract Comet_AccessManaged_Test is Common_Setup {
         // comet extended asset list
         vm.expectRevert(
             abi.encodeWithSelector(
-                IAccessManager.AccessManagerUnauthorizedCall.selector,
-                recoverer,
+                IAccessManagerCustom.AccessManagerUnauthorizedCall.selector,
+                notRecoverer,
                 address(cometExtendedAssetList),
                 RECOVER_SELEC
             )
@@ -160,7 +160,7 @@ contract Comet_AccessManaged_Test is Common_Setup {
         address caller = makeAddr("caller");
 
         // schedule
-        vm.startPrank(pauseGuardian);
+        vm.startPrank(pauser);
         {
             bytes memory data = abi.encodeWithSelector(PAUSE_SELEC, true, false, true, false, true);
             governor.schedule(address(cometX), data, 0);
@@ -173,8 +173,8 @@ contract Comet_AccessManaged_Test is Common_Setup {
         vm.expectRevert(abi.encodeWithSelector(IAccessManaged.AccessManagedUnauthorized.selector, caller));
         cometX.pause(true, false, true, false, true);
 
-        // works for pause guardian
-        vm.startPrank(pauseGuardian);
+        // works for pauser
+        vm.startPrank(pauser);
         cometX.pause(true, false, true, false, true);
     }
 

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.20;
+pragma solidity 0.8.26;
 
 import "./CometCore.sol";
 
@@ -9,13 +9,10 @@ import "./CometCore.sol";
  * @author Compound
  */
 abstract contract CometMainInterface is CometCore {
-    error Absurd();
     error AccountNotEmpty();
     error AlreadyInitialized();
     error BadAsset();
     error BadDecimals();
-    error BadDiscount();
-    error BadMinimum();
     error BadPrice();
     error BorrowTooSmall();
     error BorrowCFTooLarge();
@@ -29,7 +26,6 @@ abstract contract CometMainInterface is CometCore {
     error ReentrantCallBlocked();
     error SupplyCapExceeded();
     error TimestampTooLarge();
-    error TooManyAssets();
     error TooMuchSlippage();
     error TransferInFailed();
     error TransferOutFailed();
@@ -212,10 +208,8 @@ abstract contract CometMainInterface is CometCore {
         uint utilization
     ) public view virtual returns (uint64);
     function getUtilization() public view virtual returns (uint);
-
+    /// @dev handles both admin and guardian within AccessManager
     function governor() external view virtual returns (address);
-    // pauseGuardian DEPRECATED due to AccessManaged & AccessManager
-    function pauseGuardian() external view virtual returns (address);
     function baseToken() external view virtual returns (address);
     function baseTokenPriceFeed() external view virtual returns (address);
     function extensionDelegate() external view virtual returns (address);

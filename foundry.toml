@@ -4,14 +4,16 @@ out = 'forge/out'
 libs = ["dependencies"]
 test = 'test/forge'
 cache_path  = 'forge/cache'
-solc = "0.8.20"
+solc = "0.8.26"
 ignored_warnings_from = ["dependencies"]
 dynamic_test_linking = true
 remappings = [
   "forge-std/=dependencies/forge-std-1.11.0/src/",
   "capo/=dependencies/woof-software-compound-capo-lst-lrt-oracles/",
   "oz/=dependencies/@openzeppelin-contracts-5.5.0/",
-  "oz-4.9.0/=dependencies/@openzeppelin-contracts-4.9.0/"
+  # For Aria dependency
+  "openzeppelin-contracts/=dependencies/@openzeppelin-contracts-5.5.0/",
+  "aria/=dependencies/aria-v1.1.0/contracts/"
 ]
 via_ir = true
 optimizer = true
@@ -39,7 +41,11 @@ single_line_statement_blocks = 'preserve'
 multiline_func_header= 'attributes_first'
 ignore = ["contracts/"]
 
+[soldeer]
+remappings_location = "config"
+
 [dependencies]
 forge-std = "1.11.0"
 "woof-software/compound-capo" = { version = "lst-lrt-oracles", git = "git@github.com:woof-software/compound-capo.git", branch = "lst-lrt-oracles" }
-"@openzeppelin-contracts" = "4.9.0"
+aria = { version = "v1.1.0", git = "git@github.com:AriaProtocol/main-contracts.git", branch = "main" }
+"@openzeppelin-contracts" = "5.5.0"

@@ -1,9 +1,15 @@
 [[dependencies]]
 name = "@openzeppelin-contracts"
-version = "4.9.0"
-url = "https://soldeer-revisions.s3.amazonaws.com/@openzeppelin-contracts/4_9_0_22-01-2024_13:13:50_contracts.zip"
-checksum = "93ceee9fa908d9ce9776c11884961a5161f28c49339774599aaaeda960e52aff"
-integrity = "f1e3f1853ec75ffd561bf39a3ca5c443ee62b010d98db7692f0cc7f673b9a3df"
+version = "5.5.0"
+url = "https://soldeer-revisions.s3.amazonaws.com/@openzeppelin-contracts/5_5_0_01-11-2025_09:56:40_contracts.zip"
+checksum = "2ee78837130cf06b456d9ef7ab70753685d9c1c9c2c5b70f24bd4c16695d0337"
+integrity = "da8336cf949f0e0667ae8360af849681e3a3e76d7e61e7a86b1a3414a158aeea"
+
+[[dependencies]]
+name = "aria"
+version = "v1.1.0"
+git = "git@github.com:AriaProtocol/main-contracts.git"
+rev = "febcdd79c78ddc3996c394fe7909b20f7781cf2f"
 
 [[dependencies]]
 name = "forge-std"

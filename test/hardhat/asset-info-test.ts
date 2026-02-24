@@ -120,7 +120,7 @@ describe('asset info', function () {
     const CometFactory = (await ethers.getContractFactory('CometHarness')) as CometHarness__factory;
     await expect(
       CometFactory.deploy(config)
-    ).to.be.revertedWith("custom error 'TooManyAssets()'");
+    ).to.be.revertedWith("custom error 'BadDecimals()'");
   });
 
   it('reverts if index is greater than numAssets', async () => {
