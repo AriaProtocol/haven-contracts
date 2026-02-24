@@ -102,7 +102,9 @@ contract CometWithExtendedAssetList is CometMainInterface, AccessManaged {
     uint8 public immutable override numAssets;
 
     /// @notice Factor to divide by when accruing rewards in order to preserve 6 decimals (i.e. baseScale / 1e6)
-    uint internal immutable accrualDescaleFactor;
+    function _accrualDescaleFactor() internal view returns (uint) {
+        return baseScale / BASE_ACCRUAL_SCALE;
+    }
 
     /// @notice The address of the asset list
     address public immutable assetList;
@@ -137,7 +139,6 @@ contract CometWithExtendedAssetList is CometMainInterface, AccessManaged {
             baseScale = uint64(10 ** decimals_);
             trackingIndexScale = config.trackingIndexScale;
             if (baseScale < BASE_ACCRUAL_SCALE) revert BadDecimals();
-            accrualDescaleFactor = baseScale / BASE_ACCRUAL_SCALE;
 
             baseMinForRewards = config.baseMinForRewards;
             baseTrackingSupplySpeed = config.baseTrackingSupplySpeed;
@@ -788,7 +789,7 @@ contract CometWithExtendedAssetList is CometMainInterface, AccessManaged {
             basic.baseTrackingAccrued += safe64(
                 (uint104(principal) * indexDelta) /
                     trackingIndexScale /
-                    accrualDescaleFactor
+                    _accrualDescaleFactor()
             );
         } else {
             uint indexDelta = uint256(
@@ -797,7 +798,7 @@ contract CometWithExtendedAssetList is CometMainInterface, AccessManaged {
             basic.baseTrackingAccrued += safe64(
                 (uint104(-principal) * indexDelta) /
                     trackingIndexScale /
-                    accrualDescaleFactor
+                    _accrualDescaleFactor()
             );
         }
 
