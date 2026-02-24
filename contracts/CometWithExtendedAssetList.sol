@@ -21,9 +21,6 @@ contract CometWithExtendedAssetList is CometMainInterface, AccessManaged {
     /// @notice The admin of the protocol
     address public immutable override governor;
 
-    /// @notice The account which may trigger pauses
-    address public immutable override pauseGuardian;
-
     /// @notice The address of the base token contract
     address public immutable override baseToken;
 
@@ -130,7 +127,6 @@ contract CometWithExtendedAssetList is CometMainInterface, AccessManaged {
         // Copy configuration
         unchecked {
             governor = config.governor;
-            pauseGuardian = config.pauseGuardian;
             baseToken = config.baseToken;
             baseTokenPriceFeed = config.baseTokenPriceFeed;
             extensionDelegate = config.extensionDelegate;
@@ -214,7 +210,6 @@ contract CometWithExtendedAssetList is CometMainInterface, AccessManaged {
      */
     function nonReentrantAfter() internal {
         bytes32 slot = REENTRANCY_GUARD_FLAG_SLOT;
-        uint256 status;
         assembly ("memory-safe") {
             sstore(slot, REENTRANCY_GUARD_NOT_ENTERED)
         }
@@ -337,6 +332,28 @@ contract CometWithExtendedAssetList is CometMainInterface, AccessManaged {
     }
 
     /**
+     * @dev Shared interest rate calculation
+     */
+    function _getRate(
+        uint utilization,
+        uint kink,
+        uint base,
+        uint slopeLow,
+        uint slopeHigh
+    ) internal pure returns (uint64) {
+        if (utilization <= kink) {
+            return safe64(base + mulFactor(slopeLow, utilization));
+        } else {
+            return
+                safe64(
+                    base +
+                        mulFactor(slopeLow, kink) +
+                        mulFactor(slopeHigh, utilization - kink)
+                );
+        }
+    }
+
+    /**
      * @dev Note: Does not accrue interest first
      * @param utilization The utilization to check the supply rate for
      * @return The per second supply rate at `utilization`
@@ -344,31 +361,14 @@ contract CometWithExtendedAssetList is CometMainInterface, AccessManaged {
     function getSupplyRate(
         uint utilization
     ) public view override returns (uint64) {
-        if (utilization <= supplyKink) {
-            // interestRateBase + interestRateSlopeLow * utilization
-            return
-                safe64(
-                    supplyPerSecondInterestRateBase +
-                        mulFactor(
-                            supplyPerSecondInterestRateSlopeLow,
-                            utilization
-                        )
-                );
-        } else {
-            // interestRateBase + interestRateSlopeLow * kink + interestRateSlopeHigh * (utilization - kink)
-            return
-                safe64(
-                    supplyPerSecondInterestRateBase +
-                        mulFactor(
-                            supplyPerSecondInterestRateSlopeLow,
-                            supplyKink
-                        ) +
-                        mulFactor(
-                            supplyPerSecondInterestRateSlopeHigh,
-                            (utilization - supplyKink)
-                        )
-                );
-        }
+        return
+            _getRate(
+                utilization,
+                supplyKink,
+                supplyPerSecondInterestRateBase,
+                supplyPerSecondInterestRateSlopeLow,
+                supplyPerSecondInterestRateSlopeHigh
+            );
     }
 
     /**
@@ -379,31 +379,14 @@ contract CometWithExtendedAssetList is CometMainInterface, AccessManaged {
     function getBorrowRate(
         uint utilization
     ) public view override returns (uint64) {
-        if (utilization <= borrowKink) {
-            // interestRateBase + interestRateSlopeLow * utilization
-            return
-                safe64(
-                    borrowPerSecondInterestRateBase +
-                        mulFactor(
-                            borrowPerSecondInterestRateSlopeLow,
-                            utilization
-                        )
-                );
-        } else {
-            // interestRateBase + interestRateSlopeLow * kink + interestRateSlopeHigh * (utilization - kink)
-            return
-                safe64(
-                    borrowPerSecondInterestRateBase +
-                        mulFactor(
-                            borrowPerSecondInterestRateSlopeLow,
-                            borrowKink
-                        ) +
-                        mulFactor(
-                            borrowPerSecondInterestRateSlopeHigh,
-                            (utilization - borrowKink)
-                        )
-                );
-        }
+        return
+            _getRate(
+                utilization,
+                borrowKink,
+                borrowPerSecondInterestRateBase,
+                borrowPerSecondInterestRateSlopeLow,
+                borrowPerSecondInterestRateSlopeHigh
+            );
     }
 
     /**

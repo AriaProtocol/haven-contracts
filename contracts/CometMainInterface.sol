@@ -212,10 +212,8 @@ abstract contract CometMainInterface is CometCore {
         uint utilization
     ) public view virtual returns (uint64);
     function getUtilization() public view virtual returns (uint);
-
+    /// @dev handles both admin and guardian within AccessManager
     function governor() external view virtual returns (address);
-    // pauseGuardian DEPRECATED due to AccessManaged & AccessManager
-    function pauseGuardian() external view virtual returns (address);
     function baseToken() external view virtual returns (address);
     function baseTokenPriceFeed() external view virtual returns (address);
     function extensionDelegate() external view virtual returns (address);
