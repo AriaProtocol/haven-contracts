@@ -810,9 +810,29 @@ contract CometWithExtendedAssetList is CometMainInterface, AccessManaged {
     }
 
     /**
-     * @dev Safe ERC20 transfer in and returns the final amount transferred (taking into account any fees)
+     * @dev Safe ERC20 transfer (in and out)
      * @dev Note: Safely handles non-standard ERC-20 tokens that do not return a value. See here: https://medium.com/coinmonks/missing-return-value-bug-at-least-130-tokens-affected-d67bf08521ca
      */
+    function _checkTransferReturn() internal pure returns (bool success) {
+        assembly ("memory-safe") {
+            switch returndatasize()
+            case 0 {
+                // This is a non-standard ERC-20
+                success := not(0) // set success to true
+            }
+            case 32 {
+                // This is a compliant ERC-20
+                returndatacopy(0, 0, 32)
+                success := mload(0) // Set `success = returndata` of override external call
+            }
+            default {
+                // This is an excessively non-compliant ERC-20, revert.
+                revert(0, 0)
+            }
+        }
+    }
+
+    /// Safe ERC20 transfer in and returns the final amount transferred (taking into account any fees)
     function doTransferIn(
         address asset,
         address from,
@@ -822,53 +842,16 @@ contract CometWithExtendedAssetList is CometMainInterface, AccessManaged {
             address(this)
         );
         IERC20NonStandard(asset).transferFrom(from, address(this), amount);
-        bool success;
-        assembly ("memory-safe") {
-            switch returndatasize()
-            case 0 {
-                // This is a non-standard ERC-20
-                success := not(0) // set success to true
-            }
-            case 32 {
-                // This is a compliant ERC-20
-                returndatacopy(0, 0, 32)
-                success := mload(0) // Set `success = returndata` of override external call
-            }
-            default {
-                // This is an excessively non-compliant ERC-20, revert.
-                revert(0, 0)
-            }
-        }
-        if (!success) revert TransferInFailed();
+        if (!_checkTransferReturn()) revert TransferInFailed();
         return
             IERC20NonStandard(asset).balanceOf(address(this)) -
             preTransferBalance;
     }
 
-    /**
-     * @dev Safe ERC20 transfer out
-     * @dev Note: Safely handles non-standard ERC-20 tokens that do not return a value. See here: https://medium.com/coinmonks/missing-return-value-bug-at-least-130-tokens-affected-d67bf08521ca
-     */
+    /// @dev Safe ERC20 transfer out
     function doTransferOut(address asset, address to, uint amount) internal {
         IERC20NonStandard(asset).transfer(to, amount);
-        bool success;
-        assembly ("memory-safe") {
-            switch returndatasize()
-            case 0 {
-                // This is a non-standard ERC-20
-                success := not(0) // set success to true
-            }
-            case 32 {
-                // This is a compliant ERC-20
-                returndatacopy(0, 0, 32)
-                success := mload(0) // Set `success = returndata` of override external call
-            }
-            default {
-                // This is an excessively non-compliant ERC-20, revert.
-                revert(0, 0)
-            }
-        }
-        if (!success) revert TransferOutFailed();
+        if (!_checkTransferReturn()) revert TransferOutFailed();
     }
 
     /**
