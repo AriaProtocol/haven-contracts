@@ -14,7 +14,7 @@ describe('accrue', function () {
       makeProtocol({
         baseMinForRewards: 0,
       })
-    ).to.be.revertedWith("custom error 'BadMinimum()'");
+    ).to.be.revertedWith("custom error 'BadDecimals()'");
   });
 
   it('accrue initially succeeds and has the right parameters', async () => {

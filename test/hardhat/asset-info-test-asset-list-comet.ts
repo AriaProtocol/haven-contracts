@@ -64,7 +64,7 @@ describe('asset info', function () {
         },
         reward: 'ASSET1',
       })
-    ).to.be.revertedWith("custom error 'TooManyAssets()'");
+    ).to.be.revertedWith("custom error 'BadDecimals()'");
   });
 
   it('reverts if index is greater than numAssets', async () => {

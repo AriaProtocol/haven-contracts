@@ -138,9 +138,9 @@ contract Comet is CometMainInterface, AccessManaged {
         // Sanity checks
         uint8 decimals_ = IERC20NonStandard(config.baseToken).decimals();
         if (decimals_ > MAX_BASE_DECIMALS) revert BadDecimals();
-        if (config.storeFrontPriceFactor > FACTOR_SCALE) revert BadDiscount();
-        if (config.assetConfigs.length > MAX_ASSETS) revert TooManyAssets();
-        if (config.baseMinForRewards == 0) revert BadMinimum();
+        if (config.storeFrontPriceFactor > FACTOR_SCALE) revert BadDecimals();
+        if (config.assetConfigs.length > MAX_ASSETS) revert BadDecimals();
+        if (config.baseMinForRewards == 0) revert BadDecimals();
         if (
             IPriceFeed(config.baseTokenPriceFeed).decimals() !=
             PRICE_FEED_DECIMALS

@@ -13,8 +13,6 @@ abstract contract CometMainInterface is CometCore {
     error AlreadyInitialized();
     error BadAsset();
     error BadDecimals();
-    error BadDiscount();
-    error BadMinimum();
     error BadPrice();
     error BorrowTooSmall();
     error BorrowCFTooLarge();
@@ -28,7 +26,6 @@ abstract contract CometMainInterface is CometCore {
     error ReentrantCallBlocked();
     error SupplyCapExceeded();
     error TimestampTooLarge();
-    error TooManyAssets();
     error TooMuchSlippage();
     error TransferInFailed();
     error TransferOutFailed();
