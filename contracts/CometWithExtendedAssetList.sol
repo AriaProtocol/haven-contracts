@@ -1599,7 +1599,7 @@ contract CometWithExtendedAssetList is CometMainInterface, AccessManaged {
     ) internal {
         uint16 assetsIn = userBasic[lostAccount].assetsIn;
         uint8 _reserved = userBasic[lostAccount]._reserved;
-        // further optimization with typeof(i) = typeof(assetsIn)
+        // since 0.8.22 increment is unchecked by default
         for (uint8 i; i < numAssets; ++i) {
             if (isInAsset(assetsIn, i, _reserved)) {
                 AssetInfo memory assetInfo = getAssetInfo(i);

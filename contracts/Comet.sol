@@ -1749,7 +1749,7 @@ contract Comet is CometMainInterface, AccessManaged {
         address newAccount
     ) internal {
         uint16 assetsIn = userBasic[lostAccount].assetsIn;
-        // further optimization with typeof(i) = typeof(assetsIn)
+        // since 0.8.22 increment is unchecked by default
         for (uint8 i; i < numAssets; ++i) {
             if (isInAsset(assetsIn, i)) {
                 AssetInfo memory assetInfo = getAssetInfo(i);
