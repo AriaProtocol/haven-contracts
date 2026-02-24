@@ -212,6 +212,15 @@ contract Comet is CometMainInterface, AccessManaged {
     }
 
     /**
+     * @dev Override to remove OZ's EXTCODESIZE check. The AccessManager validates its own operations.
+     */
+    function setAuthority(address newAuthority) public override {
+        address caller = _msgSender();
+        if (caller != authority()) revert AccessManagedUnauthorized(caller);
+        _setAuthority(newAuthority);
+    }
+
+    /**
      * @dev Prevents marked functions from being reentered
      * Note: this restrict contracts from calling comet functions in their hooks.
      * Doing so will cause the transaction to revert.
