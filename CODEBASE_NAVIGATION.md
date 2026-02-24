@@ -208,7 +208,6 @@ The Configurator contract manages protocol parameters and upgrades. It stores co
   - `getConfiguration()` - Retrieves current configuration
   - `setFactory()` - Sets the factory for deploying new implementations
 - **Parameter Setters (governor-only):**
-  - `setGovernor()` - Updates protocol governor
   - `setPauseGuardian()` - Updates pause guardian
   - `setBaseTokenPriceFeed()` - Updates base token price feed
   - `setSupplyKink()`, `setBorrowKink()` - Interest rate kink points

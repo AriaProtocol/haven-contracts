@@ -19,11 +19,6 @@ contract Configurator is ConfiguratorStorage {
         address indexed oldFactory,
         address indexed newFactory
     );
-    event SetGovernor(
-        address indexed cometProxy,
-        address indexed oldGovernor,
-        address indexed newGovernor
-    );
     event SetConfiguration(
         address indexed cometProxy,
         Configuration oldConfiguration,
@@ -212,14 +207,6 @@ contract Configurator is ConfiguratorStorage {
     }
 
     /** Governance setters for Comet-related configuration **/
-
-    function setGovernor(address cometProxy, address newGovernor) external {
-        if (msg.sender != governor) revert Unauthorized();
-
-        address oldGovernor = configuratorParams[cometProxy].governor;
-        configuratorParams[cometProxy].governor = newGovernor;
-        emit SetGovernor(cometProxy, oldGovernor, newGovernor);
-    }
 
     function setPauseGuardian(
         address cometProxy,

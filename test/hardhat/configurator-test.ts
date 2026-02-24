@@ -100,30 +100,31 @@ describe('configurator', function () {
     await expect(proxyAdmin.connect(alice).deployAndUpgradeTo(configuratorProxy.address, cometProxy.address)).to.be.revertedWith('Ownable: caller is not the owner');
   });
 
-  it('e2e governance actions from timelock', async () => {
-    const { governor, configurator, configuratorProxy, proxyAdmin, cometProxy, users: [alice] } = await makeConfigurator();
+  // // Governor setter removed due to AccessManager
+  // it('e2e governance actions from timelock', async () => {
+  //   const { governor, configurator, configuratorProxy, proxyAdmin, cometProxy, users: [alice] } = await makeConfigurator();
 
-    const TimelockFactory = (await ethers.getContractFactory(
-      'SimpleTimelock'
-    )) as SimpleTimelock__factory;
+  //   const TimelockFactory = (await ethers.getContractFactory(
+  //     'SimpleTimelock'
+  //   )) as SimpleTimelock__factory;
 
-    const timelock = await TimelockFactory.deploy(governor.address);
-    await timelock.deployed();
-    await proxyAdmin.transferOwnership(timelock.address);
+  //   const timelock = await TimelockFactory.deploy(governor.address);
+  //   await timelock.deployed();
+  //   await proxyAdmin.transferOwnership(timelock.address);
 
-    const configuratorAsProxy = configurator.attach(configuratorProxy.address);
-    await configuratorAsProxy.transferGovernor(timelock.address); // set timelock as admin of Configurator
+  //   const configuratorAsProxy = configurator.attach(configuratorProxy.address);
+  //   await configuratorAsProxy.transferGovernor(timelock.address); // set timelock as admin of Configurator
 
-    expect((await configuratorAsProxy.getConfiguration(cometProxy.address)).governor).to.be.equal(governor.address);
+  //   expect((await configuratorAsProxy.getConfiguration(cometProxy.address)).governor).to.be.equal(governor.address);
 
-    // 1. SetGovernor
-    // 2. DeployAndUpgradeTo
-    let setGovernorCalldata = ethers.utils.defaultAbiCoder.encode(['address', 'address'], [cometProxy.address, alice.address]);
-    let deployAndUpgradeToCalldata = ethers.utils.defaultAbiCoder.encode(['address', 'address'], [configuratorProxy.address, cometProxy.address]);
-    await timelock.executeTransactions([configuratorProxy.address, proxyAdmin.address], [0, 0], ['setGovernor(address,address)', 'deployAndUpgradeTo(address,address)'], [setGovernorCalldata, deployAndUpgradeToCalldata]);
+  //   // 1. SetGovernor
+  //   // 2. DeployAndUpgradeTo
+  //   let setGovernorCalldata = ethers.utils.defaultAbiCoder.encode(['address', 'address'], [cometProxy.address, alice.address]);
+  //   let deployAndUpgradeToCalldata = ethers.utils.defaultAbiCoder.encode(['address', 'address'], [configuratorProxy.address, cometProxy.address]);
+  //   await timelock.executeTransactions([configuratorProxy.address, proxyAdmin.address], [0, 0], ['setGovernor(address,address)', 'deployAndUpgradeTo(address,address)'], [setGovernorCalldata, deployAndUpgradeToCalldata]);
 
-    expect((await configuratorAsProxy.getConfiguration(cometProxy.address)).governor).to.be.equal(alice.address);
-  });
+  //   expect((await configuratorAsProxy.getConfiguration(cometProxy.address)).governor).to.be.equal(alice.address);
+  // });
 
   it('reverts if initialized more than once', async () => {
     const { governor, configurator, configuratorProxy } = await makeConfigurator();
@@ -250,29 +251,30 @@ describe('configurator', function () {
       ).to.be.revertedWith("custom error 'ConfigurationAlreadyExists()'");
     });
 
-    it('sets governor and deploys Comet with new configuration', async () => {
-      const { configurator, configuratorProxy, proxyAdmin, comet, cometProxy, users: [alice] } = await makeConfigurator();
+    // // Governor setter removed due to AccessManager
+    // it('sets governor and deploys Comet with new configuration', async () => {
+    //   const { configurator, configuratorProxy, proxyAdmin, comet, cometProxy, users: [alice] } = await makeConfigurator();
 
-      const cometAsProxy = comet.attach(cometProxy.address);
-      const configuratorAsProxy = configurator.attach(configuratorProxy.address);
-      expect((await configuratorAsProxy.getConfiguration(cometProxy.address)).governor).to.be.equal(await comet.governor());
+    //   const cometAsProxy = comet.attach(cometProxy.address);
+    //   const configuratorAsProxy = configurator.attach(configuratorProxy.address);
+    //   expect((await configuratorAsProxy.getConfiguration(cometProxy.address)).governor).to.be.equal(await comet.governor());
 
-      const oldGovernor = await comet.governor();
-      const newGovernor = alice.address;
-      const txn = await wait(configuratorAsProxy.setGovernor(cometProxy.address, newGovernor));
-      await wait(proxyAdmin.deployAndUpgradeTo(configuratorProxy.address, cometProxy.address));
+    //   const oldGovernor = await comet.governor();
+    //   const newGovernor = alice.address;
+    //   const txn = await wait(configuratorAsProxy.setGovernor(cometProxy.address, newGovernor));
+    //   await wait(proxyAdmin.deployAndUpgradeTo(configuratorProxy.address, cometProxy.address));
 
-      expect(event(txn, 0)).to.be.deep.equal({
-        SetGovernor: {
-          cometProxy: cometProxy.address,
-          oldGovernor,
-          newGovernor,
-        }
-      });
-      expect(oldGovernor).to.be.not.equal(newGovernor);
-      expect((await configuratorAsProxy.getConfiguration(cometProxy.address)).governor).to.be.equal(newGovernor);
-      expect(await cometAsProxy.governor()).to.be.equal(newGovernor);
-    });
+    //   expect(event(txn, 0)).to.be.deep.equal({
+    //     SetGovernor: {
+    //       cometProxy: cometProxy.address,
+    //       oldGovernor,
+    //       newGovernor,
+    //     }
+    //   });
+    //   expect(oldGovernor).to.be.not.equal(newGovernor);
+    //   expect((await configuratorAsProxy.getConfiguration(cometProxy.address)).governor).to.be.equal(newGovernor);
+    //   expect(await cometAsProxy.governor()).to.be.equal(newGovernor);
+    // });
 
     it('sets pauseGuardian and deploys Comet with new configuration', async () => {
       const { configurator, configuratorProxy, proxyAdmin, comet, cometProxy, users: [alice] } = await makeConfigurator();
@@ -930,13 +932,14 @@ describe('configurator', function () {
       ).to.be.revertedWith("custom error 'AssetDoesNotExist()'");
     });
 
-    it('reverts if setter is called from non-governor', async () => {
-      const { configuratorProxy, configurator, cometProxy, users: [alice] } = await makeConfigurator();
+    // // Governor setter removed due to AccessManager
+    // it('reverts if setter is called from non-governor', async () => {
+    //   const { configuratorProxy, configurator, cometProxy, users: [alice] } = await makeConfigurator();
 
-      const configuratorAsProxy = configurator.attach(configuratorProxy.address);
-      await expect(
-        configuratorAsProxy.connect(alice).setGovernor(cometProxy.address, alice.address)
-      ).to.be.revertedWith("custom error 'Unauthorized()'");
-    });
+    //   const configuratorAsProxy = configurator.attach(configuratorProxy.address);
+    //   await expect(
+    //     configuratorAsProxy.connect(alice).setGovernor(cometProxy.address, alice.address)
+    //   ).to.be.revertedWith("custom error 'Unauthorized()'");
+    // });
   });
 });
