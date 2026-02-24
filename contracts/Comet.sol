@@ -615,13 +615,20 @@ contract Comet is CometMainInterface, AccessManaged {
     }
 
     /**
+     * @dev Helper to get accrued interest indices as of now
+     */
+    function _currentAccruedIndices() internal view returns (uint64, uint64) {
+        return accruedInterestIndices(getNowInternal() - lastAccrualTime);
+    }
+
+    /**
      * @notice Gets the total amount of protocol reserves of the base asset
      */
     function getReserves() public view override returns (int) {
         (
             uint64 baseSupplyIndex_,
             uint64 baseBorrowIndex_
-        ) = accruedInterestIndices(getNowInternal() - lastAccrualTime);
+        ) = _currentAccruedIndices();
         uint balance = IERC20NonStandard(baseToken).balanceOf(address(this));
         uint totalSupply_ = presentValueSupply(
             baseSupplyIndex_,
@@ -1658,9 +1665,7 @@ contract Comet is CometMainInterface, AccessManaged {
      * @return The supply of tokens
      **/
     function totalSupply() external view override returns (uint256) {
-        (uint64 baseSupplyIndex_, ) = accruedInterestIndices(
-            getNowInternal() - lastAccrualTime
-        );
+        (uint64 baseSupplyIndex_, ) = _currentAccruedIndices();
         return presentValueSupply(baseSupplyIndex_, totalSupplyBase);
     }
 
@@ -1670,9 +1675,7 @@ contract Comet is CometMainInterface, AccessManaged {
      * @return The amount of debt
      **/
     function totalBorrow() external view override returns (uint256) {
-        (, uint64 baseBorrowIndex_) = accruedInterestIndices(
-            getNowInternal() - lastAccrualTime
-        );
+        (, uint64 baseBorrowIndex_) = _currentAccruedIndices();
         return presentValueBorrow(baseBorrowIndex_, totalBorrowBase);
     }
 
@@ -1683,9 +1686,7 @@ contract Comet is CometMainInterface, AccessManaged {
      * @return The present day base balance magnitude of the account, if positive
      */
     function balanceOf(address account) public view override returns (uint256) {
-        (uint64 baseSupplyIndex_, ) = accruedInterestIndices(
-            getNowInternal() - lastAccrualTime
-        );
+        (uint64 baseSupplyIndex_, ) = _currentAccruedIndices();
         int104 principal = userBasic[account].principal;
         return
             principal > 0
@@ -1702,9 +1703,7 @@ contract Comet is CometMainInterface, AccessManaged {
     function borrowBalanceOf(
         address account
     ) public view override returns (uint256) {
-        (, uint64 baseBorrowIndex_) = accruedInterestIndices(
-            getNowInternal() - lastAccrualTime
-        );
+        (, uint64 baseBorrowIndex_) = _currentAccruedIndices();
         int104 principal = userBasic[account].principal;
         return
             principal < 0
