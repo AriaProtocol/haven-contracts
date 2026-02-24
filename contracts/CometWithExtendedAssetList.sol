@@ -19,7 +19,9 @@ contract CometWithExtendedAssetList is CometMainInterface, AccessManaged {
     /** General configuration constants **/
 
     /// @notice The admin of the protocol
-    address public immutable override governor;
+    function governor() external view override returns (address) {
+        return authority();
+    }
 
     /// @notice The address of the base token contract
     address public immutable override baseToken;
@@ -126,7 +128,6 @@ contract CometWithExtendedAssetList is CometMainInterface, AccessManaged {
 
         // Copy configuration
         unchecked {
-            governor = config.governor;
             baseToken = config.baseToken;
             baseTokenPriceFeed = config.baseTokenPriceFeed;
             extensionDelegate = config.extensionDelegate;
