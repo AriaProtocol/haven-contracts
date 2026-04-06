@@ -5,20 +5,15 @@ import "./CometMainInterface.sol";
 import "./IERC20NonStandard.sol";
 import "./IPriceFeed.sol";
 
-import {AccessManaged} from "oz/access/manager/AccessManaged.sol";
+import {AccessManagedUpgradeable} from "oz-upgradeable/access/manager/AccessManagedUpgradeable.sol";
 
 /**
  * @title Compound's Comet Contract
  * @notice An efficient monolithic money market protocol
  * @author Compound
  */
-contract Comet is CometMainInterface, AccessManaged {
+contract Comet is CometMainInterface, AccessManagedUpgradeable {
     /** General configuration constants **/
-
-    /// @notice The admin of the protocol
-    function governor() external view override returns (address) {
-        return authority();
-    }
 
     /// @notice The address of the base token contract
     address public immutable override baseToken;
@@ -134,7 +129,9 @@ contract Comet is CometMainInterface, AccessManaged {
      * @notice Construct a new protocol instance
      * @param config The mapping of initial/constant parameters
      **/
-    constructor(Configuration memory config) AccessManaged(config.governor) {
+    constructor(Configuration memory config) {
+        __AccessManaged_init(config.governor);
+
         // Sanity checks
         uint8 decimals_ = IERC20NonStandard(config.baseToken).decimals();
         if (decimals_ > MAX_BASE_DECIMALS) revert BadDecimals();
@@ -214,15 +211,6 @@ contract Comet is CometMainInterface, AccessManaged {
     }
 
     /**
-     * @dev Override to remove OZ's EXTCODESIZE check. The AccessManager validates its own operations.
-     */
-    function setAuthority(address newAuthority) public override {
-        address caller = _msgSender();
-        if (caller != authority()) revert AccessManagedUnauthorized(caller);
-        _setAuthority(newAuthority);
-    }
-
-    /**
      * @dev Prevents marked functions from being reentered
      * Note: this restrict contracts from calling comet functions in their hooks.
      * Doing so will cause the transaction to revert.
@@ -259,6 +247,26 @@ contract Comet is CometMainInterface, AccessManaged {
         }
     }
 
+    //=============================================================================//
+    //                 AccessManager (dedicated storage namespace)                 //
+    //=============================================================================//
+    /**
+     * @dev Override to remove OZ's EXTCODESIZE check. The AccessManager validates its own operations.
+     */
+    function setAuthority(address newAuthority) public override {
+        address caller = _msgSender();
+        if (caller != authority()) revert AccessManagedUnauthorized(caller);
+        _setAuthority(newAuthority);
+    }
+
+    /// @notice The admin of the protocol
+    function governor() external view override returns (address) {
+        return authority();
+    }
+
+    //============================================================================//
+    //                                 Else Comet                                 //
+    //============================================================================//
     /**
      * @notice Initialize storage for the contract
      * @dev Can be used from constructor or proxy
