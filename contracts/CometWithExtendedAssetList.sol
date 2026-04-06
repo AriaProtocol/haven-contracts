@@ -8,14 +8,14 @@ import "./IAssetListFactory.sol";
 import "./IAssetListFactoryHolder.sol";
 import "./IAssetList.sol";
 
-import {AccessManaged} from "oz/access/manager/AccessManaged.sol";
+import {AccessManagedUpgradeable} from "oz-upgradeable/access/manager/AccessManagedUpgradeable.sol";
 
 /**
  * @title Compound's Comet Contract
  * @notice An efficient monolithic money market protocol
  * @author Compound
  */
-contract CometWithExtendedAssetList is CometMainInterface, AccessManaged {
+contract CometWithExtendedAssetList is CometMainInterface, AccessManagedUpgradeable {
     /** General configuration constants **/
 
     /// @notice The address of the base token contract
@@ -110,7 +110,9 @@ contract CometWithExtendedAssetList is CometMainInterface, AccessManaged {
      * @notice Construct a new protocol instance
      * @param config The mapping of initial/constant parameters
      **/
-    constructor(Configuration memory config) AccessManaged(config.governor) {
+    constructor(Configuration memory config) {
+        __AccessManaged_init(config.governor);
+
         // Sanity checks
         uint8 decimals_ = IERC20NonStandard(config.baseToken).decimals();
         if (decimals_ > MAX_BASE_DECIMALS) revert BadDecimals();
@@ -213,7 +215,7 @@ contract CometWithExtendedAssetList is CometMainInterface, AccessManaged {
     }
 
     //=============================================================================//
-    //                                AccessManager                                //
+    //                 AccessManager (dedicated storage namespace)                 //
     //=============================================================================//
     /**
      * @dev Override to remove OZ's EXTCODESIZE check. The AccessManager validates its own operations.
