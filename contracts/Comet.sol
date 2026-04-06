@@ -15,11 +15,6 @@ import {AccessManaged} from "oz/access/manager/AccessManaged.sol";
 contract Comet is CometMainInterface, AccessManaged {
     /** General configuration constants **/
 
-    /// @notice The admin of the protocol
-    function governor() external view override returns (address) {
-        return authority();
-    }
-
     /// @notice The address of the base token contract
     address public immutable override baseToken;
 
@@ -214,15 +209,6 @@ contract Comet is CometMainInterface, AccessManaged {
     }
 
     /**
-     * @dev Override to remove OZ's EXTCODESIZE check. The AccessManager validates its own operations.
-     */
-    function setAuthority(address newAuthority) public override {
-        address caller = _msgSender();
-        if (caller != authority()) revert AccessManagedUnauthorized(caller);
-        _setAuthority(newAuthority);
-    }
-
-    /**
      * @dev Prevents marked functions from being reentered
      * Note: this restrict contracts from calling comet functions in their hooks.
      * Doing so will cause the transaction to revert.
@@ -259,6 +245,26 @@ contract Comet is CometMainInterface, AccessManaged {
         }
     }
 
+    //=============================================================================//
+    //                                AccessManager                                //
+    //=============================================================================//
+    /**
+     * @dev Override to remove OZ's EXTCODESIZE check. The AccessManager validates its own operations.
+     */
+    function setAuthority(address newAuthority) public override {
+        address caller = _msgSender();
+        if (caller != authority()) revert AccessManagedUnauthorized(caller);
+        _setAuthority(newAuthority);
+    }
+
+    /// @notice The admin of the protocol
+    function governor() external view override returns (address) {
+        return authority();
+    }
+
+    //============================================================================//
+    //                                 Else Comet                                 //
+    //============================================================================//
     /**
      * @notice Initialize storage for the contract
      * @dev Can be used from constructor or proxy
