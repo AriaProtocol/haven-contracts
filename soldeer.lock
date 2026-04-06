@@ -14,9 +14,9 @@ integrity = "2f539b6241258fc3c127c97225b3cb1b5e9225e422d2c1cb233c52a6f5c29002"
 
 [[dependencies]]
 name = "aria"
-version = "v1.1.0"
+version = "v1.1.1"
 git = "git@github.com:AriaProtocol/main-contracts.git"
-rev = "febcdd79c78ddc3996c394fe7909b20f7781cf2f"
+rev = "1a13ee093379c0f1554359b313ef02af63821dd3"
 
 [[dependencies]]
 name = "forge-std"
